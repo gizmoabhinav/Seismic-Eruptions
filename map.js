@@ -1,8 +1,12 @@
-var map = L.map('map').setView([50, -50], 2);
+var map = L.map('map').setView([30, -0], 2);
 	var track = new L.KML("plates.kml", {async: true});
    // track.on("loaded", function(e) { map.fitBounds(e.target.getBounds()); });
-	map.addLayer(track);
-    
+   $('#plates').click(function () {
+   if($("#plates").is(':checked'))
+    map.addLayer(track);  // checked
+	else
+    map.removeLayer(track);  // unchecked
+    });
 	map.invalidateSize(false);
 	var osmmapLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 			maxZoom: 18,
@@ -32,4 +36,5 @@ var map = L.map('map').setView([50, -50], 2);
 	});
 
 	layerControl.addTo(map);
+	
 	
