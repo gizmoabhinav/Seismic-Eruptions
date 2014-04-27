@@ -9,19 +9,43 @@
 	
 </head>
 <body>
-	
-    
+	<div id="playback" style="display:none;">
+    <div id="slider"></div>
+	<button onclick="Play()">Play</button>
+	<button onclick="Pause()">Pause</button>
+	<button onclick="SpeedUp()">speed up</button>
+	<button onclick="SpeedDown()">speed down</button>
+	</div>
 	<div id="map" style="width:80%;height: 575px;position: relative;float:left;"></div>
 	<div id="controls" style="width:20%;height:575px;float:left;">
-	<input id="plates" type="checkbox">Plates<br>
+	Timeline time:</br>
+	<div id="values"></div>
+	<input id="plates" type="checkbox">Plates</br>
+	Event time:</br>
+	<div id="time"></div>
+	<div id="overlay">
+     <img src="images/loading.gif" alt="Loading" />
+     Loading...
+	</div>
 	</div>
 	<p>Link to the <a href="https://github.com/gizmoabhinav/Seismic-Eruptions">project</a></p>
 	<script src="leaflet.js"></script>
 	<script src="KML.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
 	<script src="//code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script src="map.js"></script>
 	
+	
+	<script>
+	$(window).load(function(){
+
+		$('#overlay').fadeOut();
+		$('#playback').fadeIn();
+		tl.resume();
+
+	});
+	</script>
 	
 </body>
 </html>
