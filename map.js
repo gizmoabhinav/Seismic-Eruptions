@@ -1,10 +1,10 @@
 //load map
-var speed = 1;
+var speed = 6;
 var map = L.map('map').setView([30, -0], 2);
 map.invalidateSize(false);
 // create timeline
 var tl = new TimelineLite({onUpdate:updateSlider});
-
+tl.timeScale(speed);
 tl.pause();
 var d = new Date();
 var curr_year = d.getFullYear();
@@ -31,6 +31,7 @@ var starttime = 0;
 var circles = new Array();
 var time = new Array();
 var stamp = new Array();
+var circles_added = new MiniSet();
 var script = document.createElement('script');
 var snd = new Audio("tap.wav"); // buffers automatically when created
 
@@ -40,7 +41,8 @@ var snd = new Audio("tap.wav"); // buffers automatically when created
 	  
 		size = results.features.length;
 			for (var i = 0; i < size; i++){
-				circles[i] = L.geoJson(results.features[i], {pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, {radius: results.features[i].properties.mag ,fillColor: "#ff0000",color: "#000",weight: 1,opacity: 1,fillOpacity: 0.8});}}).bindPopup("Place: <b>"+results.features[i].properties.place+"</b></br>Magnitude : <b>"+ results.features[i].properties.mag+"</b></br>Time : "+timeConverter(results.features[i].properties.time));
+				circles[i] = L.geoJson(results.features[i], {pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, {radius: results.features[i].properties.mag ,fillColor: "#00ff00",color: "#000",weight: 1,opacity: 1,fillOpacity: 1});}}).bindPopup("Place: <b>"+results.features[i].properties.place+"</b></br>Magnitude : <b>"+ results.features[i].properties.mag+"</b></br>Time : "+timeConverter(results.features[i].properties.time));
+				//circles[i].addTo(map);
 				time[i] = timeConverter(results.features[i].properties.time);
 				stamp[i] = results.features[i].properties.time
 				// Adding events to the timeline
@@ -75,22 +77,30 @@ var snd = new Audio("tap.wav"); // buffers automatically when created
 		$("#values").html(timeConverter((tl.progress()*timediff)+starttime));
 	}
 	function mapAdder(i){
-		if(!map.hasLayer(circles[i]))
-		map.addLayer(circles[i]);
-		if(i>=20)
-		mapRemover(i-20);
-		
+		if(!map.hasLayer(circles[i])){
+		circles[i].addTo(map);
+		circles_added.add(i);
+		}
+		circles[i].setStyle({fillOpacity : 1,fillColor: "#00ff00"});
+		if(i>=1){
+			circles[i-1].setStyle({fillOpacity : 0.5,fillColor: "#ff0000"});
+		}
+		if(i>=100)
+		mapRemover(i-100);
+		circles_added.each(function(value) {
+			if(value>i){
+				mapRemover(value);
+			}
+		});
 		$("#time").html(time[i]);
 		snd.play();
-		/*for(var j= Math.floor(tl.progress()*100)+1;j<19774;j++){
-				if(map.hasLayer(circles[j])){
-					map.removeLayer(circles[j]);
-				}
-			}*/
+		
 	}
 	function mapRemover(i){
-		if(map.hasLayer(circles[i]))
+		if(map.hasLayer(circles[i])){
 		map.removeLayer(circles[i]);
+		circles_added.remove(i);
+		}
 	}
 // load plate boundaries
 var track = new L.KML("plates.kml", {async: true});
@@ -113,7 +123,7 @@ var track = new L.KML("plates.kml", {async: true});
 		tl.pause();
 	}
 	function SpeedUp(){
-			speed*=1.05;
+			speed*=1.5;
 			tl.timeScale(speed);
 	}
 	function SpeedDown(){
