@@ -35,7 +35,7 @@ var circles_added = new MiniSet();
 var script = document.createElement('script');
 var snd = new Audio("tap.wav"); // buffers automatically when created
 
-	script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime=2009-1-1%2000:00:00&minmagnitude=5&format=geojson&callback=eqfeed_callback&endtime='+curr_year+'-'+curr_month+'-'+curr_date+'%2023:59:59&orderby=time-asc';
+	script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime=2013-1-1%2000:00:00&minmagnitude=5&format=geojson&callback=eqfeed_callback&endtime='+curr_year+'-'+curr_month+'-'+curr_date+'%2023:59:59&orderby=time-asc';
 	document.getElementsByTagName('body')[0].appendChild(script);
 	window.eqfeed_callback = function(results) {
 	  
