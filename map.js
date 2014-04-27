@@ -4,25 +4,14 @@ var map = L.map('map').setView([30, -0], 2);
 map.invalidateSize(false);
 // create timeline
 var tl = new TimelineLite({onUpdate:updateSlider});
-$("#slider").slider({
-		value: 0,
-		range: "min",
-		min: 0,
-		max: 315670898300,
-		slide: function ( event, ui ) {
-			$("#values").html(timeConverter(ui.value+1072921310700));
-			//tl.seek();
-			tl.pause();
-			tl.progress(ui.value/315670898300);
-		}
-	});
+
 tl.pause();
-function updateSlider()
-	{
-		$("#slider").slider("value", (tl.progress()*315670898300));
-		$("#values").html(timeConverter((tl.progress()*315670898300)+1072921310700));
-	}
-//time
+var d = new Date();
+var curr_year = d.getFullYear();
+var curr_month = d.getMonth()+1;
+var curr_date = d.getDate();
+
+//time stamp conversion
 function timeConverter(UNIX_timestamp){
  var a = new Date(UNIX_timestamp);
  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -35,21 +24,23 @@ function timeConverter(UNIX_timestamp){
      var time = year+' '+month+' '+date+'  '+hour+':'+min+':'+sec ;
      return time;
  }
-// load data from usgs
+// load data from usgs and populate timeline accordingly
 var size = 0;
+var timediff = 0;
+var starttime = 0;
 var circles = new Array();
 var time = new Array();
 var stamp = new Array();
 var script = document.createElement('script');
 var snd = new Audio("tap.wav"); // buffers automatically when created
 
-	script.src = 'values.js';
+	script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime=2009-1-1%2000:00:00&minmagnitude=5&format=geojson&callback=eqfeed_callback&endtime='+curr_year+'-'+curr_month+'-'+curr_date+'%2023:59:59&orderby=time-asc';
 	document.getElementsByTagName('body')[0].appendChild(script);
 	window.eqfeed_callback = function(results) {
 	  
 		size = results.features.length;
-			for (var i = 0; i < 19774; i++){
-				circles[i] = L.geoJson(results.features[i], {pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, {radius: results.features[i].properties.mag ,fillColor: "#ff0000",color: "#000",weight: 1,opacity: 1,fillOpacity: 0.8});}}).bindPopup("Place: <b>"+results.features[i].properties.place+"</b></br>Magnitude : <b>"+ results.features[i].properties.mag+"</b>");
+			for (var i = 0; i < size; i++){
+				circles[i] = L.geoJson(results.features[i], {pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, {radius: results.features[i].properties.mag ,fillColor: "#ff0000",color: "#000",weight: 1,opacity: 1,fillOpacity: 0.8});}}).bindPopup("Place: <b>"+results.features[i].properties.place+"</b></br>Magnitude : <b>"+ results.features[i].properties.mag+"</b></br>Time : "+timeConverter(results.features[i].properties.time));
 				time[i] = timeConverter(results.features[i].properties.time);
 				stamp[i] = results.features[i].properties.time
 				// Adding events to the timeline
@@ -60,9 +51,28 @@ var snd = new Audio("tap.wav"); // buffers automatically when created
 				
 				//depths[i] = results.features[i].geometry.coordinates[2];
 			}
+		timediff = results.features[size-1].properties.time-results.features[0].properties.time;
+		starttime = results.features[0].properties.time;
+		
+		$("#slider").slider({
+		value: 0,
+		range: "min",
+		min: 0,
+		max: timediff,
+		slide: function ( event, ui ) {
+			$("#values").html(timeConverter(starttime));
+			//tl.seek();
+			tl.pause();
+			tl.progress(ui.value/(timediff));
+		}
+	});	
 			
 			
-			
+	}
+	function updateSlider()
+	{
+		$("#slider").slider("value", (tl.progress()*timediff));
+		$("#values").html(timeConverter((tl.progress()*timediff)+starttime));
 	}
 	function mapAdder(i){
 		if(!map.hasLayer(circles[i]))
