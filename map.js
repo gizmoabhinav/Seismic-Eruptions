@@ -178,3 +178,9 @@ var layerControl = new L.Control.Layers({
 	'Cloudmade' : baseLayer2
 });
 layerControl.addTo(map);
+////////////// Loading data gif //////////////////////
+$(window).load(function(){
+	$('#overlay').fadeOut();
+	$('#playback').fadeIn();
+	tl.resume();
+});
