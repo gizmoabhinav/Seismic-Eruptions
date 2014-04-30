@@ -10,11 +10,11 @@
 </head>
 <body>
 	<div id="playback" style="display:none;">
-    <div id="slider"></div>
-	<button onclick="Play()">Play</button>
-	<button onclick="Pause()">Pause</button>
-	<button onclick="SpeedUp()">speed up</button>
-	<button onclick="SpeedDown()">speed down</button>
+    <div id="slider" style="width:90%"></div>
+	<button id="play" onclick="Play()">Play</button>
+	<button id="pause" onclick="Pause()">Pause</button>
+	<button id="speedup" onclick="SpeedUp()">speed up</button>
+	<button id="speeddown" onclick="SpeedDown()">speed down</button>
 	</div>
 	<div id="map" style="width:80%;height: 575px;position: relative;float:left;"></div>
 	<div id="controls" style="width:20%;height:575px;float:left;">
@@ -37,17 +37,5 @@
 	<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script src="miniset.js"></script>
 	<script src="map.js"></script>
-	
-	
-	<script>
-	$(window).load(function(){
-
-		$('#overlay').fadeOut();
-		$('#playback').fadeIn();
-		tl.resume();
-
-	});
-	</script>
-	
 </body>
 </html>

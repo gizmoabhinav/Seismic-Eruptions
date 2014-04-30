@@ -44,7 +44,7 @@ window.eqfeed_callback = function(results) {
 	  
 	size = results.features.length;
 	for (var i = 0; i < size; i++){
-		circles[i] = L.geoJson(results.features[i], {pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, {radius: results.features[i].properties.mag ,fillColor: "#00ff00",color: "#000",weight: 1,opacity: 1,fillOpacity: 1});}}).bindPopup("Place: <b>"+results.features[i].properties.place+"</b></br>Magnitude : <b>"+ results.features[i].properties.mag+"</b></br>Time : "+timeConverter(results.features[i].properties.time));
+		circles[i] = L.geoJson(results.features[i], {pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, {radius: results.features[i].properties.mag ,fillColor: "#ff0000",color: "#000",weight: 1,opacity: 1,fillOpacity: 1});}}).bindPopup("Place: <b>"+results.features[i].properties.place+"</b></br>Magnitude : <b>"+ results.features[i].properties.mag+"</b></br>Time : "+timeConverter(results.features[i].properties.time));
 		//circles[i].addTo(map);
 		time[i] = timeConverter(results.features[i].properties.time);
 		stamp[i] = results.features[i].properties.time
@@ -69,6 +69,7 @@ window.eqfeed_callback = function(results) {
 			tl.progress(ui.value/(timediff));
 		}
 	});
+	
 }
 function updateSlider(){
 	$("#slider").slider("value", (tl.progress()*timediff));
@@ -119,8 +120,13 @@ $('#plates').click(function () {
 $('#all_events').click(function () {
 	$('#overlay').fadeIn();
 	if($("#all_events").is(':checked')){
-		$('#playback').fadeOut();
-		tl.progress(1);
+		$("#slider").slider({ disabled: true });
+		document.getElementById("play").disabled = true;
+		document.getElementById("pause").disabled = true;
+		document.getElementById("speedup").disabled = true;
+		document.getElementById("speeddown").disabled = true;
+		tl.pause();
+		//tl.progress(1);
 		for (var i = 0; i < size; i++){
 			if(!map.hasLayer(circles[i])){
 				circles[i].addTo(map);
@@ -130,8 +136,13 @@ $('#all_events').click(function () {
 		$('#overlay').fadeOut();
 	}
 	else{
-		tl.progress(0);
-		$('#playback').fadeIn();
+		tl.resume();
+		//tl.progress(0);
+		$("#slider").slider({ disabled: false });
+		document.getElementById("play").disabled = false;
+		document.getElementById("pause").disabled = false;
+		document.getElementById("speedup").disabled = false;
+		document.getElementById("speeddown").disabled = false;
 		$('#overlay').fadeOut();
 	}
 });
