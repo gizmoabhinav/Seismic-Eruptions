@@ -136,6 +136,7 @@ $('#all_events').click(function () {
 		$('#overlay').fadeOut();
 	}
 	else{
+		tl.progress(0);
 		tl.resume();
 		//tl.progress(0);
 		$("#slider").slider({ disabled: false });
