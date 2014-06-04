@@ -59,6 +59,8 @@ function initializeScene(){
 	rectangle.vertices.push( new THREE.Vector3( x4-leftTileLimit-2, 0.5, y4-topTileLimit-2 ) );
 	rectangle.faces.push( new THREE.Face3( 2,1,0 ) );
 	rectangle.faces.push( new THREE.Face3( 0,3,2 ) );
+	rectangle.faces.push( new THREE.Face3( 0,1,2 ) );
+	rectangle.faces.push( new THREE.Face3( 2,3,0 ) );
 	var rectmaterial = new THREE.MeshBasicMaterial({color: 0xff0000});
 	rectmesh = new THREE.Mesh(rectangle,rectmaterial);
 	scene.add(rectmesh);
