@@ -12,8 +12,11 @@ var minx = Math.min(x1,x2,x3,x4);
 var miny = Math.min(y1,y2,y3,y4);
 var maxx = Math.max(x1,x2,x3,x4);
 var maxy = Math.max(y1,y2,y3,y4);
-//alert(y1);
-leftTileLimit = Math.floor(minx);
-alert((leftTileLimit));
-topTileLimit = Math.floor(miny);
-alert((topTileLimit));
+if(3-Math.ceil(maxx-minx)>=0 && 3-Math.ceil(maxy-miny)>=0){					// temporary limit to the size of the rectangle
+	leftTileLimit = Math.floor(minx-(3-Math.ceil(maxx-minx)));
+	topTileLimit = Math.floor(miny-(3-Math.ceil(maxy-miny)));
+}
+else{
+	leftTileLimit = Math.floor(minx);
+	topTileLimit = Math.floor(miny);
+}
