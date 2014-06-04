@@ -51,6 +51,19 @@ function initializeScene(){
 			scene.add(cubeMesh);
 		}
 	}
+	// generate the rectangle
+	var rectangle = new THREE.Geometry();
+	rectangle.vertices.push( new THREE.Vector3( x1-leftTileLimit-2, 0.5, y1-topTileLimit-2 ) );
+	rectangle.vertices.push( new THREE.Vector3( x2-leftTileLimit-2, 0.5, y2-topTileLimit-2 ) );
+	rectangle.vertices.push( new THREE.Vector3( x3-leftTileLimit-2, 0.5, y3-topTileLimit-2 ) );
+	rectangle.vertices.push( new THREE.Vector3( x4-leftTileLimit-2, 0.5, y4-topTileLimit-2 ) );
+	rectangle.faces.push( new THREE.Face3( 2,1,0 ) );
+	rectangle.faces.push( new THREE.Face3( 0,3,2 ) );
+	var rectmaterial = new THREE.MeshBasicMaterial({color: 0xff0000});
+	rectmesh = new THREE.Mesh(rectangle,rectmaterial);
+	scene.add(rectmesh);
+	
+	
 	var ambientLight = new THREE.AmbientLight(0x101010, 10.0);
 	scene.add(ambientLight);
 	var directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
