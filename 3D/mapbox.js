@@ -53,10 +53,10 @@ function initializeScene(){
 	}
 	// generate the rectangle
 	var rectangle = new THREE.Geometry();
-	rectangle.vertices.push( new THREE.Vector3( x1-leftTileLimit-2, 0.5, y1-topTileLimit-2 ) );
-	rectangle.vertices.push( new THREE.Vector3( x2-leftTileLimit-2, 0.5, y2-topTileLimit-2 ) );
-	rectangle.vertices.push( new THREE.Vector3( x3-leftTileLimit-2, 0.5, y3-topTileLimit-2 ) );
-	rectangle.vertices.push( new THREE.Vector3( x4-leftTileLimit-2, 0.5, y4-topTileLimit-2 ) );
+	rectangle.vertices.push( new THREE.Vector3( x1-leftTileLimit-2, 0.6, y1-topTileLimit-2 ) );
+	rectangle.vertices.push( new THREE.Vector3( x2-leftTileLimit-2, 0.6, y2-topTileLimit-2 ) );
+	rectangle.vertices.push( new THREE.Vector3( x3-leftTileLimit-2, 0.6, y3-topTileLimit-2 ) );
+	rectangle.vertices.push( new THREE.Vector3( x4-leftTileLimit-2, 0.6, y4-topTileLimit-2 ) );
 	rectangle.faces.push( new THREE.Face3( 2,1,0 ) );
 	rectangle.faces.push( new THREE.Face3( 0,3,2 ) );
 	rectangle.faces.push( new THREE.Face3( 0,1,2 ) );
