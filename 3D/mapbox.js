@@ -53,15 +53,15 @@ function initializeScene(){
 	}
 	// generate the rectangle
 	var rectangle = new THREE.Geometry();
-	rectangle.vertices.push( new THREE.Vector3( x1-leftTileLimit-2, 0.505, y1-topTileLimit-2 ) );
-	rectangle.vertices.push( new THREE.Vector3( x2-leftTileLimit-2, 0.505, y2-topTileLimit-2 ) );
-	rectangle.vertices.push( new THREE.Vector3( x3-leftTileLimit-2, 0.505, y3-topTileLimit-2 ) );
-	rectangle.vertices.push( new THREE.Vector3( x4-leftTileLimit-2, 0.505, y4-topTileLimit-2 ) );
+	rectangle.vertices.push( new THREE.Vector3( x1-leftTileLimit-2, 0.55, y1-topTileLimit-2 ) );
+	rectangle.vertices.push( new THREE.Vector3( x2-leftTileLimit-2, 0.55, y2-topTileLimit-2 ) );
+	rectangle.vertices.push( new THREE.Vector3( x3-leftTileLimit-2, 0.55, y3-topTileLimit-2 ) );
+	rectangle.vertices.push( new THREE.Vector3( x4-leftTileLimit-2, 0.55, y4-topTileLimit-2 ) );
 	rectangle.faces.push( new THREE.Face3( 2,1,0 ) );
 	rectangle.faces.push( new THREE.Face3( 0,3,2 ) );
 	rectangle.faces.push( new THREE.Face3( 0,1,2 ) );
 	rectangle.faces.push( new THREE.Face3( 2,3,0 ) );
-	var rectmaterial = new THREE.MeshBasicMaterial({color: 0xff0000});
+	var rectmaterial = new THREE.MeshBasicMaterial({color: 0x770000,opacity:0.3});
 	rectmesh = new THREE.Mesh(rectangle,rectmaterial);
 	scene.add(rectmesh);
 	
