@@ -34,13 +34,13 @@ function rect(x,y){
 				
 	bax = x2 - x1;
 	bay = y2 - y1;
-	dax = x3 - x1;
-	day = y3 - y1;
+	dax = x4 - x1;
+	day = y4 - y1;
 
 	if ((x - x1) * bax + (y - y1) * bay < 0.0) return false;
 	if ((x - x2) * bax + (y - y2) * bay > 0.0) return false;
 	if ((x - x1) * dax + (y - y1) * day < 0.0) return false;
-	if ((x - x3) * dax + (y - y3) * day > 0.0) return false;
+	if ((x - x4) * dax + (y - y4) * day > 0.0) return false;
 
 	return true;
 }
