@@ -11,7 +11,7 @@ var magnitude = getURLParameter("mag");
 var script = document.createElement('script');
 script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+year+'-'+month+'-'+date+'%2000:00:00&minmagnitude='+magnitude+'&format=geojson&callback=eqfeed_callback&endtime='+curr_year+'-'+curr_month+'-'+curr_date+'%2023:59:59&orderby=time-asc&minlatitude='+Math.min(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&maxlatitude='+Math.max(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&minlongitude='+Math.min(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"))+'&maxlongitude='+Math.max(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"));
 document.getElementsByTagName('body')[0].appendChild(script);
-var count = 0
+var count = 0;
 
 
 var particle_system_geometry = new THREE.Geometry();
