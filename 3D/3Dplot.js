@@ -1,3 +1,6 @@
+var rainbow = new Rainbow();
+rainbow.setSpectrum('blue', 'yellow', 'red');
+rainbow.setNumberRange(0, 500);
 var sphereParent = new THREE.Object3D();
 var circles = new Array();
 var d = new Date();
@@ -18,9 +21,9 @@ window.eqfeed_callback = function(results) {
 		if(rect(convertCoordinatesx(results.features[i].geometry.coordinates[0]),convertCoordinatesy(results.features[i].geometry.coordinates[1]))){
 			count++;
 			//circles[i] = new Array(results.features[i].geometry.coordinates[0],results.features[i].geometry.coordinates[1],results.features[i].geometry.coordinates[2],results.features[i].properties.time,results.features[i].properties.mag);
-			var radius = 0.03;//results.features[i].properties.mag;
+			var radius = 0.01;//results.features[i].properties.mag;
 			var sphereGeometry = new THREE.SphereGeometry( radius, 4, 2 );
-			var sphereMaterial = new THREE.MeshLambertMaterial( { color: 0xff0000 } );
+			var sphereMaterial = new THREE.MeshLambertMaterial( { color: parseInt('0x'+rainbow.colourAt(results.features[i].geometry.coordinates[2])) } );
 			var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 			sphere.position.set(convertCoordinatesx(results.features[i].geometry.coordinates[0])-leftTileLimit-2,0.5-(results.features[i].geometry.coordinates[2]/1000),convertCoordinatesy(results.features[i].geometry.coordinates[1])-topTileLimit-2);
 			sphereParent.add( sphere );
