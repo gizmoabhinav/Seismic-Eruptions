@@ -22,7 +22,7 @@ window.eqfeed_callback = function(results) {
 			var sphereGeometry = new THREE.SphereGeometry( radius, 4, 2 );
 			var sphereMaterial = new THREE.MeshLambertMaterial( { color: 0xff0000 } );
 			var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
-			sphere.position.set(convertCoordinatesx(results.features[i].geometry.coordinates[0])-leftTileLimit-2,(results.features[i].geometry.coordinates[2]/100)-0.5,convertCoordinatesy(results.features[i].geometry.coordinates[1])-topTileLimit-2);
+			sphere.position.set(convertCoordinatesx(results.features[i].geometry.coordinates[0])-leftTileLimit-2,(results.features[i].geometry.coordinates[2]/1000)-0.5,convertCoordinatesy(results.features[i].geometry.coordinates[1])-topTileLimit-2);
 			sphereParent.add( sphere );
 		}
 		sphereParent.position.set(0,0,0);
