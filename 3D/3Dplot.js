@@ -12,6 +12,12 @@ var script = document.createElement('script');
 script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+year+'-'+month+'-'+date+'%2000:00:00&minmagnitude='+magnitude+'&format=geojson&callback=eqfeed_callback&endtime='+curr_year+'-'+curr_month+'-'+curr_date+'%2023:59:59&orderby=time-asc&minlatitude='+Math.min(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&maxlatitude='+Math.max(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&minlongitude='+Math.min(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"))+'&maxlongitude='+Math.max(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"));
 document.getElementsByTagName('body')[0].appendChild(script);
 var count = 0
+
+
+var particle_system_geometry = new THREE.Geometry();
+
+
+
 window.eqfeed_callback = function(results) {
 	size = results.features.length;
 	for (var i = 0; i < size; i++){
@@ -24,11 +30,22 @@ window.eqfeed_callback = function(results) {
 			var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 			sphere.position.set(convertCoordinatesx(results.features[i].geometry.coordinates[0])-leftTileLimit-2,0,convertCoordinatesy(results.features[i].geometry.coordinates[1])-topTileLimit-2);
 			sphereParent.add( sphere );
+			particle_system_geometry.vertices.push(new THREE.Vector3D(results.features[i].geometry.coordinates[0])-leftTileLimit-2,0,convertCoordinatesy(results.features[i].geometry.coordinates[1])-topTileLimit-2));
 		}
 		sphereParent.position.set(0,0,0);
 	}
 	alert(count);
-	scene.add(sphereParent);
+	//scene.add(sphereParent);
+	var particle_system_material = new THREE.ParticleBasicMaterial({
+  		color: 0xffffff,
+  		size: 1
+	});
+	var particleSystem = new THREE.ParticleSystem(
+  		particle_system_geometry,
+    		particle_system_material
+	);
+	scene.add(particleSystem);
+
 }
 function rect(x,y){
 				
