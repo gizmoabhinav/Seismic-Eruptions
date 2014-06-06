@@ -30,7 +30,7 @@ window.eqfeed_callback = function(results) {
 			var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 			sphere.position.set(convertCoordinatesx(results.features[i].geometry.coordinates[0])-leftTileLimit-2,0,convertCoordinatesy(results.features[i].geometry.coordinates[1])-topTileLimit-2);
 			sphereParent.add( sphere );
-			particle_system_geometry.vertices.push(new THREE.Vector3D(results.features[i].geometry.coordinates[0])-leftTileLimit-2,0,convertCoordinatesy(results.features[i].geometry.coordinates[1])-topTileLimit-2));
+			particle_system_geometry.vertices.push(new THREE.Vector3D(results.features[i].geometry.coordinates[0])-leftTileLimit-2,0,convertCoordinatesy(results.features[i].geometry.coordinates[1])-topTileLimit-2);
 		}
 		sphereParent.position.set(0,0,0);
 	}
