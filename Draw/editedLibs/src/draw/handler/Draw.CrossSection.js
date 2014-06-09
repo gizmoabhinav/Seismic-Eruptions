@@ -87,7 +87,8 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			this._map
 				.on('mousemove', this._onMouseMove, this)
 				.on('mouseup', this._onMouseUp, this)
-				.on('zoomend', this._onZoomEnd, this);
+				.on('zoomlevelschange', this._onZoomEnd, this)
+				.on('click', this._onTouch, this);
 		}
 	},
 
@@ -117,7 +118,8 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 
 		this._map
 			.off('mousemove', this._onMouseMove, this)
-			.off('zoomend', this._onZoomEnd, this);
+			.off('zoomend', this._onZoomEnd, this)
+			.off('click', this._onTouch, this);
 	},
 
 	deleteLastVertex: function () {
@@ -261,6 +263,13 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			}
 		}
 		this._mouseDownOrigin = null;
+	},
+	_onTouch: function (e) {
+		// #TODO: use touchstart and touchend vs using click(touch start & end).
+		if (L.Browser.touch){ // #TODO: get rid of this once leaflet fixes their click/touch.
+			this._onMouseDown(e);
+			this._onMouseUp(e);
+		}
 	},
 
 	_updateFinishHandler: function () {
