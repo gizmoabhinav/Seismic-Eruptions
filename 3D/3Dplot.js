@@ -21,7 +21,7 @@ window.eqfeed_callback = function(results) {
 		if(rect(convertCoordinatesx(results.features[i].geometry.coordinates[0]),convertCoordinatesy(results.features[i].geometry.coordinates[1]))){
 			count++;
 			//circles[i] = new Array(results.features[i].geometry.coordinates[0],results.features[i].geometry.coordinates[1],results.features[i].geometry.coordinates[2],results.features[i].properties.time,results.features[i].properties.mag);
-			var radius = 0.01;//results.features[i].properties.mag;
+			var radius = 0.005*(results.features[i].properties.mag-magnitude+1);
 			var sphereGeometry = new THREE.SphereGeometry( radius, 4, 2 );
 			var sphereMaterial = new THREE.MeshLambertMaterial( { color: parseInt('0x'+rainbow.colourAt(results.features[i].geometry.coordinates[2])) } );
 			var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
@@ -30,7 +30,7 @@ window.eqfeed_callback = function(results) {
 		}
 		sphereParent.position.set(0,0,0);
 	}
-	alert("earthquake count:"+count);
+	alert("earthquake count : "+count);
 	scene.add(sphereParent);
 }
 function rect(x,y){
