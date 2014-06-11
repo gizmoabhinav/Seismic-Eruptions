@@ -162,7 +162,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			this._map.addLayer(this._poly);
 		}
 
-		this._vertexChanged(latlng, true);
+		//this._vertexChanged(latlng, true);
 		if(markersLength >= 1){
 			this._finishShape();
 			polygonArr[2]=polygonArr[0];
