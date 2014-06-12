@@ -30,14 +30,13 @@ window.eqfeed_callback = function(results) {
 			latVal[i] = results.features[i].geometry.coordinates[0];
 			lonVal[i] = results.features[i].geometry.coordinates[1];
 			depths[i] = results.features[i].geometry.coordinates[2];
-			colors[i] = '0x'+rainbow.colourAt(results.features[i].geometry.coordinates[2]);
 		}
 	}
 	alert("earthquake count : "+count);
 	rainbow.setNumberRange(0, max);
 	for(var i=0;i<size;i++){
 		var sphereGeometry = new THREE.SphereGeometry( radius[i], 4, 2 );
-		var sphereMaterial = new THREE.MeshLambertMaterial( { color: parseInt(colors[i]) } );
+		var sphereMaterial = new THREE.MeshLambertMaterial( { color: parseInt('0x'+rainbow.colourAt(results.features[i].geometry.coordinates[2])) } );
 		var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 		sphere.position.set(convertCoordinatesx(latVal[i])-leftTileLimit-2,0.5-(depths[i]/1000),convertCoordinatesy(lonVal[i])-topTileLimit-2);
 		sphereParent.add( sphere );
