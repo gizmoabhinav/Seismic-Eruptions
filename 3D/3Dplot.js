@@ -47,6 +47,39 @@ window.eqfeed_callback = function(results) {
 	}
 	sphereParent.position.set(0,0,0);
 	scene.add(sphereParent);
+	// generate the box
+var box = new THREE.Geometry();
+	box.vertices.push( new THREE.Vector3( x1-leftTileLimit-2, 0.55, y1-topTileLimit-2 ) );
+	box.vertices.push( new THREE.Vector3( x2-leftTileLimit-2, 0.55, y2-topTileLimit-2 ) );
+	box.vertices.push( new THREE.Vector3( x3-leftTileLimit-2, 0.55, y3-topTileLimit-2 ) );
+	box.vertices.push( new THREE.Vector3( x4-leftTileLimit-2, 0.55, y4-topTileLimit-2 ) );
+	box.vertices.push( new THREE.Vector3( x1-leftTileLimit-2, 0.45-(max/1000), y1-topTileLimit-2 ) );
+	box.vertices.push( new THREE.Vector3( x2-leftTileLimit-2, 0.45-(max/1000), y2-topTileLimit-2 ) );
+	box.vertices.push( new THREE.Vector3( x3-leftTileLimit-2, 0.45-(max/1000), y3-topTileLimit-2 ) );
+	box.vertices.push( new THREE.Vector3( x4-leftTileLimit-2, 0.45-(max/1000), y4-topTileLimit-2 ) );
+	box.faces.push( new THREE.Face3( 6,5,4 ) );
+	box.faces.push( new THREE.Face3( 4,7,6 ) );
+	box.faces.push( new THREE.Face3( 4,5,6 ) );
+	box.faces.push( new THREE.Face3( 6,7,4 ) );
+	box.faces.push( new THREE.Face3( 4,1,0 ) );
+	box.faces.push( new THREE.Face3( 5,1,4 ) );
+	box.faces.push( new THREE.Face3( 0,1,4 ) );
+	box.faces.push( new THREE.Face3( 4,1,5 ) );
+	box.faces.push( new THREE.Face3( 1,2,5 ) );
+	box.faces.push( new THREE.Face3( 5,2,6 ) );
+	box.faces.push( new THREE.Face3( 5,2,1 ) );
+	box.faces.push( new THREE.Face3( 6,2,5 ) );
+	box.faces.push( new THREE.Face3( 2,3,6 ) );
+	box.faces.push( new THREE.Face3( 6,3,7 ) );
+	box.faces.push( new THREE.Face3( 6,3,2 ) );
+	box.faces.push( new THREE.Face3( 7,3,6 ) );
+	box.faces.push( new THREE.Face3( 3,0,7 ) );
+	box.faces.push( new THREE.Face3( 7,0,3 ) );
+	box.faces.push( new THREE.Face3( 7,0,4 ) );
+	box.faces.push( new THREE.Face3( 4,0,7 ) );
+	var rectmaterial = new THREE.MeshBasicMaterial({color: 0x770000,opacity:0.15});
+	rectmesh = new THREE.Mesh(box,rectmaterial);
+	scene.add(rectmesh);
 }
 function rect(x,y){
 				
@@ -62,3 +95,4 @@ function rect(x,y){
 
 	return true;
 }
+
