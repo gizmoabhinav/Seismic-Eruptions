@@ -26,7 +26,7 @@ window.eqfeed_callback = function(results) {
 		if(rect(convertCoordinatesx(results.features[i].geometry.coordinates[0]),convertCoordinatesy(results.features[i].geometry.coordinates[1]))){
 			count++;
 			if(results.features[i].geometry.coordinates[2]>max)max=results.features[i].geometry.coordinates[2];
-			radius[i] = 0.005*(results.features[i].properties.mag-magnitude+1);
+			radius[i] = 0.0025*Math.pow(2,results.features[i].properties.mag-magnitude+1);
 			latVal[i] = results.features[i].geometry.coordinates[0];
 			lonVal[i] = results.features[i].geometry.coordinates[1];
 			depths[i] = results.features[i].geometry.coordinates[2];
@@ -35,8 +35,8 @@ window.eqfeed_callback = function(results) {
 	alert("earthquake count : "+count);
 	rainbow.setNumberRange(0, max);
 	for(var i=0;i<size;i++){
-		var sphereGeometry = new THREE.SphereGeometry( radius[i], 4, 2 );
-		var sphereMaterial = new THREE.MeshLambertMaterial( { color: parseInt('0x'+rainbow.colourAt(results.features[i].geometry.coordinates[2])) } );
+		var sphereGeometry = new THREE.SphereGeometry( radius[i], 2, 2 );
+		var sphereMaterial = new THREE.MeshBasicMaterial( { color: parseInt('0x'+rainbow.colourAt(results.features[i].geometry.coordinates[2])) , overdraw: false } );
 		var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 		sphere.position.set(convertCoordinatesx(latVal[i])-leftTileLimit-2,0.5-(depths[i]/1000),convertCoordinatesy(lonVal[i])-topTileLimit-2);
 		sphereParent.add( sphere );

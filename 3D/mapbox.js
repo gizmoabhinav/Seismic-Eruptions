@@ -2,6 +2,7 @@ var scene;
 var camera; 
 var cubeMesh;
 initializeScene();
+
 animateScene();
 function initializeScene(){ 
 	if(false){ 
@@ -19,6 +20,14 @@ function initializeScene(){
 	camera.position.set(5, 0, 10);
 	camera.lookAt(scene.position);
 	scene.add(camera);
+	
+	// stats
+	stats = new Stats();
+	stats.domElement.style.position = 'absolute';
+	stats.domElement.style.top = '0px';
+	document.getElementById("WebGLCanvas").appendChild( stats.domElement );
+	
+	
 	controls = new THREE.OrbitControls( camera, renderer.domElement );
 	var cubeGeometry = new THREE.CubeGeometry(1, 1, 1, 2,0,2);
 	/*if(!Detector.webgl){
@@ -75,6 +84,7 @@ function initializeScene(){
 function animateScene(){
 	requestAnimationFrame(animateScene);
 	renderScene();
+	stats.update();
 }
 function renderScene(){
 	renderer.render(scene, camera);
