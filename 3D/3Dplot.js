@@ -77,7 +77,7 @@ var box = new THREE.Geometry();
 	box.faces.push( new THREE.Face3( 7,0,3 ) );
 	box.faces.push( new THREE.Face3( 7,0,4 ) );
 	box.faces.push( new THREE.Face3( 4,0,7 ) );
-	var rectmaterial = new THREE.MeshBasicMaterial({color: 0x770000,opacity:0.15});
+	var rectmaterial = new THREE.MeshBasicMaterial({color: 0x770000,opacity:0.15,wireframe: true});
 	rectmesh = new THREE.Mesh(box,rectmaterial);
 	scene.add(rectmesh);
 }
