@@ -19,6 +19,8 @@ script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+year+'-
 document.getElementsByTagName('body')[0].appendChild(script);
 var count = 0;
 var max = 0;
+var minmag = 10;
+var maxmag = 0;
 var size;
 window.eqfeed_callback = function(results) {
 	size = results.features.length;
@@ -26,7 +28,9 @@ window.eqfeed_callback = function(results) {
 		if(rect(convertCoordinatesx(results.features[i].geometry.coordinates[0]),convertCoordinatesy(results.features[i].geometry.coordinates[1]))){
 			count++;
 			if(results.features[i].geometry.coordinates[2]>max)max=results.features[i].geometry.coordinates[2];
-			radius[i] = 0.0025*Math.pow(2,results.features[i].properties.mag-magnitude+1);
+			if(results.features[i].properties.mag<minmag)minmag=results.features[i].properties.mag;
+			if(results.features[i].properties.mag>maxmag)maxmag=results.features[i].properties.mag;
+			radius[i] = 0.0025*Math.pow(2,(results.features[i].properties.mag-minmag)*4/(maxmag-minmag));
 			latVal[i] = results.features[i].geometry.coordinates[0];
 			lonVal[i] = results.features[i].geometry.coordinates[1];
 			depths[i] = results.features[i].geometry.coordinates[2];
