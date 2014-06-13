@@ -39,7 +39,7 @@ window.eqfeed_callback = function(results) {
 	alert("earthquake count : "+count);
 	rainbow.setNumberRange(0, max);
 	for(var i=0;i<size;i++){
-		var sphereGeometry = new THREE.SphereGeometry( radius[i], 2, 2 );
+		var sphereGeometry = new THREE.SphereGeometry( radius[i], 4, 4 );
 		var sphereMaterial = new THREE.MeshBasicMaterial( { color: parseInt('0x'+rainbow.colourAt(results.features[i].geometry.coordinates[2])) , overdraw: false } );
 		var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 		sphere.position.set(convertCoordinatesx(latVal[i])-leftTileLimit-2,0.5-(depths[i]/1000),convertCoordinatesy(lonVal[i])-topTileLimit-2);
@@ -48,7 +48,7 @@ window.eqfeed_callback = function(results) {
 	sphereParent.position.set(0,0,0);
 	scene.add(sphereParent);
 	// generate the box
-var box = new THREE.Geometry();
+	var box = new THREE.Geometry();
 	box.vertices.push( new THREE.Vector3( x1-leftTileLimit-2, 0.55, y1-topTileLimit-2 ) );
 	box.vertices.push( new THREE.Vector3( x2-leftTileLimit-2, 0.55, y2-topTileLimit-2 ) );
 	box.vertices.push( new THREE.Vector3( x3-leftTileLimit-2, 0.55, y3-topTileLimit-2 ) );
@@ -77,9 +77,29 @@ var box = new THREE.Geometry();
 	box.faces.push( new THREE.Face3( 7,0,3 ) );
 	box.faces.push( new THREE.Face3( 7,0,4 ) );
 	box.faces.push( new THREE.Face3( 4,0,7 ) );
-	var rectmaterial = new THREE.MeshBasicMaterial({color: 0x770000,opacity:0.15,wireframe: true});
-	rectmesh = new THREE.Mesh(box,rectmaterial);
-	scene.add(rectmesh);
+	var rectmaterial = new THREE.MeshBasicMaterial({color: 0x770000,opacity:0.15,wireframe : false});
+	mesh = new THREE.Mesh(box, rectmaterial);
+    scene.add(mesh);
+	var lines = new THREE.Geometry();
+	lines.vertices.push( new THREE.Vector3( x1-leftTileLimit-2, 0.55, y1-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x2-leftTileLimit-2, 0.55, y2-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x3-leftTileLimit-2, 0.55, y3-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x4-leftTileLimit-2, 0.55, y4-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x1-leftTileLimit-2, 0.55, y1-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x1-leftTileLimit-2, 0.45-(max/1000), y1-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x2-leftTileLimit-2, 0.45-(max/1000), y2-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x3-leftTileLimit-2, 0.45-(max/1000), y3-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x4-leftTileLimit-2, 0.45-(max/1000), y4-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x1-leftTileLimit-2, 0.45-(max/1000), y1-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x2-leftTileLimit-2, 0.45-(max/1000), y2-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x2-leftTileLimit-2, 0.55, y2-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x3-leftTileLimit-2, 0.55, y3-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x3-leftTileLimit-2, 0.45-(max/1000), y3-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x4-leftTileLimit-2, 0.45-(max/1000), y4-topTileLimit-2 ) );
+	lines.vertices.push( new THREE.Vector3( x4-leftTileLimit-2, 0.55, y4-topTileLimit-2 ) );
+	// lines
+	var line = new THREE.Line( lines, new THREE.LineBasicMaterial( { color: 0x000000, opacity: 1 } ) );
+	scene.add( line );
 }
 function rect(x,y){
 				
