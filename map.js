@@ -2,9 +2,9 @@
 var speed = 6;
 var map = L.map('map').setView([30, -0], 2);
 map.invalidateSize(false);
-/*map.on('contextmenu', function(e) {
+map.on('contextmenu', function(e) {
     alert(e.latlng);
-});*/
+});
 // create timeline
 var tl = new TimelineLite({onUpdate:updateSlider});
 tl.timeScale(speed);
@@ -34,9 +34,13 @@ var starttime = 0;
 var circles = new Array();
 var time = new Array();
 var stamp = new Array();
+var magnitude = new Array();
+var maxmag = 0;
+var minmag =11;
 var circles_added = new MiniSet();
 var script = document.createElement('script');
 var snd = new Audio("tap.wav"); // buffers automatically when created
+var rainbow = new Rainbow();
 
 script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime=2013-1-1%2000:00:00&minmagnitude=5&format=geojson&callback=eqfeed_callback&endtime='+curr_year+'-'+curr_month+'-'+curr_date+'%2023:59:59&orderby=time-asc';
 document.getElementsByTagName('body')[0].appendChild(script);
@@ -44,10 +48,13 @@ window.eqfeed_callback = function(results) {
 	  
 	size = results.features.length;
 	for (var i = 0; i < size; i++){
-		circles[i] = L.geoJson(results.features[i], {pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, {radius: results.features[i].properties.mag ,fillColor: "#ff0000",color: "#000",weight: 1,opacity: 1,fillOpacity: 1});}}).bindPopup("Place: <b>"+results.features[i].properties.place+"</b></br>Magnitude : <b>"+ results.features[i].properties.mag+"</b></br>Time : "+timeConverter(results.features[i].properties.time));
+		circles[i] = L.geoJson(results.features[i], {pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, {radius: results.features[i].properties.mag ,fillColor: "#"+rainbow.colourAt(results.features[i].properties.mag),color: "#000",weight: 1,opacity: 1,fillOpacity: 1});}}).bindPopup("Place: <b>"+results.features[i].properties.place+"</b></br>Magnitude : <b>"+ results.features[i].properties.mag+"</b></br>Time : "+timeConverter(results.features[i].properties.time));
 		//circles[i].addTo(map);
 		time[i] = timeConverter(results.features[i].properties.time);
 		stamp[i] = results.features[i].properties.time
+		magnitude[i] = results.features[i].properties.mag;
+		if(magnitude[i]>maxmag)maxmag=magnitude[i];
+		if(magnitude[i]<minmag)minmag=magnitude[i];
 		// Adding events to the timeline
 		//if(i==0)
 		//tl.append(TweenLite.delayedCall(0,mapAdder,[i.toString]));
@@ -55,6 +62,8 @@ window.eqfeed_callback = function(results) {
 			tl.append(TweenLite.delayedCall(20*((results.features[i].properties.time-results.features[i-1].properties.time)/1000000000), mapAdder, [i.toString()]));
 		}
 	}
+	rainbow = new Rainbow();
+	rainbow.setNumberRange(minmag, maxmag);
 	timediff = results.features[size-1].properties.time-results.features[0].properties.time;
 	starttime = results.features[0].properties.time;
 	$("#slider").slider({
@@ -80,9 +89,9 @@ function mapAdder(i){
 		circles[i].addTo(map);
 		circles_added.add(i);
 	}
-	circles[i].setStyle({fillOpacity : 1,fillColor: "#00ff00"});
+	circles[i].setStyle({fillOpacity : 1,fillColor: "#"+rainbow.colourAt(magnitude[i])});
 	if(i>=1){
-		circles[i-1].setStyle({fillOpacity : 0.5,fillColor: "#ff0000"});
+		circles[i-1].setStyle({fillOpacity : 0.5});
 	}
 	if(i>=100){
 		mapRemover(i-100);
