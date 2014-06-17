@@ -7,8 +7,10 @@ animateScene();
 function initializeScene(){ 
 	if(Detector.webgl){ 
 		renderer = new THREE.WebGLRenderer({antialias:true});
+		$("#controls").html("<font color='white'>WebGL Renderer</font>");
 	} else { 
-        renderer = new THREE.CanvasRenderer(); 
+        renderer = new THREE.CanvasRenderer();
+		$("#controls").html("<font color='white'>Canvas Renderer</font>");
     } 
     renderer.setClearColor(0x777777, 1);
 	canvasWidth = window.innerWidth;
