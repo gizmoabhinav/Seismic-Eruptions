@@ -66,7 +66,6 @@ var stamp = new Array();
 var depth = new Array();
 var maxdepth = 0;
 var mindepth =2000;
-var circles_added = new MiniSet();
 var script = document.createElement('script');
 var snd = new Audio("tap.wav"); // buffers automatically when created
 var rainbow = new Rainbow();
@@ -121,27 +120,22 @@ function updateSlider(){
 function mapAdder(i){
 	if(!map.hasLayer(circles[i])){
 		circles[i].addTo(map);
-		circles_added.add(i);
 	}
-	circles[i].setStyle({fillOpacity : 1,fillColor: "#"+rainbow.colourAt(depth[i])});
-	if(i>=1){
+	circles[i].setStyle({fillOpacity : 0.5,fillColor: "#"+rainbow.colourAt(depth[i])});
+	/*if(i>=1){
 		circles[i-1].setStyle({fillOpacity : 0.5});
+	}*/
+	i++;
+	while(map.hasLayer(circles[i])){
+		map.removeLayer(circles[i]);
+		i++;
 	}
-	if(i>=100){
-		mapRemover(i-100);
-	}
-	circles_added.each(function(value) {
-		if(value>i){
-			mapRemover(value);
-		}
-	});
 	$("#time").html(time[i]);
 	snd.play();
 }
 function mapRemover(i){
 	if(map.hasLayer(circles[i])){
 		map.removeLayer(circles[i]);
-		circles_added.remove(i);
 	}
 }
 // load plate boundaries
@@ -174,7 +168,6 @@ $('#all_events').click(function () {
 			if(!map.hasLayer(circles[i])){
 				circles[i].setStyle({fillOpacity : 0.5,fillColor: "#"+rainbow.colourAt(depth[i])});
 				circles[i].addTo(map);
-				circles_added.add(i);
 			}
 		}
 		$('#overlay').fadeOut();
