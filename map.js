@@ -138,6 +138,7 @@ $('#all_events').click(function () {
 		//tl.progress(1);
 		for (var i = 0; i < size; i++){
 			if(!map.hasLayer(circles[i])){
+				circles[i].setStyle({fillOpacity : 0.5,fillColor: "#"+rainbow.colourAt(magnitude[i])});
 				circles[i].addTo(map);
 				circles_added.add(i);
 			}
