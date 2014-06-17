@@ -30,6 +30,12 @@
 	</div>
 	</div>
 	<p>Link to the <a href="https://github.com/gizmoabhinav/Seismic-Eruptions">project</a></p>
+	<!-- URL parameter fetcher -->
+	<script>
+		function getURLParameter(name) {
+			return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
+		}
+	</script>
 	<script src="leaflet.js"></script>
 	<script src="KML.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
