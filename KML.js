@@ -1,4 +1,4 @@
-/*global L: true */
+
 
 L.KML = L.FeatureGroup.extend({
 	options: {
