@@ -18,9 +18,12 @@ function initializeScene(){
 	renderer.setSize(canvasWidth, canvasHeight);
 	document.getElementById("WebGLCanvas").appendChild(renderer.domElement);
 	scene = new THREE.Scene();
-	camera = new THREE.PerspectiveCamera(45, canvasWidth / canvasHeight, 1, 100);
-	camera.position.set(5, 0, 10);
+	camera = new THREE.PerspectiveCamera(25, canvasWidth / canvasHeight, 1, 100);
+	camera.up.set( 0, 0, 1 );
 	camera.lookAt(scene.position);
+	camera.position.set(-0.06482651054618802,-5.700549182560303,1.7185117585230711);
+	camera.rotation.set(1.3152065196639642,-0.010945765414223593,-0.002860116004235155);
+	
 	scene.add(camera);
 	
 	// stats
@@ -78,4 +81,5 @@ function animateScene(){
 }
 function renderScene(){
 	renderer.render(scene, camera);
+	//$("#controls").html("<font color='white'>"+camera.position.x+","+camera.position.y+","+camera.position.z+";"+camera.rotation.x+","+camera.rotation.y+","+camera.rotation.z+"</font>");
 } 
