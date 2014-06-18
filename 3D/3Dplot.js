@@ -108,6 +108,8 @@ window.eqfeed_callback = function(results) {
 	// lines
 	var line = new THREE.Line( lines, new THREE.LineBasicMaterial( { color: 0x000000, opacity: 1 } ) );
 	scene.add( line );
+	controls.target.z = 1.0-(max/2000);
+	
 }
 function rect(x,y){
 				

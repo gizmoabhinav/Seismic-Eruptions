@@ -20,7 +20,7 @@ function initializeScene(){
 	scene = new THREE.Scene();
 	camera = new THREE.PerspectiveCamera(25, canvasWidth / canvasHeight, 1, 100);
 	camera.up.set( 0, 0, 1 );
-	camera.lookAt(scene.position);
+	camera.lookAt(new THREE.Vector3(midx-leftTileLimit-2,-midy+topTileLimit+2,1));
 	camera.position.set(0.1953529215215685,-5.647229198648456,1.4347925563786978);
 	camera.rotation.set(1.439025394333189,0.03591325303244356,0.004758846432708524);
 	
