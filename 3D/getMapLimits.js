@@ -20,3 +20,5 @@ else{
 	leftTileLimit = Math.floor(minx);
 	topTileLimit = Math.floor(miny);
 }
+var midx = ((maxx+minx)/2);
+var midy = ((maxy+miny)/2);

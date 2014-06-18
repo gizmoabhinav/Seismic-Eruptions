@@ -21,8 +21,8 @@ function initializeScene(){
 	camera = new THREE.PerspectiveCamera(25, canvasWidth / canvasHeight, 1, 100);
 	camera.up.set( 0, 0, 1 );
 	camera.lookAt(scene.position);
-	camera.position.set(-0.06482651054618802,-5.700549182560303,1.7185117585230711);
-	camera.rotation.set(1.3152065196639642,-0.010945765414223593,-0.002860116004235155);
+	camera.position.set(0.1953529215215685,-5.647229198648456,1.4347925563786978);
+	camera.rotation.set(1.439025394333189,0.03591325303244356,0.004758846432708524);
 	
 	scene.add(camera);
 	
@@ -34,6 +34,8 @@ function initializeScene(){
 	
 	
 	controls = new THREE.OrbitControls( camera, renderer.domElement );
+	controls.target.x = midx-leftTileLimit-2;
+	controls.target.y = -midy+topTileLimit+2;
 	var cubeGeometry;
 	if(Detector.webgl){
 		planeGeometry = new THREE.PlaneGeometry( 1, 1, 1); 
