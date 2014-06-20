@@ -27,7 +27,7 @@ L.DrawToolbar = L.Toolbar.extend({
 		return [
 			{
 				enabled: this.options.polyline,
-				handler: new L.Draw.CrossSection(map, this.options.polyline),
+				handler: new L.Draw.CrossSection(map, {}),
 				title: L.drawLocal.draw.toolbar.buttons.polyline
 			}
 		];

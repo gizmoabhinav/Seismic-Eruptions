@@ -5,6 +5,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width,height=device-height, initial-scale=1.0">
 	<link rel="stylesheet" href="leaflet.css" />
+	<link rel="stylesheet" href="Draw/leaflet.draw.css" />
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 	
 </head>
@@ -25,6 +26,18 @@
 	<div id="time"></div>
 	<div id="info"></div>
 	<input id="all_events" type="checkbox">All events</br>
+	<button id="startDrawingToolButton" onclick="startDrawingTool()">Draw Cross-section for 3D view</button>
+	<div id="Drawingtools" style="display:none;">
+	<button onclick="removeDrawingTool()">Back to 2D playback</button>
+	<button onclick="render()">Render</button>
+	<div id="Rectslider"></div>
+	<script>
+		function render(){
+			window.open("http://gizmoabhinav.github.io/Seismic-Eruptions/3D/index.html?x1="+toLon(y1)+"&y1="+toLat(x1)+"&x2="+toLon(y2)+"&y2="+toLat(x2)+"&x3="+toLon(y3)+"&y3="+toLat(x3)+"&x4="+toLon(y4)+"&y4="+toLat(x4)+"&mag=4&y=2013&m=1&d=1");
+		}
+		
+	</script>
+	</div>
 	<div id="overlay">
      <img src="images/loading.gif" alt="Loading" />
      Loading...
@@ -45,5 +58,106 @@
 	<script src="miniset.js"></script>
 	<script src="rainbowvis.js"></script>
 	<script src="map.js"></script>
+	<script src="Draw/editedLibs/src/Leaflet.draw.js"></script>
+	<script src="Draw/editedLibs/src/draw/handler/Draw.Feature.js"></script>
+	<script src="Draw/editedLibs/src/draw/handler/latlonTo3D.js"></script>
+	
+	<script src="Draw/editedLibs/src/ext/GeometryUtil.js"></script>
+	<script src="Draw/editedLibs/src/Control.Draw.js"></script>
+	<script src="Draw/editedLibs/src/Tooltip.js"></script>
+	<script src="Draw/editedLibs/src/Toolbar.js"></script>
+	<script src="Draw/editedLibs/src/draw/DrawToolbar.js"></script>
+	<script>
+	$("#Rectslider").slider({
+		value: 0,
+		min: 0,
+		max: 100,
+		slide: function ( event, ui ) {
+			width = ui.value/100;
+			x1=polygonArr[0].lat+(width/ratio2);
+			y1=polygonArr[0].lng-(width/ratio1);
+			x2=polygonArr[1].lat+(width/ratio2);
+			y2=polygonArr[1].lng-(width/ratio1);
+			x3=polygonArr[1].lat-(width/ratio2);
+			y3=polygonArr[1].lng+(width/ratio1);
+			x4=polygonArr[0].lat-(width/ratio2);
+			y4=polygonArr[0].lng+(width/ratio1);
+			map.removeLayer(polygon);
+			polygon = L.polygon([
+						[toLat(x1),toLon(y1)],
+						[toLat(x2),toLon(y2)],
+						[toLat(x3),toLon(y3)],
+						[toLat(x4),toLon(y4)]
+					]).addTo(map);
+			//document.write("<button href='http://gizmoabhinav.github.io/Seismic-Eruptions/3D/index.html?x1="+toLon(y1)+"&y1="+toLat(x1)+"&x2="+toLon(y2)+"&y2="+toLat(x2)+"&x3="+toLon(y3)+"&y3="+toLat(x3)+"&x4="+toLon(y4)+"&y4="+toLat(x4)+"&mag=4&y=2013&m=1&d=1'>Render</button>");
+		}
+		});
+	function startDrawingTool(){
+		$('#overlay').fadeIn();
+		map.addControl(drawControl);
+		map.addLayer(drawnItems);
+		$('#startDrawingToolButton').fadeOut();
+		$('#all_events').fadeOut();
+		$('#Drawingtools').fadeIn();
+		$("#slider").slider({ disabled: true });
+		document.getElementById("play").disabled = true;
+		document.getElementById("pause").disabled = true;
+		document.getElementById("speedup").disabled = true;
+		document.getElementById("speeddown").disabled = true;
+		tl.pause();
+		//tl.progress(1);
+		for (var i = 0; i < size; i++){
+			if(!map.hasLayer(circles[i])){
+				circles[i].setStyle({fillOpacity : 0.5,fillColor: "#"+rainbow.colourAt(depth[i])});
+				circles[i].addTo(map);
+			}
+		}
+		$('#overlay').fadeOut();
+	}
+	function removeDrawingTool(){
+		$('#overlay').fadeIn();
+		$('#startDrawingToolButton').fadeIn();
+		$('#all_events').fadeIn();
+		$('#Drawingtools').fadeOut();
+		
+		map.removeControl(drawControl);
+		map.removeLayer(drawnItems);
+		map.removeLayer(polygon);
+		tl.progress(0);
+		tl.resume();
+		//tl.progress(0);
+		$("#slider").slider({ disabled: false });
+		document.getElementById("play").disabled = false;
+		document.getElementById("pause").disabled = false;
+		document.getElementById("speedup").disabled = false;
+		document.getElementById("speeddown").disabled = false;
+		$('#overlay').fadeOut();
+	}
+	var Line;
+	var drawnItems = new L.FeatureGroup();
+		
+		var drawControl = new L.Control.Draw({
+			position: 'topright',
+			draw: {
+				polyline: {
+					metric: true
+				}
+			},
+			edit: {
+				featureGroup: drawnItems,
+				remove: false
+			}
+		});
+		//map.addControl(drawControl);
+
+		map.on('draw:created', function (e) {
+			var type = e.layerType,
+				Line = e.layer;
+
+
+			drawnItems.addLayer(Line);
+		});
+	</script>
+	<script src="Draw/editedLibs/src/draw/handler/Draw.CrossSection.js"></script>
 </body>
 </html>
