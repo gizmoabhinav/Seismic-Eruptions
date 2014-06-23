@@ -105,7 +105,8 @@
 		document.getElementById("speedup").disabled = true;
 		document.getElementById("speeddown").disabled = true;
 		tl.pause();
-		//tl.progress(1);
+		//var current = tl.progress();
+		//tl.progress(0);
 		for (var i = 0; i < size; i++){
 			if(!map.hasLayer(circles[i])){
 				circles[i].setStyle({fillOpacity : 0.5,fillColor: "#"+rainbow.colourAt(depth[i])});
@@ -119,13 +120,14 @@
 		$('#startDrawingToolButton').fadeIn();
 		$('#all_events').fadeIn();
 		$('#Drawingtools').fadeOut();
-		
 		map.removeControl(drawControl);
-		map.removeLayer(drawnItems);
-		map.removeLayer(polygon);
-		tl.progress(0);
+		if(map.hasLayer(drawnItems)){
+			map.removeLayer(drawnItems);
+		}
+		if(map.hasLayer(polygon)){
+			map.removeLayer(polygon);
+		}
 		tl.resume();
-		//tl.progress(0);
 		$("#slider").slider({ disabled: false });
 		document.getElementById("play").disabled = false;
 		document.getElementById("pause").disabled = false;
