@@ -3,20 +3,10 @@ var mag = getURLParameter("mag");
 if(mag == undefined){
 	mag = 5;
 }
-var startyear = getURLParameter("startyear");
-if(startyear == undefined){
-	startyear = 2009;
-}
-var startmonth = getURLParameter("startmonth");
-if(startmonth == undefined){
-	startmonth = 1;
-}
 var startdate = getURLParameter("startdate");
 if(startdate == undefined){
-	startdate = 1;
+	startdate = "2009-1-1";
 }
-var endyear = getURLParameter("endyear");
-var endmonth = getURLParameter("endmonth");
 var enddate = getURLParameter("enddate");
 //load map
 var speed = 6;
@@ -30,18 +20,12 @@ var tl = new TimelineLite({onUpdate:updateSlider});
 tl.timeScale(speed);
 tl.pause();
 var d = new Date();
-var curr_year = d.getFullYear();
-var curr_month = d.getMonth()+1;
-var curr_date = d.getDate();
-
-if(endyear == undefined){
-	endyear = curr_year;
-}
-if(endmonth == undefined){
-	endmonth = curr_month;
-}
+var curr_year,curr_month,curr_date;
 if(enddate == undefined){
-	enddate = curr_date;
+	curr_year = d.getFullYear();
+	curr_month = d.getMonth()+1;
+	curr_date = d.getDate();
+	enddate = curr_year+'-'+curr_month+'-'+curr_date;
 }
 //time stamp conversion
 function timeConverter(UNIX_timestamp){
@@ -69,7 +53,7 @@ var mindepth =2000;
 var script = document.createElement('script');
 var snd = new Audio("tap.wav"); // buffers automatically when created
 var rainbow = new Rainbow();
-script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+startyear+'-'+startmonth+'-'+startdate+'%2000:00:00&minmagnitude='+mag+'&format=geojson&callback=eqfeed_callback&endtime='+endyear+'-'+endmonth+'-'+enddate+'%2023:59:59&orderby=time-asc';
+script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+startdate+'%2000:00:00&minmagnitude='+mag+'&format=geojson&callback=eqfeed_callback&endtime='+enddate+'%2023:59:59&orderby=time-asc';
 /* script.onerror = function() {
     alert("The number of earthquakes in the given range of time and magnitude cutoff exceeds the limit of 20,000. Try again with a different parameters");
 }​ */

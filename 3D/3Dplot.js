@@ -7,15 +7,23 @@ var lonVal = new Array();
 var colors = new Array();
 var depths = new Array();
 var d = new Date();
-var curr_year = d.getFullYear();
-var curr_month = d.getMonth()+1;
+var curr_year,curr_month,curr_date;
 var curr_date = d.getDate();
-var year = getURLParameter("y");
-var month = getURLParameter("m");
-var date = getURLParameter("d");
+
 var magnitude = getURLParameter("mag");
+var startdate = getURLParameter("startdate");
+if(startdate == undefined){
+	startdate = "2009-1-1";
+}
+var enddate = getURLParameter("enddate");
+if(enddate == undefined){
+	curr_year = d.getFullYear();
+	curr_month = d.getMonth()+1;
+	curr_date = d.getDate();
+	enddate = curr_year+'-'+curr_month+'-'+curr_date;
+}
 var script = document.createElement('script');
-script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+year+'-'+month+'-'+date+'%2000:00:00&minmagnitude='+magnitude+'&format=geojson&callback=eqfeed_callback&endtime='+curr_year+'-'+curr_month+'-'+curr_date+'%2023:59:59&orderby=time-asc&minlatitude='+Math.min(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&maxlatitude='+Math.max(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&minlongitude='+Math.min(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"))+'&maxlongitude='+Math.max(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"));
+script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+startdate+'%2000:00:00&minmagnitude='+magnitude+'&format=geojson&callback=eqfeed_callback&endtime='+enddate+'%2023:59:59&orderby=time-asc&minlatitude='+Math.min(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&maxlatitude='+Math.max(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&minlongitude='+Math.min(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"))+'&maxlongitude='+Math.max(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"));
 document.getElementsByTagName('body')[0].appendChild(script);
 var count = 0;
 var max = 0;
