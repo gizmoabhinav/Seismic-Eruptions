@@ -5,7 +5,7 @@ if(mag == undefined){
 }
 var startdate = getURLParameter("startdate");
 if(startdate == undefined){
-	startdate = "2009-1-1";
+	startdate = "2009/1/1";
 }
 var enddate = getURLParameter("enddate");
 //load map
@@ -25,7 +25,7 @@ if(enddate == undefined){
 	curr_year = d.getFullYear();
 	curr_month = d.getMonth()+1;
 	curr_date = d.getDate();
-	enddate = curr_year+'-'+curr_month+'-'+curr_date;
+	enddate = curr_year+'/'+curr_month+'/'+curr_date;
 }
 //time stamp conversion
 function timeConverter(UNIX_timestamp){
@@ -137,37 +137,7 @@ $('#plates').click(function () {
 		map.removeLayer(track);  // unchecked
 	}
 });
-//show all events
-$('#all_events').click(function () {
-	$('#overlay').fadeIn();
-	if($("#all_events").is(':checked')){
-		$("#slider").slider({ disabled: true });
-		document.getElementById("play").disabled = true;
-		document.getElementById("pause").disabled = true;
-		document.getElementById("speedup").disabled = true;
-		document.getElementById("speeddown").disabled = true;
-		tl.pause();
-		//tl.progress(1);
-		for (var i = 0; i < size; i++){
-			if(!map.hasLayer(circles[i])){
-				circles[i].setStyle({fillOpacity : 0.5,fillColor: "#"+rainbow.colourAt(depth[i])});
-				circles[i].addTo(map);
-			}
-		}
-		$('#overlay').fadeOut();
-	}
-	else{
-		tl.progress(0);
-		tl.resume();
-		//tl.progress(0);
-		$("#slider").slider({ disabled: false });
-		document.getElementById("play").disabled = false;
-		document.getElementById("pause").disabled = false;
-		document.getElementById("speedup").disabled = false;
-		document.getElementById("speeddown").disabled = false;
-		$('#overlay').fadeOut();
-	}
-});
+
 //buttons
 function Play(){
 	tl.resume();
