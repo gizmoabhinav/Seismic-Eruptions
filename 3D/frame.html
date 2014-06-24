@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="../leaflet.css" />
+	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	
+
+	<script src="../leaflet.js"></script>
+	
+	<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+</head>
+<body>
+
+	<script src="../leaflet.js"></script>
+	<div id="map" style="height : 200px; width : 200px"></div>
+	<script>
+		function getURLParameter(name) {
+				return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
+		}
+		var map = L.map('map');
+		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			maxZoom: 6
+		}).addTo(map);
+		L.polygon([
+						[parseFloat(getURLParameter("y1")),parseFloat(getURLParameter("x1"))],
+						[parseFloat(getURLParameter("y2")),parseFloat(getURLParameter("x2"))],
+						[parseFloat(getURLParameter("y3")),parseFloat(getURLParameter("x3"))],
+						[parseFloat(getURLParameter("y4")),parseFloat(getURLParameter("x4"))]
+					]).addTo(map);
+		map.fitBounds([[parseFloat(getURLParameter("y1")),parseFloat(getURLParameter("x1"))],
+						[parseFloat(getURLParameter("y2")),parseFloat(getURLParameter("x2"))],
+						[parseFloat(getURLParameter("y3")),parseFloat(getURLParameter("x3"))],
+						[parseFloat(getURLParameter("y4")),parseFloat(getURLParameter("x4"))]]);
+		map.setZoom(map.getZoom()-1);
+	</script>
+</body>
