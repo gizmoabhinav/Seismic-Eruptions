@@ -35,7 +35,7 @@
 				return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
 		}
 		document.getElementById("frame").src="frame.html?x1="+getURLParameter('x1')+"&x2="+getURLParameter('x2')+"&x3="+getURLParameter('x3')+"&x4="+getURLParameter('x4')+"&y1="+getURLParameter('y1')+"&y2="+getURLParameter('y2')+"&y3="+getURLParameter('y3')+"&y4="+getURLParameter('y4');
-		alert("frame.html?x1="+getURLParameter("x1")+"&x2="+getURLParameter("x2")+"&x3="+getURLParameter("x3")+"&x4="+getURLParameter("x4")+"&y1="+getURLParameter("y1")+"&y2="+getURLParameter("y2")+"&y3="+getURLParameter("y3")+"&y4="+getURLParameter("y4"));
+		//alert("frame.html?x1="+getURLParameter("x1")+"&x2="+getURLParameter("x2")+"&x3="+getURLParameter("x3")+"&x4="+getURLParameter("x4")+"&y1="+getURLParameter("y1")+"&y2="+getURLParameter("y2")+"&y3="+getURLParameter("y3")+"&y4="+getURLParameter("y4"));
 			
 		</script>
 		<!-- This script helps convert latitude longitude values from the 2D map into 3D xyz coordinates centered at 0,0,0 -->
