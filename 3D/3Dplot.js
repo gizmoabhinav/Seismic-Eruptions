@@ -47,7 +47,7 @@ window.eqfeed_callback = function(results) {
 	alert("earthquake count : "+count);
 	rainbow.setNumberRange(0, max);
 	for(var i=0;i<size;i++){
-		var sphereGeometry = new THREE.SphereGeometry( radius[i], 4, 4 );
+		var sphereGeometry = new THREE.SphereGeometry( radius[i], 8, 8 );
 		var sphereMaterial = new THREE.MeshBasicMaterial( { color: parseInt('0x'+rainbow.colourAt(results.features[i].geometry.coordinates[2])) , overdraw: false } );
 		var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 		sphere.position.set(convertCoordinatesx(latVal[i])-leftTileLimit-2,-convertCoordinatesy(lonVal[i])+topTileLimit+2,1.0-(depths[i]/1000));
