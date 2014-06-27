@@ -87,7 +87,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 				.on('mousemove', this._onMouseMove, this)
 				.on('mouseup', this._onMouseUp, this)
 				.on('zoomlevelschange', this._onZoomEnd, this)
-				.on('touchstart', this._onTouch, this);
+				.on('click', this._onTouch, this);
 		}
 	},
 
@@ -118,7 +118,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 		this._map
 			.off('mousemove', this._onMouseMove, this)
 			.off('zoomend', this._onZoomEnd, this)
-			.off('touchstart', this._onTouch, this);
+			.off('click', this._onTouch, this);
 	},
 
 	deleteLastVertex: function () {
