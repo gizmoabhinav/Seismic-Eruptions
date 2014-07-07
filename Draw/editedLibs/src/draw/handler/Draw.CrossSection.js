@@ -81,13 +81,16 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 
 			this._mouseMarker
 				.on('mousedown', this._onMouseDown, this)
+				.on('touchstart', this._onMouseDown, this)
 				.addTo(this._map);
 
 			this._map
 				.on('mousemove', this._onMouseMove, this)
+				.on('touchmove', this._onMouseMove, this)
 				.on('mouseup', this._onMouseUp, this)
 				.on('zoomlevelschange', this._onZoomEnd, this)
-				.on('click', this._onTouch, this);
+				.on('touchend', this._onTouchEnd, this)
+				.on('touchstart', this._onTouchStart, this);
 		}
 	},
 
@@ -117,8 +120,9 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 
 		this._map
 			.off('mousemove', this._onMouseMove, this)
+			.off('touchmove', this._onMouseMove, this)
 			.off('zoomend', this._onZoomEnd, this)
-			.off('click', this._onTouch, this);
+			.off('touchstart', this._onTouchStart, this);
 	},
 
 	deleteLastVertex: function () {
@@ -140,6 +144,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 	},
 
 	addVertex: function (latlng) {
+		//alert(latlng.lat);
 		var markersLength = this._markers.length;
 		
 
@@ -151,7 +156,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			this._hideErrorTooltip();
 		}
 
-		this._markers.push(this._createMarker(latlng));
+		//this._markers.push(this._createMarker(latlng));
 
 		this._poly.addLatLng(latlng);
 		
@@ -162,7 +167,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 		}
 
 		//this._vertexChanged(latlng, true);
-		if((markersLength+1)%2 == 0){
+		if((markersLength) == 2){
 			polygonArr[1] = latlng;
 			map.addLayer(drawnItems);
 			this._finishShape();
@@ -257,8 +262,13 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 	},
 
 	_onMouseDown: function (e) {
+		//alert("mousedown");
 		var originalEvent = e.originalEvent;
 		this._mouseDownOrigin = L.point(originalEvent.clientX, originalEvent.clientY);
+		this._markers = [];
+		this._markers.push(this._createMarker(e.latlng));
+		this.addVertex(e.latlng);
+		this._map.dragging.disable();
 	},
 
 	_onMouseUp: function (e) {
@@ -267,19 +277,26 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			// be interpreted as a drag by the map
 			var distance = L.point(e.originalEvent.clientX, e.originalEvent.clientY)
 				.distanceTo(this._mouseDownOrigin);
-			if (Math.abs(distance) < 9 * (window.devicePixelRatio || 1)) {
-				
+			//if (Math.abs(distance) < 9 * (window.devicePixelRatio || 1)) {
+					this._markers[1] = this._createMarker(e.latlng);
 					this.addVertex(e.latlng);
 				
-			}
+			//}
+			this._map.dragging.enable();
 		}
 		this._mouseDownOrigin = null;
 	},
-	_onTouch: function (e) {
-		//alert("touch");
+	_onTouchStart: function (e) {
+		//alert("touchstart");
 		// #TODO: use touchstart and touchend vs using click(touch start & end).
-		if (L.Browser.touch){ // #TODO: get rid of this once leaflet fixes their click/touch.
+		//if (L.Browser.touch){ // #TODO: get rid of this once leaflet fixes their click/touch.
+			//alert("touchstart");
 			this._onMouseDown(e);
+
+		//}
+	},
+	_onTouchStop: function (e) {
+		if (L.Browser.touch){
 			this._onMouseUp(e);
 		}
 	},
