@@ -287,7 +287,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 		this._mouseDownOrigin = null;
 	},
 	_onTouchStart: function (e) {
-		//alert("touchstart");
+		alert("touchstart");
 		// #TODO: use touchstart and touchend vs using click(touch start & end).
 		//if (L.Browser.touch){ // #TODO: get rid of this once leaflet fixes their click/touch.
 			//alert("touchstart");
@@ -296,6 +296,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 		//}
 	},
 	_onTouchStop: function (e) {
+		alert("touchstop");
 		if (L.Browser.touch){
 			this._onMouseUp(e);
 		}
