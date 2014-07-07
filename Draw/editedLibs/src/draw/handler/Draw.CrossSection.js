@@ -1,5 +1,7 @@
 var polygonArr = new Array();
 var polygon;
+var touchstart = true;
+var touchend = false;
 var width=0.25;
 var length,ratio1,ratio2,x1,y1,x2,y2,x3,y3,x4,y4;
 L.Draw.CrossSection = L.Draw.Feature.extend({
@@ -67,6 +69,10 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			// we can create vertices over other map layers (markers, vector layers). We
 			// also do not want to trigger any click handlers of objects we are clicking on
 			// while drawing.
+			
+			L.DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
+			L.DomEvent.on(this._map._container, 'touchend', this._onTouchEnd, this);
+			
 			if (!this._mouseMarker) {
 				this._mouseMarker = L.marker(this._map.getCenter(), {
 					icon: L.divIcon({
@@ -85,9 +91,6 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 				.addTo(this._map);
 
 			this._map
-				
-				.on('touchend', this._onTouchEnd, this.map)
-				.on('touchstart', this._onTouchStart, this.map)
 				.on('mousemove', this._onMouseMove, this)
 				.on('touchmove', this._onMouseMove, this)
 				.on('mouseup', this._onMouseUp, this)
@@ -118,12 +121,12 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 
 		// clean up DOM
 		this._clearGuides();
-
+		L.DomEvent.off(this._map._container, 'touchstart', this._onTouchStart, this);
+		L.DomEvent.off(this._map._container, 'touchend', this._onTouchEnd, this);
 		this._map
 			.off('mousemove', this._onMouseMove, this)
 			.off('touchmove', this._onMouseMove, this)
-			.off('zoomend', this._onZoomEnd, this)
-			.off('touchstart', this._onTouchStart, this);
+			.off('zoomend', this._onZoomEnd, this);
 	},
 
 	deleteLastVertex: function () {
@@ -163,7 +166,8 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 		
 		//polygonArr[polygonArr.length]=latlng;
 		
-		if (this._poly.getLatLngs().length === 2) {
+		if (this._poly.getLatLngs().length == 2) {
+		//alert(this._poly.getLatLngs()[1]);
 			this._map.addLayer(this._poly);
 		}
 
@@ -272,6 +276,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 	},
 
 	_onMouseUp: function (e) {
+		//alert("mouseup");
 		if (this._mouseDownOrigin) {
 			// We detect clicks within a certain tolerance, otherwise let it
 			// be interpreted as a drag by the map
@@ -287,18 +292,32 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 		this._mouseDownOrigin = null;
 	},
 	_onTouchStart: function (e) {
-		alert("touchstart");
-		// #TODO: use touchstart and touchend vs using click(touch start & end).
-		//if (L.Browser.touch){ // #TODO: get rid of this once leaflet fixes their click/touch.
-			//alert("touchstart");
-			this._onMouseDown(e);
-
-		//}
+		if(touchstart){
+		this._mouseDownOrigin = L.point(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+		this._markers = [];
+		this._markers.push(this._map.layerPointToLatLng(this._mouseDownOrigin));
+		this.addVertex(this._map.layerPointToLatLng(this._mouseDownOrigin));
+		//alert((this._map.layerPointToLatLng(this._mouseDownOrigin)));
+		touchstart = false;
+		touchend = true;
+		}
 	},
-	_onTouchStop: function (e) {
-		alert("touchstop");
-		if (L.Browser.touch){
-			this._onMouseUp(e);
+	_onTouchEnd: function (e) {
+		if(touchend){
+			if (this._mouseDownOrigin) {
+			var distance = L.point(e.changedTouches[0].clientX, e.changedTouches[0].clientY)
+				.distanceTo(this._mouseDownOrigin);
+			var endpoint = this._map.layerPointToLatLng(L.point(e.changedTouches[0].clientX, e.changedTouches[0].clientY));
+				
+					this._markers[1] = this._createMarker(endpoint);
+					
+					this.addVertex(endpoint);
+					touchend = false;
+					
+		}
+		this._mouseDownOrigin = null;
+		
+		touchstart = true;
 		}
 	},
 
