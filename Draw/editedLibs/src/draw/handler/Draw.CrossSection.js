@@ -1,10 +1,10 @@
-var polygonArr = Array();
+var polygonArr = new Array();
 var polygon;
 var width=0.25;
 var length,ratio1,ratio2,x1,y1,x2,y2,x3,y3,x4,y4;
 L.Draw.CrossSection = L.Draw.Feature.extend({
 	statics: {
-		TYPE: 'cross-section'
+		TYPE: 'polyline'
 	},
 
 	Poly: L.Polyline,
@@ -155,14 +155,16 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 
 		this._poly.addLatLng(latlng);
 		
-		polygonArr[polygonArr.length]=latlng;
+		//polygonArr[polygonArr.length]=latlng;
 		
 		if (this._poly.getLatLngs().length === 2) {
 			this._map.addLayer(this._poly);
 		}
 
 		//this._vertexChanged(latlng, true);
-		if(markersLength >= 1){
+		if((markersLength+1)%2 == 0){
+			polygonArr[1] = latlng;
+			map.addLayer(drawnItems);
 			this._finishShape();
 			polygonArr[2]=polygonArr[0];
 			polygonArr[3]=polygonArr[1];
@@ -170,23 +172,33 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			polygonArr[3].lat=convertCoordinatesy(polygonArr[1].lat);
 			polygonArr[2].lng=convertCoordinatesx(polygonArr[0].lng);
 			polygonArr[3].lng=convertCoordinatesx(polygonArr[1].lng);
-			length = Math.sqrt(Math.pow((polygonArr[polygonArr.length-2].lat)-(polygonArr[polygonArr.length-1].lat),2)+Math.pow((polygonArr[polygonArr.length-2].lng)-(polygonArr[polygonArr.length-1].lng),2));
-			ratio1 = length/(((polygonArr[polygonArr.length-2].lat)-(polygonArr[polygonArr.length-1].lat)));
-			ratio2 = length/(((polygonArr[polygonArr.length-2].lng)-(polygonArr[polygonArr.length-1].lng)));
-			x1=polygonArr[polygonArr.length-1].lat+(width/ratio2);
-			y1=polygonArr[polygonArr.length-1].lng-(width/ratio1);
-			x2=polygonArr[polygonArr.length-2].lat+(width/ratio2);
-			y2=polygonArr[polygonArr.length-2].lng-(width/ratio1);
-			x3=polygonArr[polygonArr.length-2].lat-(width/ratio2);
-			y3=polygonArr[polygonArr.length-2].lng+(width/ratio1);
-			x4=polygonArr[polygonArr.length-1].lat-(width/ratio2);
-			y4=polygonArr[polygonArr.length-1].lng+(width/ratio1);
+			length = Math.sqrt(Math.pow((polygonArr[0].lat)-(polygonArr[1].lat),2)+Math.pow((polygonArr[0].lng)-(polygonArr[1].lng),2));
+			ratio1 = length/(((polygonArr[0].lat)-(polygonArr[1].lat)));
+			ratio2 = length/(((polygonArr[0].lng)-(polygonArr[1].lng)));
+			x1=polygonArr[1].lat+(width/ratio2);
+			y1=polygonArr[1].lng-(width/ratio1);
+			x2=polygonArr[0].lat+(width/ratio2);
+			y2=polygonArr[0].lng-(width/ratio1);
+			x3=polygonArr[0].lat-(width/ratio2);
+			y3=polygonArr[0].lng+(width/ratio1);
+			x4=polygonArr[1].lat-(width/ratio2);
+			y4=polygonArr[1].lng+(width/ratio1);
 			polygon = L.polygon([
 						[toLat(x1),toLon(y1)],
 						[toLat(x2),toLon(y2)],
 						[toLat(x3),toLon(y3)],
 						[toLat(x4),toLon(y4)]
 					]).addTo(this._map);
+		}
+		else{
+			polygonArr = new Array();
+			polygonArr[0] = latlng;
+			if(map.hasLayer(drawnItems)){
+				map.removeLayer(drawnItems);
+			}
+			if(map.hasLayer(polygon)){
+				map.removeLayer(polygon);
+			}
 		}
 	},
 
@@ -256,9 +268,9 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			var distance = L.point(e.originalEvent.clientX, e.originalEvent.clientY)
 				.distanceTo(this._mouseDownOrigin);
 			if (Math.abs(distance) < 9 * (window.devicePixelRatio || 1)) {
-				if(polygonArr.length<2){
+				
 					this.addVertex(e.latlng);
-				}
+				
 			}
 		}
 		this._mouseDownOrigin = null;
