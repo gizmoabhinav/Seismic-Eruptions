@@ -89,8 +89,8 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 				.on('touchmove', this._onMouseMove, this)
 				.on('mouseup', this._onMouseUp, this)
 				.on('zoomlevelschange', this._onZoomEnd, this)
-				.on('touchend', this._onTouchEnd, this)
-				.on('touchstart', this._onTouchStart, this);
+				.on('touchend', this._onTouchEnd, this.map)
+				.on('touchstart', this._onTouchStart, this.map);
 		}
 	},
 
