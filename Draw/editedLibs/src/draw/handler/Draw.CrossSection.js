@@ -72,6 +72,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			
 			L.DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
 			L.DomEvent.on(this._map._container, 'touchend', this._onTouchEnd, this);
+			L.DomEvent.on(this._map._container, 'touchmove', this._onTouchMove, this);
 			
 			if (!this._mouseMarker) {
 				this._mouseMarker = L.marker(this._map.getCenter(), {
@@ -92,7 +93,6 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 
 			this._map
 				.on('mousemove', this._onMouseMove, this)
-				.on('touchmove', this._onMouseMove, this)
 				.on('mouseup', this._onMouseUp, this)
 				.on('zoomlevelschange', this._onZoomEnd, this);
 		}
@@ -123,9 +123,9 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 		this._clearGuides();
 		L.DomEvent.off(this._map._container, 'touchstart', this._onTouchStart, this);
 		L.DomEvent.off(this._map._container, 'touchend', this._onTouchEnd, this);
+		L.DomEvent.off(this._map._container, 'touchmove', this._onTouchMove, this);
 		this._map
 			.off('mousemove', this._onMouseMove, this)
-			.off('touchmove', this._onMouseMove, this)
 			.off('zoomend', this._onZoomEnd, this);
 	},
 
@@ -295,7 +295,8 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 		if(touchstart){
 		this._mouseDownOrigin = L.point(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
 		this._markers = [];
-		this._markers.push(this._map.layerPointToLatLng(this._mouseDownOrigin));
+		this._markers[0] = this._createMarker(this._map.layerPointToLatLng(this._mouseDownOrigin));
+		//this._markers.push(this._map.layerPointToLatLng(this._mouseDownOrigin));
 		this.addVertex(this._map.layerPointToLatLng(this._mouseDownOrigin));
 		//alert((this._map.layerPointToLatLng(this._mouseDownOrigin)));
 		touchstart = false;
@@ -320,7 +321,19 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 		touchstart = true;
 		}
 	},
+	_onTouchMove: function (e) {
+		this._currentLatLng = this._map.layerPointToLatLng(L.point(e.changedTouches[0].clientX, e.changedTouches[0].clientY));
 
+		this._updateTooltip(this._map.layerPointToLatLng(L.point(e.changedTouches[0].clientX, e.changedTouches[0].clientY)));
+		
+		// Update the guide line
+		this._updateGuide(L.point(e.changedTouches[0].clientX, e.changedTouches[0].clientY));
+
+		// Update the mouse marker position
+		this._mouseMarker.setLatLng(this._map.layerPointToLatLng(L.point(e.changedTouches[0].clientX, e.changedTouches[0].clientY)));
+		
+		
+	},
 	_updateFinishHandler: function () {
 		var markerCount = this._markers.length;
 		// The last marker should have a click handler to close the polyline
@@ -354,7 +367,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			// draw the guide line
 			this._clearGuides();
 			this._drawGuide(
-				this._map.latLngToLayerPoint(this._markers[markerCount - 1].getLatLng()),
+				this._map.latLngToLayerPoint(this._markers[0].getLatLng()),
 				newPos
 			);
 		}
