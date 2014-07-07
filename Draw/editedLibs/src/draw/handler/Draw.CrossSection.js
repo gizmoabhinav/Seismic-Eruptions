@@ -54,7 +54,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 		L.Draw.Feature.prototype.addHooks.call(this);
 		if (this._map) {
 			this._markers = [];
-
+			this._map.dragging.disable();
 			this._markerGroup = new L.LayerGroup();
 			this._map.addLayer(this._markerGroup);
 
@@ -85,12 +85,13 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 				.addTo(this._map);
 
 			this._map
+				
+				.on('touchend', this._onTouchEnd, this.map)
+				.on('touchstart', this._onTouchStart, this.map)
 				.on('mousemove', this._onMouseMove, this)
 				.on('touchmove', this._onMouseMove, this)
 				.on('mouseup', this._onMouseUp, this)
-				.on('zoomlevelschange', this._onZoomEnd, this)
-				.on('touchend', this._onTouchEnd, this.map)
-				.on('touchstart', this._onTouchStart, this.map);
+				.on('zoomlevelschange', this._onZoomEnd, this);
 		}
 	},
 
@@ -268,7 +269,6 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 		this._markers = [];
 		this._markers.push(this._createMarker(e.latlng));
 		this.addVertex(e.latlng);
-		this._map.dragging.disable();
 	},
 
 	_onMouseUp: function (e) {
