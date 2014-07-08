@@ -203,6 +203,8 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			polygonArr[0] = latlng;
 			if(map.hasLayer(drawnItems)){
 				map.removeLayer(drawnItems);
+				if(this._map.hasLayer(this._poly))
+				this._map.removeLayer(this._poly);
 			}
 			if(map.hasLayer(polygon)){
 				map.removeLayer(polygon);
