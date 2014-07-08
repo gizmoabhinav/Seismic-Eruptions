@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Earthquake area selection tool</title>
+	<title>earthquake area selection</title>
 
 	<link rel="stylesheet" href="../leaflet.css" />
 	<link rel="stylesheet" href="leaflet.draw.css" />
@@ -30,7 +30,7 @@
 	<button onclick="render()">Render</button>
 	<script>
 		function render(){
-			window.open("http://gizmoabhinav.github.io/Seismic-Eruptions/3D/index.html?x1="+toLon(y1)+"&y1="+toLat(x1)+"&x2="+toLon(y2)+"&y2="+toLat(x2)+"&x3="+toLon(y3)+"&y3="+toLat(x3)+"&x4="+toLon(y4)+"&y4="+toLat(x4)+"&mag=4&y=2009&m=1&d=1");
+			window.open("http://gizmoabhinav.github.io/Seismic-Eruptions/3D/index.html?x1="+toLon(y1)+"&y1="+toLat(x1)+"&x2="+toLon(y2)+"&y2="+toLat(x2)+"&x3="+toLon(y3)+"&y3="+toLat(x3)+"&x4="+toLon(y4)+"&y4="+toLat(x4)+"&mag=4&y=2013&m=1&d=1");
 		}
 		$("#slider").slider({
 		value: 0,
@@ -80,7 +80,7 @@
 				remove: false
 			}
 		});
-		map.addControl(drawControl);
+		//map.addControl(drawControl);
 
 		map.on('draw:created', function (e) {
 			var type = e.layerType,
@@ -92,7 +92,7 @@
 
 			drawnItems.addLayer(layer);
 		});
-
+		
 		/*map.on('draw:edited', function (e) {
 			var layers = e.layers;
 			var countOfEditedLayers = 0;
@@ -107,5 +107,7 @@
 		};*/
 
 	</script>
+	
+	<button onclick="map.addControl(drawControl);">Draw</button>
 </body>
 </html>

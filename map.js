@@ -12,9 +12,7 @@ var enddate = getURLParameter("enddate");
 var speed = 6;
 var map = L.map('map').setView([30, -0], 2);
 map.invalidateSize(false);
-map.on('contextmenu', function(e) {
-    alert(e.latlng);
-});
+
 // create timeline
 var tl = new TimelineLite({onUpdate:updateSlider});
 tl.timeScale(speed);

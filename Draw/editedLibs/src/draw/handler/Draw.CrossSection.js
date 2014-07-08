@@ -1,5 +1,5 @@
 var polygonArr = new Array();
-var polygon;
+var polygon,lng0,lng1,lat0,lat1;
 var touchstart = true;
 var touchend = false;
 var width=0.25;
@@ -169,30 +169,28 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 		if (this._poly.getLatLngs().length == 2) {
 		//alert(this._poly.getLatLngs()[1]);
 			this._map.addLayer(this._poly);
+			this._finishShape();
 		}
 
 		//this._vertexChanged(latlng, true);
 		if((markersLength) == 2){
 			polygonArr[1] = latlng;
 			map.addLayer(drawnItems);
-			this._finishShape();
-			polygonArr[2]=polygonArr[0];
-			polygonArr[3]=polygonArr[1];
-			polygonArr[2].lat=convertCoordinatesy(polygonArr[0].lat);
-			polygonArr[3].lat=convertCoordinatesy(polygonArr[1].lat);
-			polygonArr[2].lng=convertCoordinatesx(polygonArr[0].lng);
-			polygonArr[3].lng=convertCoordinatesx(polygonArr[1].lng);
-			length = Math.sqrt(Math.pow((polygonArr[0].lat)-(polygonArr[1].lat),2)+Math.pow((polygonArr[0].lng)-(polygonArr[1].lng),2));
-			ratio1 = length/(((polygonArr[0].lat)-(polygonArr[1].lat)));
-			ratio2 = length/(((polygonArr[0].lng)-(polygonArr[1].lng)));
-			x1=polygonArr[1].lat+(width/ratio2);
-			y1=polygonArr[1].lng-(width/ratio1);
-			x2=polygonArr[0].lat+(width/ratio2);
-			y2=polygonArr[0].lng-(width/ratio1);
-			x3=polygonArr[0].lat-(width/ratio2);
-			y3=polygonArr[0].lng+(width/ratio1);
-			x4=polygonArr[1].lat-(width/ratio2);
-			y4=polygonArr[1].lng+(width/ratio1);
+			lat0 =convertCoordinatesy(polygonArr[0].lat);
+			lat1 =convertCoordinatesy(polygonArr[1].lat);
+			lng0 =convertCoordinatesx(polygonArr[0].lng);
+			lng1 =convertCoordinatesx(polygonArr[1].lng);
+			length = Math.sqrt(Math.pow((lat0)-(lat1),2)+Math.pow((lng0)-(lng1),2));
+			ratio1 = length/(((lat0)-(lat1)));
+			ratio2 = length/(((lng0)-(lng1)));
+			x1=lat1+(width/ratio2);
+			y1=lng1-(width/ratio1);
+			x2=lat0+(width/ratio2);
+			y2=lng0-(width/ratio1);
+			x3=lat0-(width/ratio2);
+			y3=lng0+(width/ratio1);
+			x4=lat1-(width/ratio2);
+			y4=lng1+(width/ratio1);
 			polygon = L.polygon([
 						[toLat(x1),toLon(y1)],
 						[toLat(x2),toLon(y2)],

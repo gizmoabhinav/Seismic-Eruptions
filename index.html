@@ -29,7 +29,7 @@
 	<button id="speedup" onclick="SpeedUp()">speed up</button>
 	<button id="speeddown" onclick="SpeedDown()">speed down</button>
 	</div>
-	<div id="controls" style="position : absolute;right:10px;bottom:35px">
+	<div id="controls" style="height: 40%;width: 20%;position : absolute;right:10px;bottom:35px">
 	<font color="white">
 	Timeline time:</br>
 	<div id="values"></div>
@@ -65,15 +65,25 @@
 	<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script src="rainbowvis.js"></script>
 	<script src="map.js"></script>
+	
+	<script src="Draw/editedLibs/src/ext/TouchEvents.js"></script>
 	<script src="Draw/editedLibs/src/Leaflet.draw.js"></script>
 	<script src="Draw/editedLibs/src/draw/handler/Draw.Feature.js"></script>
 	<script src="Draw/editedLibs/src/draw/handler/latlonTo3D.js"></script>
 	
 	<script src="Draw/editedLibs/src/ext/GeometryUtil.js"></script>
+	<script src="Draw/editedLibs/src/ext/LatLngUtil.js"></script>
+	<script src="Draw/editedLibs/src/ext/LineUtil.Intersect.js"></script>
+	<script src="Draw/editedLibs/src/ext/Polygon.Intersect.js"></script>
+	<script src="Draw/editedLibs/src/ext/Polyline.Intersect.js"></script>
 	<script src="Draw/editedLibs/src/Control.Draw.js"></script>
 	<script src="Draw/editedLibs/src/Tooltip.js"></script>
 	<script src="Draw/editedLibs/src/Toolbar.js"></script>
 	<script src="Draw/editedLibs/src/draw/DrawToolbar.js"></script>
+	<script src="Draw/editedLibs/src/edit/EditToolbar.js"></script>
+	<script src="Draw/editedLibs/src/edit/handler/EditToolbar.Edit.js"></script>
+	<script src="Draw/editedLibs/src/edit/handler/EditToolbar.Delete.js"></script>
+	<script src="Draw/editedLibs/src/edit/handler/Edit.CrossSection.js"></script>
 	<script>
 		function render(){
 			window.open("http://gizmoabhinav.github.io/Seismic-Eruptions/3D/index.html?x1="+toLon(y1)+"&y1="+toLat(x1)+"&x2="+toLon(y2)+"&y2="+toLat(x2)+"&x3="+toLon(y3)+"&y3="+toLat(x3)+"&x4="+toLon(y4)+"&y4="+toLat(x4)+"&mag="+mag+"&startdate="+startdate+"&enddate="+enddate);

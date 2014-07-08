@@ -4,14 +4,14 @@ $("#Rectslider").slider({
 		max: 100,
 		slide: function ( event, ui ) {
 			width = ui.value/100;
-			x1=polygonArr[0].lat+(width/ratio2);
-			y1=polygonArr[0].lng-(width/ratio1);
-			x2=polygonArr[1].lat+(width/ratio2);
-			y2=polygonArr[1].lng-(width/ratio1);
-			x3=polygonArr[1].lat-(width/ratio2);
-			y3=polygonArr[1].lng+(width/ratio1);
-			x4=polygonArr[0].lat-(width/ratio2);
-			y4=polygonArr[0].lng+(width/ratio1);
+			x1=lat0+(width/ratio2);
+			y1=lng0-(width/ratio1);
+			x2=lat1+(width/ratio2);
+			y2=lng1-(width/ratio1);
+			x3=lat1-(width/ratio2);
+			y3=lng1+(width/ratio1);
+			x4=lat0-(width/ratio2);
+			y4=lng0+(width/ratio1);
 			map.removeLayer(polygon);
 			polygon = L.polygon([
 						[toLat(x1),toLon(y1)],
