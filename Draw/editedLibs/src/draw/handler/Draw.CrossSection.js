@@ -102,7 +102,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 		L.Draw.Feature.prototype.removeHooks.call(this);
 
 		this._clearHideErrorTimeout();
-
+		this._map.dragging.enable();
 		this._cleanUpShape();
 
 		// remove markers from map
@@ -285,7 +285,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 					this.addVertex(e.latlng);
 				
 			//}
-			this._map.dragging.enable();
+			
 		}
 		this._mouseDownOrigin = null;
 	},
