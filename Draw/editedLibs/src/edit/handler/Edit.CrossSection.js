@@ -120,10 +120,18 @@ L.Edit.Poly = L.Handler.extend({
 		if (marker._middleRight) {
 			marker._middleRight.setLatLng(this._getMiddleLatLng(marker, marker._next));
 		}*/
+		var map = this._poly._map,
+		    p1 = map.project([toLat(x1),toLon(y1)]),
+		    p2 = map.project([toLat(x2),toLon(y2)]);
+		var p4 = map.unproject(map.project([toLat(lat0),toLon(lng0)])._add(map.project([toLat(lat1),toLon(lng1)]))._divideBy(2));
+		var p3 = map.unproject(p1._add(p2)._divideBy(2));
 		if(marker._index == 2){
-		if(width < 5)
-			width = Math.sqrt(Math.pow(map.project([toLat(lat1),toLon(lng1)]).x-map.project(marker._latlng).x,2)+Math.pow(map.project([toLat(lat1),toLon(lng1)]).y-map.project(marker._latlng).y,2))*initWidth/initDistance;
-			marker.setLatLng([toLat(x1),toLon(y1)]);
+			
+		
+		if(width < 5){
+			width = Math.sqrt(Math.pow(map.project(p4).x-map.project(marker._latlng).x,2)+Math.pow(map.project(p4).y-map.project(marker._latlng).y,2))*initWidth/initDistance;
+			}
+			marker.setLatLng(p3);
 		}
 		this._poly.redraw();
 		this._poly._map.removeLayer(polygon);
@@ -148,7 +156,7 @@ L.Edit.Poly = L.Handler.extend({
 						[toLat(x3),toLon(y3)],
 						[toLat(x4),toLon(y4)]
 					]).addTo(this._poly._map);
-		resizemarkervar.setLatLng([toLat(x1),toLon(y1)]);
+		resizemarkervar.setLatLng(p3);
 	},
 
 	_onMarkerClick: function (e) {
@@ -198,12 +206,12 @@ L.Edit.Poly = L.Handler.extend({
 	
 	_createResizeMarker: function (marker1, marker2) {
 		var map = this._poly._map,
-		    p1 = map.project(marker1.getLatLng()),
-		    p2 = map.project(marker2.getLatLng());
-
-		var p3 = (p1._add(p2)._divideBy(2));
-		var latlng = ([toLat(x1),toLon(y1)]);
-		var marker = this._createMarker(latlng,2),
+		    p1 = map.project([toLat(x1),toLon(y1)]),
+		    p2 = map.project([toLat(x2),toLon(y2)]);
+		
+		var p4 = map.unproject(map.project([toLat(lat0),toLon(lng0)])._add(map.project([toLat(lat1),toLon(lng1)]))._divideBy(2));
+		var p3 = map.unproject(p1._add(p2)._divideBy(2));
+		var marker = this._createMarker(p3,2),
 		    onClick,
 		    onDragStart,
 		    onDragEnd;
@@ -212,7 +220,7 @@ L.Edit.Poly = L.Handler.extend({
 		onDragStart = function () {
 			lat = marker.getLatLng().lat;
 			lng = marker.getLatLng().lng;
-			initDistance = Math.sqrt(Math.pow(map.project([toLat(lat1),toLon(lng1)]).x-map.project(marker.getLatLng()).x,2)+Math.pow(map.project([toLat(lat1),toLon(lng1)]).y-map.project(marker.getLatLng()).y,2));
+			initDistance = Math.sqrt(Math.pow(map.project(p4).x-map.project(marker.getLatLng()).x,2)+Math.pow(map.project(p4).y-map.project(marker.getLatLng()).y,2));
 			initWidth = width;
 			
 		};
