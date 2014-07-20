@@ -1,5 +1,5 @@
 L.Edit = L.Edit || {};
-var lat,lng,initDistance,initWidth,resizemarkervar;
+var lat,lng,mlat,mlng,mlatlng,initDistance,initWidth,resizemarkervar,movemarkervar,endmarker1,endmarker2;
 /*
  * L.Edit.Poly is an editing handler for polylines and polygons.
  */
@@ -66,10 +66,10 @@ L.Edit.Poly = L.Handler.extend({
 
 			markerLeft = this._markers[j];
 			markerRight = this._markers[i];
-			
+			endmarker1 = markerLeft;
+			endmarker2 = markerRight;
 			this._createResizeMarker(markerLeft,markerRight);
-			//this._createMiddleMarker(markerLeft, markerRight);
-			//this._updatePrevNext(markerLeft, markerRight);
+			this._createMoveMarker(markerLeft, markerRight);
 		}
 	},
 
@@ -126,14 +126,25 @@ L.Edit.Poly = L.Handler.extend({
 		var p4 = map.unproject(map.project([toLat(lat0),toLon(lng0)])._add(map.project([toLat(lat1),toLon(lng1)]))._divideBy(2));
 		var p3 = map.unproject(p1._add(p2)._divideBy(2));
 		if(marker._index == 2){
-			
-		
-		if(width < 5){
-			width = Math.sqrt(Math.pow(map.project(p4).x-map.project(marker._latlng).x,2)+Math.pow(map.project(p4).y-map.project(marker._latlng).y,2))*initWidth/initDistance;
+			if(width <= 5){
+				width = Math.sqrt(Math.pow(map.project(p4).x-map.project(marker.getLatLng()).x,2)+Math.pow(map.project(p4).y-map.project(marker.getLatLng()).y,2))*initWidth/initDistance;
+				initDistance = Math.sqrt(Math.pow(map.project(p4).x-map.project(p3).x,2)+Math.pow(map.project(p4).y-map.project(p3).y,2));
+				intiWidth = width;
 			}
-			marker.setLatLng(p3);
+			//marker.setLatLng(p3);
 		}
-		this._poly.redraw();
+		if(marker._index == 3){
+			offset = [map.project(mlatlng).x - map.project(marker._latlng).x, map.project(mlatlng).y - map.project(marker._latlng).y];
+			mlatlng = marker._latlng;
+			polygonArr[0]=map.unproject([map.project(polygonArr[0]).x - offset[0],map.project(polygonArr[0]).y - offset[1]]);
+			polygonArr[1]=map.unproject([map.project(polygonArr[1]).x - offset[0],map.project(polygonArr[1]).y - offset[1]]);
+			this._poly.setLatLngs([polygonArr[0], polygonArr[1]]);
+			/*endmarker1.setLatLng(polygonArr[0]);
+			endmarker2.setLatLng(polygonArr[1]);*/
+			//this.updateMarkers();
+			//marker.setLatLng(p4);
+		}
+		
 		this._poly._map.removeLayer(polygon);
 			lat0 =convertCoordinatesy(polygonArr[0].lat);
 			lat1 =convertCoordinatesy(polygonArr[1].lat);
@@ -157,6 +168,8 @@ L.Edit.Poly = L.Handler.extend({
 						[toLat(x4),toLon(y4)]
 					]).addTo(this._poly._map);
 		resizemarkervar.setLatLng(p3);
+		movemarkervar.setLatLng(p4);
+		this._poly.redraw();
 	},
 
 	_onMarkerClick: function (e) {
@@ -220,7 +233,7 @@ L.Edit.Poly = L.Handler.extend({
 		onDragStart = function () {
 			lat = marker.getLatLng().lat;
 			lng = marker.getLatLng().lng;
-			initDistance = Math.sqrt(Math.pow(map.project(p4).x-map.project(marker.getLatLng()).x,2)+Math.pow(map.project(p4).y-map.project(marker.getLatLng()).y,2));
+			initDistance = Math.sqrt(Math.pow(map.project(p4).x-map.project(p3).x,2)+Math.pow(map.project(p4).y-map.project(p3).y,2));
 			initWidth = width;
 			
 		};
@@ -228,6 +241,45 @@ L.Edit.Poly = L.Handler.extend({
 		onDragEnd = function () {
 			marker.off('dragstart', onDragStart, this);
 			marker.off('dragend', onDragEnd, this);
+			
+		};
+
+		onClick = function () {
+			onDragStart.call(this);
+			onDragEnd.call(this);
+		};
+
+		marker
+		    .on('click', onClick, this)
+		    .on('dragstart', onDragStart, this)
+		    .on('dragend', onDragEnd, this);
+
+		this._markerGroup.addLayer(marker);
+	},
+	
+	_createMoveMarker: function (marker1, marker2) {
+		var map = this._poly._map;
+		var p4 = map.unproject(map.project([toLat(lat0),toLon(lng0)])._add(map.project([toLat(lat1),toLon(lng1)]))._divideBy(2));
+		var marker = this._createMarker(p4,3),
+		    onClick,
+		    onDragStart,
+		    onDragEnd;
+		movemarkervar = marker;
+		marker.setOpacity(0.6);
+		onDragStart = function () {
+			mlatlng = marker.getLatLng();
+			mlat = marker.getLatLng().lat;
+			mlng = marker.getLatLng().lng;
+			
+		
+			
+		};
+
+		onDragEnd = function () {
+			marker.off('dragstart', onDragStart, this);
+			marker.off('dragend', onDragEnd, this);
+			this._markerGroup.clearLayers();
+			this._initMarkers();
 		};
 
 		onClick = function () {
