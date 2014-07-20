@@ -128,8 +128,7 @@ L.Edit.Poly = L.Handler.extend({
 		if(marker._index == 2){
 			if(width <= 5){
 				width = Math.sqrt(Math.pow(map.project(p4).x-map.project(marker.getLatLng()).x,2)+Math.pow(map.project(p4).y-map.project(marker.getLatLng()).y,2))*initWidth/initDistance;
-				initDistance = Math.sqrt(Math.pow(map.project(p4).x-map.project(p3).x,2)+Math.pow(map.project(p4).y-map.project(p3).y,2));
-				intiWidth = width;
+				
 			}
 			//marker.setLatLng(p3);
 		}
