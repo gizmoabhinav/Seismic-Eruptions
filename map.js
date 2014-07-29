@@ -114,7 +114,7 @@ window.eqfeed_callback = function(results) {
 		min: 0,
 		max: timediff,
 		slide: function ( event, ui ) {
-			$("#date").html("Date : "+timeConverter(starttime));
+			$("#date").html(timeConverter(starttime));
 			//tl.seek();
 			tl.pause();
 			tl.progress(ui.value/(timediff));
@@ -124,7 +124,7 @@ window.eqfeed_callback = function(results) {
 }
 function updateSlider(){
 	$("#slider").slider("value", (tl.progress()*timediff));
-	$("#date").html("Date : "+timeConverter((tl.progress()*timediff)+starttime));
+	$("#date").html(timeConverter((tl.progress()*timediff)+starttime));
 }
 function mapAdder(i){
 	if(!map.hasLayer(circles[i])){

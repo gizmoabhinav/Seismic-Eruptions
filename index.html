@@ -53,22 +53,20 @@
 			</div>
             <div data-role="content">
                 <div id="map"></div>
-				<div class="ui-bar ui-body-a" style="width:60%;bottom:0px;left:0px;position:absolute"  id="playback">
+				<div class="ui-bar ui-body-a" style="width:100%;bottom:0px;left:0px;position:absolute"  id="playback">
 					<div class="ui-grid-d" id="playcontrols">
 						<div class="ui-block-a"><a class="ui-btn-inline" data-iconpos="notext" data-role="button" data-icon="arrow-r" id="play">PLAY</a></div>
 						<div class="ui-block-b"><a class="ui-btn-inline" data-iconpos="notext" data-role="button" data-icon="arrow-d" id="pause">PAUSE</a></div>
 						<div class="ui-block-c"><a class="ui-btn-inline" data-iconpos="notext" data-role="button" data-icon="plus" id="speedup">SPEED UP</a></div>
 						<div class="ui-block-d"><a class="ui-btn-inline" data-iconpos="notext" data-role="button" data-icon="minus" id="speeddown">SPEED DOWN</a></div>
 					</div>
-					<div id="slider" style="height:10px;width:90%"></div>
+					<div class="ui-grid-a">
+						<div class="ui-block-a"><div id="slider" style="height:10px;width:90%"></div></div>
+						<div class="ui-block-b" id="date"></div>
+					</div>
 				</div>
 				<div class="ui-bar ui-body-a" style="width:100%;bottom:0px;position:absolute;display:none" id="crosssection">
 					<button class="ui-btn ui-btn-inline" onclick="render()">RENDER</button>
-				</div>
-				<div class="ui-corner-all custom-corners" style="bottom:0px;right:0px;position:absolute;width:40%">
-					<div class="ui-bar ui-bar-a" id="date">
-						<h3> </h3>
-					</div>	
 				</div>
 			</div>
 			
