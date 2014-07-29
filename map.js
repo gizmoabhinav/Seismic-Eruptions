@@ -103,7 +103,7 @@ window.eqfeed_callback = function(results) {
 		}
 	}
 	
-	$("#info").html("Start Date : "+timeConverter(startdate)+"</br>End Date : "+timeConverter(enddate)+"</br>Cutoff magnitude : "+mag+"</br></br></br>total earthquakes : "+size+"</br>minimum depth : "+mindepth+" km</br>maximum depth : "+maxdepth+" km");
+	$("#info").html("Start Date : "+timeConverter(startdate)+"</br>End Date : "+timeConverter(enddate)+"</br>Cutoff magnitude : "+mag+"</br></br></br>total earthquakes : "+size+"</br>minimum depth : "+mindepth+" km</br>maximum depth : "+maxdepth+" km</br><div class='ui-body ui-body-a'><p><a href='http://github.com/gizmoabhinav/Seismic-Eruptions'>Link to the project</a></p></div>");
 	rainbow = new Rainbow();
 	rainbow.setNumberRange(mindepth, maxdepth);
 	timediff = results.features[size-1].properties.time-results.features[0].properties.time;

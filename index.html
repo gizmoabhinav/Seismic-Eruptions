@@ -40,10 +40,10 @@
 				<a href="#options" data-icon="bars" data-iconpos="notext">Options</a>
 				<a href="#settings" data-icon="gear" data-iconpos="notext">Settings</a>
             </div>
-            <div data-role="panel" id="options">
+            <div data-role="panel" data-display="overlay" id="options">
 				<div id="info" class="ui-bar ui-body-a"></div>
 			</div>
-			 <div data-role="panel" data-position="right" data-display="reveal" data-theme="a" id="settings">
+			 <div data-role="panel" data-position="right" data-display="overlay" data-theme="a" id="settings">
 				<form>
 					<label>
 						<input type="checkbox" name="plates" id="plates">Display plate boundaries
@@ -53,7 +53,7 @@
 			</div>
             <div data-role="content">
                 <div id="map"></div>
-				<div class="ui-bar ui-body-a" style="width:60%;bottom:0px;position:absolute"  id="playback">
+				<div class="ui-bar ui-body-a" style="width:60%;bottom:0px;left:0px;position:absolute"  id="playback">
 					<div class="ui-grid-d">
 						<div class="ui-block-a"><a class="ui-btn-inline" data-iconpos="notext" data-role="button" data-icon="arrow-r" id="play">PLAY</a></div>
 						<div class="ui-block-b"><a class="ui-btn-inline" data-iconpos="notext" data-role="button" data-icon="arrow-d" id="pause">PAUSE</a></div>
@@ -68,9 +68,6 @@
 				<div class="ui-corner-all custom-corners" style="bottom:0px;right:0px;position:absolute;width:40%">
 					<div class="ui-bar ui-bar-a" id="date">
 						<h3> </h3>
-					</div>
-					<div class="ui-body ui-body-a">
-						<p><a href="http://github.com/gizmoabhinav/Seismic-Eruptions">Link to the project</a></p>
 					</div>	
 				</div>
 			</div>
