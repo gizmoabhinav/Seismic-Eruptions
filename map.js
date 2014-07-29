@@ -213,9 +213,15 @@ $('#index').click(function(){
 		$('#playcontrols').fadeOut();
 	}, 5000);
 });
+$('#playback').hover(function(){
+	$('#playcontrols').fadeIn();
+	setTimeout(function(){ 
+		$('#playcontrols').fadeOut();
+	}, 10000);
+});
 setTimeout(function(){ 
     $('#playcontrols').fadeOut();
-}, 5000);
+}, 10000);
 var drawingMode = false;
 $('#drawingTool').click(function(){
 	if(!drawingMode){
