@@ -207,8 +207,15 @@ map.on('draw:created', function (e) {
 	Line = e.layer;
 	drawnItems.addLayer(Line);
 });
-
-
+$('#index').click(function(){
+	$('#playcontrols').fadeIn();
+	setTimeout(function(){ 
+		$('#playcontrols').fadeOut();
+	}, 5000);
+});
+setTimeout(function(){ 
+    $('#playcontrols').fadeOut();
+}, 5000);
 var drawingMode = false;
 $('#drawingTool').click(function(){
 	if(!drawingMode){
