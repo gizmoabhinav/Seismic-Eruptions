@@ -77,7 +77,7 @@ var mindepth =2000;
 var script = document.createElement('script');
 var snd = new Audio("tap.wav"); // buffers automatically when created
 var rainbow = new Rainbow();
-script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+startdate+'%2000:00:00&minmagnitude='+mag+'&format=geojson&callback=eqfeed_callback&endtime='+enddate+'%2023:59:59&orderby=time-asc';
+script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+startdate+'%0000:00:00&minmagnitude='+mag+'&format=geojson&callback=eqfeed_callback&endtime='+enddate+'%0000:00:00&orderby=time-asc';
 //script.src = 'values.js';
 /* script.onerror = function() {
     alert("The number of earthquakes in the given range of time and magnitude cutoff exceeds the limit of 20,000. Try again with a different parameters");
@@ -103,7 +103,7 @@ window.eqfeed_callback = function(results) {
 		}
 	}
 	
-	$("#info").html("total earthquakes : "+size+"</br>minimum depth : "+mindepth+" km</br>maximum depth : "+maxdepth+" km");
+	$("#info").html("Start Date : "+timeConverter(startdate)+"</br>End Date : "+timeConverter(enddate)+"</br>Cutoff magnitude : "+mag+"</br></br></br>total earthquakes : "+size+"</br>minimum depth : "+mindepth+" km</br>maximum depth : "+maxdepth+" km");
 	rainbow = new Rainbow();
 	rainbow.setNumberRange(mindepth, maxdepth);
 	timediff = results.features[size-1].properties.time-results.features[0].properties.time;
