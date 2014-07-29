@@ -1,18 +1,44 @@
+var map,mag,startdate,enddate,drawnItems;
+$("#index").on("pageshow",function(event, ui){
+$.mobile.showPageLoadingMsg();
+map = L.map('map');
+map.invalidateSize(true);
+var osmmapLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+});
+var baseLayer2 = L.tileLayer('http://{s}.tile.cloudmade.com/82e1a1bab27244f0ab6a3dd1770f7d11/999/256/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+});
+var baseLayer = L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; MapQuest, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery � <a href="http://cloudmade.com">CloudMade</a>'
+});
+var prccEarthquakesLayer = L.tileLayer('http://{s}.tiles.mapbox.com/v3/bclc-apec.map-rslgvy56/{z}/{x}/{y}.png', {});
+prccEarthquakesLayer.addTo(map);
+
+var layerControl = new L.Control.Layers({
+	'MapQuest Satellite': baseLayer,
+	'PRCC Earthquake Risk Zones': prccEarthquakesLayer,
+	'OSM map' : osmmapLayer,
+	'Cloudmade' : baseLayer2
+});
+layerControl.addTo(map);
+map.setView([30, 0], 2);
+setTimeout(function(){ 
+    map.invalidateSize(); 
+}, 1);
+
 //get url params
-var mag = getURLParameter("mag");
+mag = getURLParameter("mag");
 if(mag == undefined){
 	mag = 5;
 }
-var startdate = getURLParameter("startdate");
+startdate = getURLParameter("startdate");
 if(startdate == undefined){
 	startdate = "2009/1/1";
 }
-var enddate = getURLParameter("enddate");
-//load map
+enddate = getURLParameter("enddate");
 var speed = 6;
-var map = L.map('map').setView([30, -0], 2);
-map.invalidateSize(false);
-
 // create timeline
 var tl = new TimelineLite({onUpdate:updateSlider});
 tl.timeScale(speed);
@@ -52,6 +78,7 @@ var script = document.createElement('script');
 var snd = new Audio("tap.wav"); // buffers automatically when created
 var rainbow = new Rainbow();
 script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+startdate+'%2000:00:00&minmagnitude='+mag+'&format=geojson&callback=eqfeed_callback&endtime='+enddate+'%2023:59:59&orderby=time-asc';
+//script.src = 'values.js';
 /* script.onerror = function() {
     alert("The number of earthquakes in the given range of time and magnitude cutoff exceeds the limit of 20,000. Try again with a different parameters");
 }​ */
@@ -87,7 +114,7 @@ window.eqfeed_callback = function(results) {
 		min: 0,
 		max: timediff,
 		slide: function ( event, ui ) {
-			$("#values").html(timeConverter(starttime));
+			$("#date").html("Date : "+timeConverter(starttime));
 			//tl.seek();
 			tl.pause();
 			tl.progress(ui.value/(timediff));
@@ -97,7 +124,7 @@ window.eqfeed_callback = function(results) {
 }
 function updateSlider(){
 	$("#slider").slider("value", (tl.progress()*timediff));
-	$("#values").html(timeConverter((tl.progress()*timediff)+starttime));
+	$("#date").html("Date : "+timeConverter((tl.progress()*timediff)+starttime));
 }
 function mapAdder(i){
 	if(!map.hasLayer(circles[i])){
@@ -122,10 +149,8 @@ function mapRemover(i){
 }
 // load plate boundaries
 var track = new L.KML("plates.kml", {async: true});
-
-
 ///////////// Controls /////////////////
-
+var plates = false;
 //plate controls   
 $('#plates').click(function () {
 	if($("#plates").is(':checked')){
@@ -137,51 +162,87 @@ $('#plates').click(function () {
 });
 
 //buttons
-function Play(){
+$('#play').click(function (){
 	tl.resume();
-}
-function Pause(){
+});
+$('#pause').click(function (){
 	tl.pause();
-}
-function SpeedUp(){
+});
+$('#speedup').click(function (){
 	speed*=1.5;
 	tl.timeScale(speed);
-}
-function SpeedDown(){
+});
+$('#speeddown').click(function (){
 	if(speed>=0.5){
 		speed/=2;
 		tl.timeScale(speed);
 	}
-}
+});
 //////////// Controls end //////////////
 
-/////////////// Layers ////////////////
-
-var osmmapLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-	maxZoom: 18,
-	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-});
-var baseLayer2 = L.tileLayer('http://{s}.tile.cloudmade.com/82e1a1bab27244f0ab6a3dd1770f7d11/999/256/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
-});
-var baseLayer = L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; MapQuest, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery � <a href="http://cloudmade.com">CloudMade</a>'
-});
-var prccEarthquakesLayer = L.tileLayer('http://{s}.tiles.mapbox.com/v3/bclc-apec.map-rslgvy56/{z}/{x}/{y}.png', {
-	attribution: 'Map &copy; Pacific Rim Coordination Center (PRCC).  Certain data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-});
-prccEarthquakesLayer.addTo(map);
-
-var layerControl = new L.Control.Layers({
-	'MapQuest Satellite': baseLayer,
-	'PRCC Earthquake Risk Zones': prccEarthquakesLayer,
-	'OSM map' : osmmapLayer,
-	'Cloudmade' : baseLayer2
-});
-layerControl.addTo(map);
-////////////// Loading data gif //////////////////////
 $(window).load(function(){
-	$('#overlay').fadeOut();
-	$('#playback').fadeIn();
+	$.mobile.hidePageLoadingMsg();
 	tl.resume();
+});
+
+/////////// Drawing Controls ///////////
+
+var Line;
+drawnItems = new L.FeatureGroup();
+		
+var drawControl = new L.Control.Draw({
+	position: 'topright',
+	draw: {
+		polyline: {
+			metric: true
+		}
+	},
+	edit: {
+		featureGroup: drawnItems,
+		remove: false
+	}
+});
+map.on('draw:created', function (e) {
+	var type = e.layerType,
+	Line = e.layer;
+	drawnItems.addLayer(Line);
+});
+
+
+var drawingMode = false;
+$('#drawingTool').click(function(){
+	if(!drawingMode){
+		tl.pause();
+		$.mobile.showPageLoadingMsg();
+		map.addControl(drawControl);
+		map.addLayer(drawnItems);
+		$('#playback').fadeOut();
+		$('#crosssection').fadeIn();
+		for (var i = 0; i < size; i++){
+			if(!map.hasLayer(circles[i])){
+				circles[i].setStyle({fillOpacity : 0.5,fillColor: "#"+rainbow.colourAt(depth[i])});
+				circles[i].addTo(map);
+			}
+		}
+		$.mobile.hidePageLoadingMsg();
+		drawingMode = true;
+	}
+	else{
+		$.mobile.showPageLoadingMsg();
+		$('#playback').fadeIn();
+		$('#crosssection').fadeOut();
+		map.removeControl(drawControl);
+		if(map.hasLayer(drawnItems)){
+			map.removeLayer(drawnItems);
+		}
+		if(map.hasLayer(polygon)){
+			map.removeLayer(polygon);
+		}
+		$.mobile.hidePageLoadingMsg();
+		drawingMode = false;
+	}
+});
+
+
+
 });

@@ -1,96 +1,115 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>JS demo</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width,height=device-height, initial-scale=1.0">
-	<link rel="stylesheet" href="leaflet.css" />
-	<link rel="stylesheet" href="Draw/leaflet.draw.css" />
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-	<style>
-	html, body {
-		height: 98%;
-	}
-	#map {
-		height : 100%;
-	}
-	#playback{
-		width: 80%;
-	}
-	</style>
-</head>
-<body>
-	
-	<div id="map" style="width:100%;height: 100%;position: static;top:0px;"></div>
-	<div id="playback" style="display:none;position: absolute;top:15px;left:90px">
-    <div id="slider" style="width:100%"></div>
-	<button id="play" onclick="Play()">Play</button>
-	<button id="pause" onclick="Pause()">Pause</button>
-	<button id="speedup" onclick="SpeedUp()">speed up</button>
-	<button id="speeddown" onclick="SpeedDown()">speed down</button>
-	</div>
-	<div id="controls" style="height: 40%;width: 20%;position : absolute;right:10px;bottom:35px">
-	<font color="white">
-	Timeline time:</br>
-	<div id="values"></div>
-	<input id="plates" type="checkbox">Plates</br>
-	Event time:</br>
-	<div id="time"></div>
-	<div id="info"></div>
-	<button id="startDrawingToolButton" onclick="startDrawingTool()">Draw Cross-section for 3D view</button>
-	<div id="Drawingtools" style="display:none;">
-	<button onclick="removeDrawingTool()">Back to 2D playback</button>
-	<button onclick="render()">Render</button>
-	<div id="Rectslider"></div>
-	
-	</div>
-	<div id="overlay">
-     <img src="images/loading.gif" alt="Loading" />
-     Loading...
-	</div>
-	<p>Link to the <a href="https://github.com/gizmoabhinav/Seismic-Eruptions">project</a></p>
-	</font>
-	</div>
-	
-	<!-- URL parameter fetcher -->
-	<script>
-		function getURLParameter(name) {
-			return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
-		}
-	</script>
-	<script src="leaflet.js"></script>
-	<script src="KML.js"></script>
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
-	<script src="//code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-	<script src="rainbowvis.js"></script>
-	<script src="map.js"></script>
-	
-	<script src="Draw/editedLibs/src/ext/TouchEvents.js"></script>
-	<script src="Draw/editedLibs/src/Leaflet.draw.js"></script>
-	<script src="Draw/editedLibs/src/draw/handler/Draw.Feature.js"></script>
-	<script src="Draw/editedLibs/src/draw/handler/latlonTo3D.js"></script>
-	
-	<script src="Draw/editedLibs/src/ext/GeometryUtil.js"></script>
-	<script src="Draw/editedLibs/src/ext/LatLngUtil.js"></script>
-	<script src="Draw/editedLibs/src/ext/LineUtil.Intersect.js"></script>
-	<script src="Draw/editedLibs/src/ext/Polygon.Intersect.js"></script>
-	<script src="Draw/editedLibs/src/ext/Polyline.Intersect.js"></script>
-	<script src="Draw/editedLibs/src/Control.Draw.js"></script>
-	<script src="Draw/editedLibs/src/Tooltip.js"></script>
-	<script src="Draw/editedLibs/src/Toolbar.js"></script>
-	<script src="Draw/editedLibs/src/draw/DrawToolbar.js"></script>
-	<script src="Draw/editedLibs/src/edit/EditToolbar.js"></script>
-	<script src="Draw/editedLibs/src/edit/handler/EditToolbar.Edit.js"></script>
-	<script src="Draw/editedLibs/src/edit/handler/EditToolbar.Delete.js"></script>
-	<script src="Draw/editedLibs/src/edit/handler/Edit.CrossSection.js"></script>
-	<script>
-		function render(){
-			window.open("http://gizmoabhinav.github.io/Seismic-Eruptions/3D/index.html?x1="+toLon(y1)+"&y1="+toLat(x1)+"&x2="+toLon(y2)+"&y2="+toLat(x2)+"&x3="+toLon(y3)+"&y3="+toLat(x3)+"&x4="+toLon(y4)+"&y4="+toLat(x4)+"&mag="+mag+"&startdate="+startdate+"&enddate="+enddate);
-		}
+    <head>
+        <title>Seismic Eruptions</title>
+        <meta http-equiv='Content-Type' content='text/html, charset=utf-8'/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densityDpi=device-dpi"/>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+        <link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
+		<link rel="stylesheet" href="Draw/leaflet.draw.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+		<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <script src="http://leafletjs.com/dist/leaflet.js"></script>
+		<style>
+			.ui-content {
+				position: absolute;
+				top: 40px;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				padding: 0;
+			}
+			#map {
+				height: 100%;
+				position:absolute;
+				top:0;
+				bottom:0;
+				left:0;
+				right:0;
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+    </head>
+    <body>
+        <div data-role="page" id="index">
+            <div data-theme="a" data-role="header">
+                <h1>Seismic Eruptions</h1>
+				<a href="#options" data-icon="bars" data-iconpos="notext">Options</a>
+				<a href="#settings" data-icon="gear" data-iconpos="notext">Settings</a>
+            </div>
+            <div data-role="panel" id="options">
+				<div id="info" class="ui-bar ui-body-a">hi</div>
+			</div>
+			 <div data-role="panel" data-position="right" data-display="reveal" data-theme="a" id="settings">
+				<form>
+					<label>
+						<input type="checkbox" name="plates" id="plates">Display plate boundaries
+					</label>
+					<a class="ui-btn ui-btn-c ui-mini ui-corner-all" href="#settings" data-rel="close" id="drawingTool">Draw Cross-section for 3D view</a>
+				</form>
+			</div>
+            <div data-role="content">
+                <div id="map"></div>
+				<div class="ui-bar ui-body-a" style="width:100%;bottom:0px;position:absolute"  id="playback">
+					<div class="ui-grid-d ui-responsive">
+						<div class="ui-block-a"><button class="ui-btn ui-btn-b" id="play">PLAY</button></div>
+						<div class="ui-block-b"><button class="ui-btn ui-btn-b" id="pause">PAUSE</button></div>
+						<div class="ui-block-c"><button class="ui-btn ui-btn-b" id="speedup">SPEED UP</button></div>
+						<div class="ui-block-d"><button class="ui-btn ui-btn-b" id="speeddown">SPEED DOWN</button></div>
+					</div>
+					<div id="slider" style="height:10px;width:80%"></div>
+				</div>
+				<div class="ui-bar ui-body-a" style="width:100%;bottom:0px;position:absolute;display:none" id="crosssection">
+					<button class="ui-btn ui-btn-inline" onclick="render()">RENDER</button>
+				</div>
+				<div class="ui-corner-all custom-corners" style="bottom:0px;right:0px;position:absolute;width:15%">
+					<div class="ui-bar ui-bar-a" id="date">
+						<h3> </h3>
+					</div>
+					<div class="ui-body ui-body-a">
+						<p><a href="http://github.com/gizmoabhinav">Link to the project</a></p>
+					</div>	
+				</div>
+			</div>
+			
+        </div>
+		<script>
+			function getURLParameter(name) {
+				return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
+			}
+		</script>
 		
-	</script>
-	<script src="drawingTool.js"></script>
-	<script src="Draw/editedLibs/src/draw/handler/Draw.CrossSection.js"></script>
-</body>
-</html>
+		<script src="KML.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+		<script src="rainbowvis.js"></script>
+		<script src="Draw/editedLibs/src/ext/TouchEvents.js"></script>
+		<script src="Draw/editedLibs/src/Leaflet.draw.js"></script>
+		<script src="Draw/editedLibs/src/draw/handler/Draw.Feature.js"></script>
+		<script src="Draw/editedLibs/src/draw/handler/latlonTo3D.js"></script>
+	
+		<script src="Draw/editedLibs/src/ext/GeometryUtil.js"></script>
+		<script src="Draw/editedLibs/src/ext/LatLngUtil.js"></script>
+		<script src="Draw/editedLibs/src/ext/LineUtil.Intersect.js"></script>
+		<script src="Draw/editedLibs/src/ext/Polygon.Intersect.js"></script>
+		<script src="Draw/editedLibs/src/ext/Polyline.Intersect.js"></script>
+		<script src="Draw/editedLibs/src/Control.Draw.js"></script>
+		<script src="Draw/editedLibs/src/Tooltip.js"></script>
+		<script src="Draw/editedLibs/src/Toolbar.js"></script>
+		<script src="Draw/editedLibs/src/draw/DrawToolbar.js"></script>
+		<script src="Draw/editedLibs/src/edit/EditToolbar.js"></script>
+		<script src="Draw/editedLibs/src/edit/handler/EditToolbar.Edit.js"></script>
+		<script src="Draw/editedLibs/src/edit/handler/EditToolbar.Delete.js"></script>
+		<script src="Draw/editedLibs/src/edit/handler/Edit.CrossSection.js"></script>
+	
+		<script>
+			function render(){
+				window.open("http://gizmoabhinav.github.io/Seismic-Eruptions/3D/index.html?x1="+toLon(y1)+"&y1="+toLat(x1)+"&x2="+toLon(y2)+"&y2="+toLat(x2)+"&x3="+toLon(y3)+"&y3="+toLat(x3)+"&x4="+toLon(y4)+"&y4="+toLat(x4)+"&mag="+mag+"&startdate="+startdate+"&enddate="+enddate);
+			}
+		</script>
+		<script src="Draw/editedLibs/src/draw/handler/Draw.CrossSection.js"></script>
+		<script src="map1.js"></script>
+    </body>
+</html>   
