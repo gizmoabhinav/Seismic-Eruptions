@@ -103,7 +103,10 @@ window.eqfeed_callback = function(results) {
 		}
 	}
 	
-	$("#info").html("Start Date : "+timeConverter(startdate)+"</br>End Date : "+timeConverter(enddate)+"</br>Cutoff magnitude : "+mag+"</br></br></br>total earthquakes : "+size+"</br>minimum depth : "+mindepth+" km</br>maximum depth : "+maxdepth+" km</br><div class='ui-body ui-body-a'><p><a href='http://github.com/gizmoabhinav/Seismic-Eruptions'>Link to the project</a></p></div>");
+	$("#info").html("</br></br>total earthquakes : "+size+"</br>minimum depth : "+mindepth+" km</br>maximum depth : "+maxdepth+" km</br></br></br><div class='ui-body ui-body-a'><p><a href='http://github.com/gizmoabhinav/Seismic-Eruptions'>Link to the project</a></p></div>");
+	$("#startdate").html("Start date : "+timeConverter(startdate));
+	$("#enddate").html("End date : "+timeConverter(enddate));
+	$("#magcutoff").html("Cutoff magnitude : "+mag);
 	rainbow = new Rainbow();
 	rainbow.setNumberRange(mindepth, maxdepth);
 	timediff = results.features[size-1].properties.time-results.features[0].properties.time;
@@ -177,6 +180,15 @@ $('#speeddown').click(function (){
 		speed/=2;
 		tl.timeScale(speed);
 	}
+});
+$('#changeparams').click(function (){
+	tl.pause();
+});
+$('#editparamscancel').click(function (){
+	tl.resume();
+});
+$('#editparamsenter').click(function (){
+	tl.pause();
 });
 //////////// Controls end //////////////
 
