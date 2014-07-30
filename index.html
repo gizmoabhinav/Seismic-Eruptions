@@ -51,19 +51,26 @@
             </div>
             <div data-role="panel" data-theme="b" data-display="overlay" id="options">
 				<div id="info" class="ui-bar ui-body-a"></div>
+				<div class="ui-bar ui-body-b">
+					<p id="startdate"></p>
+					<p id="enddate"></p>
+					<p id="magcutoff"></p>
+				</div>
 			</div>
 			 <div data-role="panel" data-position="right" data-display="overlay" data-theme="b" id="settings">
 				<form>
 					<label>
 						<input type="checkbox" name="plates" id="plates">Display plate boundaries
 					</label>
+					<div class="ui-field-contain ui-mini">
+						<select name="mapselector" id="mapselector" data-mini="true">
+							<option value="1">PRCC Earthquake density map</option>
+							<option value="2">Satellite map</option>
+							<option value="3">OSM map</option>
+						</select>
+					</div>
+					<a href="#editparams" data-rel="popup" data-position-to="window" class="ui-btn ui-shadow ui-corner-all ui-mini ui-icon-edit ui-btn-icon-right" id="changeparams"> Change parameters </a>
 				</form>
-				<div class="ui-bar ui-body-b">
-					<p id="startdate"></p>
-					<p id="enddate"></p>
-					<p id="magcutoff"></p>
-					<a href="#editparams" data-rel="popup" data-position-to="window" class="ui-btn ui-shadow ui-corner-all ui-mini ui-icon-edit ui-btn-icon-right" id="changeparams"> Change values </a>
-				</div>
 			</div>
 			<div data-role="popup" id="editparams" data-theme="a" class="ui-corner-all">
 				<h3>Edit the parameters</h3>

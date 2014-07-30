@@ -3,26 +3,10 @@ $("#index").on("pageshow",function(event, ui){
 $.mobile.showPageLoadingMsg();
 map = L.map('map');
 map.invalidateSize(true);
-var osmmapLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-	maxZoom: 18,
-	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-});
-var baseLayer2 = L.tileLayer('http://{s}.tile.cloudmade.com/82e1a1bab27244f0ab6a3dd1770f7d11/999/256/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
-});
-var baseLayer = L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; MapQuest, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery � <a href="http://cloudmade.com">CloudMade</a>'
-});
-var prccEarthquakesLayer = L.tileLayer('http://{s}.tiles.mapbox.com/v3/bclc-apec.map-rslgvy56/{z}/{x}/{y}.png', {});
-prccEarthquakesLayer.addTo(map);
-
-var layerControl = new L.Control.Layers({
-	'MapQuest Satellite': baseLayer,
-	'PRCC Earthquake Risk Zones': prccEarthquakesLayer,
-	'OSM map' : osmmapLayer,
-	'Cloudmade' : baseLayer2
-});
-layerControl.addTo(map);
+var baseLayer3 = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {});
+var baseLayer2 = L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png', {});
+var baseLayer1 = L.tileLayer('http://{s}.tiles.mapbox.com/v3/bclc-apec.map-rslgvy56/{z}/{x}/{y}.png', {});
+baseLayer1.addTo(map);
 map.setView([30, 0], 2);
 setTimeout(function(){ 
     map.invalidateSize(); 
@@ -236,20 +220,16 @@ $('#playback').hover(function(){
 	$('#slider').fadeIn();
 	$('#date').fadeIn();
 	setTimeout(function(){ 
-		$('#playcontrols').fadeOut();
-	}, 5000);
-	setTimeout(function(){ 
 		$('#slider').fadeOut();
 		$('#date').fadeOut();
-	}, 12000);
+		$('#playcontrols').fadeOut();
+	}, 8000);
 });
-setTimeout(function(){ 
-    $('#playcontrols').fadeOut();
-}, 10000);
 setTimeout(function(){ 
     $('#slider').fadeOut();
 	$('#date').fadeOut();
-}, 12000);
+    $('#playcontrols').fadeOut();
+}, 10000);
 var drawingMode = false;
 $('#drawingTool').click(function(){
 	if(!drawingMode){
@@ -285,5 +265,25 @@ $('#drawingToolDone').click(function(){
 		drawingMode = false;
 	}
 });
-
+$('#mapselector').change(function(){
+	if(map.hasLayer(baseLayer1)){
+		map.removeLayer(baseLayer1);
+	}
+	if(map.hasLayer(baseLayer2)){
+		map.removeLayer(baseLayer2);
+	}
+	if(map.hasLayer(baseLayer3)){
+		map.removeLayer(baseLayer3);
+	}
+	switch($('#mapselector').val()) {
+    case '1':
+        baseLayer1.addTo(map);
+        break;
+    case '2':
+        baseLayer2.addTo(map);
+        break;
+    case '3':
+        baseLayer3.addTo(map);
+}
+});
 });
