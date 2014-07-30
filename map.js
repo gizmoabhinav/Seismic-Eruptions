@@ -240,7 +240,9 @@ $('#drawingTool').click(function(){
 		$.mobile.hidePageLoadingMsg();
 		drawingMode = true;
 	}
-	else{
+});
+$('#drawingToolDone').click(function(){
+	if(drawingMode){
 		$.mobile.showPageLoadingMsg();
 		$('#playback').fadeIn();
 		$('#crosssection').fadeOut();
@@ -255,7 +257,5 @@ $('#drawingTool').click(function(){
 		drawingMode = false;
 	}
 });
-
-
 
 });

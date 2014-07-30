@@ -38,7 +38,10 @@
             <div data-theme="a" data-role="header">
                 <h1>Seismic Eruptions</h1>
 				<a href="#options" data-icon="bars" data-iconpos="notext">Options</a>
-				<a href="#settings" data-icon="gear" data-iconpos="notext">Settings</a>
+				<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
+					<a href="#" data-role="button" data-icon="info" data-iconpos="notext" id="drawingTool">Draw Cross-Section</a>
+					<a href="#settings" data-role="button" data-icon="gear" data-iconpos="notext">Settings</a>
+				</div>
             </div>
             <div data-role="panel" data-display="overlay" id="options">
 				<div id="info" class="ui-bar ui-body-a"></div>
@@ -48,7 +51,6 @@
 					<label>
 						<input type="checkbox" name="plates" id="plates">Display plate boundaries
 					</label>
-					<a href="#settings" data-rel="close" data-role="button" id="drawingTool">Draw Cross-section for 3D view</a>
 				</form>
 			</div>
             <div data-role="content">
@@ -66,7 +68,8 @@
 					</div>
 				</div>
 				<div class="ui-bar ui-body-a" style="width:100%;bottom:0px;position:absolute;display:none" id="crosssection">
-					<button class="ui-btn ui-btn-inline" onclick="render()">RENDER</button>
+					<button class="ui-btn ui-btn-inline" onclick="render()">View Cross Section</button>
+					<button class="ui-btn ui-btn-inline" id="drawingToolDone">Done</button>
 				</div>
 			</div>
 			
