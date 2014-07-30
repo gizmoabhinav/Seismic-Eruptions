@@ -197,12 +197,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 						[toLat(x3),toLon(y3)],
 						[toLat(x4),toLon(y4)]
 					]).addTo(this._map);
-			this._map.fitBounds([
-						[toLat(x1),toLon(y1)],
-						[toLat(x2),toLon(y2)],
-						[toLat(x3),toLon(y3)],
-						[toLat(x4),toLon(y4)]
-					]);
+			this._map.fitBounds(polygon.getBounds());
 		}
 		else{
 			polygonArr = new Array();
