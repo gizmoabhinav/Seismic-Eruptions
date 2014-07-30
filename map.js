@@ -45,7 +45,7 @@ function timeConverter(UNIX_timestamp){
 	var hour = a.getHours();
 	var min = a.getMinutes();
 	var sec = a.getSeconds();
-	var time = year+' '+month+' '+date+'  '+hour+':'+min+':'+sec ;
+	var time = year+' '+month+' '+date;
 	return time;
 }
 // load data from usgs and populate timeline accordingly
@@ -185,19 +185,6 @@ $(window).load(function(){
 
 var Line;
 drawnItems = new L.FeatureGroup();
-		
-var drawControl = new L.Control.Draw({
-	position: 'topright',
-	draw: {
-		polyline: {
-			metric: true
-		}
-	},
-	edit: {
-		featureGroup: drawnItems,
-		remove: false
-	}
-});
 map.on('draw:created', function (e) {
 	var type = e.layerType,
 	Line = e.layer;
@@ -235,7 +222,6 @@ $('#drawingTool').click(function(){
 	if(!drawingMode){
 		tl.pause();
 		$.mobile.showPageLoadingMsg();
-		map.addControl(drawControl);
 		map.addLayer(drawnItems);
 		$('#playback').fadeOut();
 		$('#crosssection').fadeIn();
@@ -254,7 +240,9 @@ $('#drawingToolDone').click(function(){
 		$.mobile.showPageLoadingMsg();
 		$('#playback').fadeIn();
 		$('#crosssection').fadeOut();
-		map.removeControl(drawControl);
+		drawnItems.eachLayer(function (layer) {
+			drawnItems.removeLayer(layer);
+		});
 		if(map.hasLayer(drawnItems)){
 			map.removeLayer(drawnItems);
 		}

@@ -45,7 +45,7 @@
                 <h1>Seismic Eruptions</h1>
 				<a href="#options" class="ui-btn ui-icon-info ui-mini ui-btn-icon-notext ui-corner-all">Options</a>
 				<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
-					<a href="#" class="ui-btn ui-btn-b ui-icon-knife ui-mini ui-btn-icon-notext ui-corner-all" id="drawingTool">Draw Cross-Section</a>
+					<a href="#" class="ui-btn ui-btn-b ui-icon-knife ui-mini ui-btn-icon-notext ui-corner-all" id="drawingTool" onclick="startdrawing()">Draw Cross-Section</a>
 					<a href="#settings" class="ui-btn ui-icon-gear ui-mini ui-btn-icon-notext ui-corner-all">Settings</a>
 				</div>
             </div>
@@ -55,6 +55,7 @@
 					<p id="startdate"></p>
 					<p id="enddate"></p>
 					<p id="magcutoff"></p>
+					<a href="#editparams" data-rel="popup" data-position-to="window" class="ui-btn ui-shadow ui-corner-all ui-mini ui-icon-edit ui-btn-icon-right" id="changeparams"> Change parameters </a>
 				</div>
 			</div>
 			 <div data-role="panel" data-position="right" data-display="overlay" data-theme="b" id="settings">
@@ -69,7 +70,6 @@
 							<option value="3">OSM map</option>
 						</select>
 					</div>
-					<a href="#editparams" data-rel="popup" data-position-to="window" class="ui-btn ui-shadow ui-corner-all ui-mini ui-icon-edit ui-btn-icon-right" id="changeparams"> Change parameters </a>
 				</form>
 			</div>
 			<div data-role="popup" id="editparams" data-theme="a" class="ui-corner-all">
@@ -92,9 +92,11 @@
 						<div class="ui-block-b" id="date"></div>
 					</div>
 				</div>
-				<div class="ui-bar ui-body-b" style="width:100%;bottom:0px;position:absolute;display:none" id="crosssection">
-					<button class="ui-btn ui-btn-inline" onclick="render()">View Cross Section</button>
-					<button class="ui-btn ui-btn-inline" id="drawingToolDone">Done</button>
+				<div class="ui-bar ui-mini ui-body-b" style="width:100%;bottom:0px;position:absolute;display:none" id="crosssection">
+					<a class="ui-btn ui-btn-inline" onclick="render()">View Cross Section</a>
+					<a class="ui-btn ui-btn-inline" onclick="editdrawing()">Edit</a>
+					<a class="ui-btn ui-btn-inline" onclick="editsave()">Save</a>
+					<a class="ui-btn ui-btn-inline" onclick="editsave()" id="drawingToolDone">Done</a>
 				</div>
 			</div>
 			
@@ -126,13 +128,41 @@
 		<script src="Draw/editedLibs/src/edit/handler/EditToolbar.Edit.js"></script>
 		<script src="Draw/editedLibs/src/edit/handler/EditToolbar.Delete.js"></script>
 		<script src="Draw/editedLibs/src/edit/handler/Edit.CrossSection.js"></script>
+		<script src="Draw/editedLibs/src/draw/handler/Draw.CrossSection.js"></script>
+		<script src="map.js"></script>
+		
 	
 		<script>
 			function render(){
 				window.open("http://gizmoabhinav.github.io/Seismic-Eruptions/3D/index.html?x1="+toLon(y1)+"&y1="+toLat(x1)+"&x2="+toLon(y2)+"&y2="+toLat(x2)+"&x3="+toLon(y3)+"&y3="+toLat(x3)+"&x4="+toLon(y4)+"&y4="+toLat(x4)+"&mag="+mag+"&startdate="+startdate+"&enddate="+enddate);
 			}
+			var poly,polyedit;
+			function startdrawing(){
+				poly = new L.Draw.CrossSection(map, []);
+				poly.enable();
+			}
+			function editdrawing(){
+				polyedit = new L.EditToolbar.Edit(map, {featureGroup: drawnItems,
+					selectedPathOptions: {
+						color: '#fe57a1',
+						opacity: 0.6,
+						dashArray: '10, 10',
+
+						fill: true,
+						fillColor: '#fe57a1',
+						fillOpacity: 0.1,
+
+						// Whether to user the existing layers color
+						maintainColor: false
+					}
+				});
+				polyedit.enable();
+			}
+			function editsave(){
+				polyedit.save();
+				polyedit.disable();
+			}
+			
 		</script>
-		<script src="Draw/editedLibs/src/draw/handler/Draw.CrossSection.js"></script>
-		<script src="map.js"></script>
     </body>
 </html>   
