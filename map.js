@@ -209,19 +209,35 @@ map.on('draw:created', function (e) {
 });
 $('#index').click(function(){
 	$('#playcontrols').fadeIn();
+	$('#slider').fadeIn();
+	$('#date').fadeIn();
 	setTimeout(function(){ 
 		$('#playcontrols').fadeOut();
 	}, 5000);
+	setTimeout(function(){ 
+		$('#slider').fadeOut();
+		$('#date').fadeOut();
+	}, 12000);
 });
 $('#playback').hover(function(){
 	$('#playcontrols').fadeIn();
+	$('#slider').fadeIn();
+	$('#date').fadeIn();
 	setTimeout(function(){ 
 		$('#playcontrols').fadeOut();
-	}, 10000);
+	}, 5000);
+	setTimeout(function(){ 
+		$('#slider').fadeOut();
+		$('#date').fadeOut();
+	}, 12000);
 });
 setTimeout(function(){ 
     $('#playcontrols').fadeOut();
 }, 10000);
+setTimeout(function(){ 
+    $('#slider').fadeOut();
+	$('#date').fadeOut();
+}, 12000);
 var drawingMode = false;
 $('#drawingTool').click(function(){
 	if(!drawingMode){
