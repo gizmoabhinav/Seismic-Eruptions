@@ -360,7 +360,10 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 	},
 
 	_updateGuide: function (newPos) {
-		var markerCount = this._markers.length;
+		if(this._markers!=null)
+			var markerCount = this._markers.length;
+		else
+			var markerCount = 0;
 
 		if (markerCount > 0 && markerCount < 2) {
 			newPos = newPos || this._map.latLngToLayerPoint(this._currentLatLng);

@@ -266,12 +266,30 @@ $('#mapselector').change(function(){
 	switch($('#mapselector').val()) {
     case '1':
         baseLayer1.addTo(map);
+		if(map.hasLayer(baseLayer2)){
+			map.removeLayer(baseLayer2);
+		}
+		if(map.hasLayer(baseLayer3)){
+			map.removeLayer(baseLayer3);
+		}
         break;
     case '2':
         baseLayer2.addTo(map);
+		if(map.hasLayer(baseLayer3)){
+			map.removeLayer(baseLayer3);
+		}
+		if(map.hasLayer(baseLayer1)){
+			map.removeLayer(baseLayer1);
+		}
         break;
     case '3':
         baseLayer3.addTo(map);
+		if(map.hasLayer(baseLayer2)){
+			map.removeLayer(baseLayer2);
+		}
+		if(map.hasLayer(baseLayer1)){
+			map.removeLayer(baseLayer1);
+		}
 }
 });
 });

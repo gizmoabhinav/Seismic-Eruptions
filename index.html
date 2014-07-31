@@ -96,7 +96,7 @@
 					<a class="ui-btn ui-btn-inline" onclick="render()">View Cross Section</a>
 					<a class="ui-btn ui-btn-inline" onclick="editdrawing()">Edit</a>
 					<a class="ui-btn ui-btn-inline" onclick="editsave()">Save</a>
-					<a class="ui-btn ui-btn-inline" onclick="editsave()" id="drawingToolDone">Done</a>
+					<a class="ui-btn ui-btn-inline" onclick="backtonormalview()" id="drawingToolDone">Done</a>
 				</div>
 			</div>
 			
@@ -140,6 +140,7 @@
 			function startdrawing(){
 				poly = new L.Draw.CrossSection(map, []);
 				poly.enable();
+				poly._updateTooltip();
 			}
 			function editdrawing(){
 				polyedit = new L.EditToolbar.Edit(map, {featureGroup: drawnItems,
@@ -152,7 +153,6 @@
 						fillColor: '#fe57a1',
 						fillOpacity: 0.1,
 
-						// Whether to user the existing layers color
 						maintainColor: false
 					}
 				});
@@ -161,8 +161,15 @@
 			function editsave(){
 				polyedit.save();
 				polyedit.disable();
+				polyedit = null;
 			}
-			
+			function backtonormalview(){
+				if(polyedit!=null)
+				editsave();
+				poly.disable();
+				poly = null;
+				
+			}
 		</script>
     </body>
 </html>   
