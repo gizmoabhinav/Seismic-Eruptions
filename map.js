@@ -7,7 +7,8 @@ var baseLayer3 = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {});
 var baseLayer2 = L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png', {});
 var baseLayer1 = L.tileLayer('http://{s}.tiles.mapbox.com/v3/bclc-apec.map-rslgvy56/{z}/{x}/{y}.png', {});
 baseLayer1.addTo(map);
-map.setView([30, 0], 2);
+map.fitBounds([[50,40],[-20,-40]]);
+map.setMaxBounds([[-90,180],[90,-180]]);
 setTimeout(function(){ 
     map.invalidateSize(); 
 }, 1);
@@ -251,6 +252,7 @@ $('#drawingToolDone').click(function(){
 		}
 		$.mobile.hidePageLoadingMsg();
 		drawingMode = false;
+		map.setZoom(2);
 	}
 });
 $('#mapselector').change(function(){
