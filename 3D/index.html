@@ -4,30 +4,51 @@
 		<title>3D cross section view</title>
 		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
 		<style type="text/css"> 
-              body { 
-                  /* Set the background color of the HTML page to black */ 
-                  background-color: #000000; 
-   
-                  /* Hide oversized content. This prevents the scroll bars. */ 
-                  overflow: hidden; 
-              }
-			  #WebGLCanvas {
-				position: static;
-				}
+			.ui-mobile .ui-page { min-height: 300px; overflow: hidden; }
+			html,body { 
+   				overflow: hidden; 
+              		}              		
+			#WebGLCanvas {
+				position:absolute;
+				top:40px;
+				height:100%;
+				overflow: hidden;
+			}
 		</style>
 		<script src="three.js"></script>
 		<script src="OrbitControl.js"></script>
 		<script src="Detector.js"></script>
-		<script src="jquery.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        	<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
 		<script src="http://threejs.org/examples/js/libs/stats.min.js"></script>
 	</head>
 	<body>
-	
-		
-		<div id="WebGLCanvas">
-		<div id="controls" style="width: 200px;position: absolute; height:40px; top:25px; right:0px"></div>
-		<div style="width: 210px; height: 210px; opacity: 0.9; cursor: pointer; position: absolute; bottom: 0px; right:0px"><iframe id="frame" src="frame.html" height="400px" width="100%"></iframe></div>
+		<div data-role="page" id="index">
+        		<div data-theme="b" data-role="header">
+                		<h1>Seismic Eruptions</h1>
+				<a href="#options" class="ui-btn ui-icon-info ui-mini ui-btn-icon-notext ui-corner-all">Options</a>
+				<a href="#settings" class="ui-btn ui-icon-gear ui-mini ui-btn-icon-notext ui-corner-all">Settings</a>
+            		</div>
+			<div data-role="panel" data-theme="b" data-display="overlay" id="options">
+				<div id="info" class="ui-bar ui-body-a"></div>
+			</div>
+			<div data-role="panel" data-position="right" data-display="overlay" data-theme="b" id="settings">
+				<form>
+					<div class="ui-field-contain">
+						<label for="thumbnail">2D Thumbnail</label>
+						<input data-role="flipswitch" data-mini="true" type="checkbox" name="plates" id="thumbnail" onchange="thumbnailToggle()" checked="true">
+					</div>
+					<div class="ui-field-contain">
+						<label for="mapToggle">Map layer</label>
+						<input data-role="flipswitch" data-mini="true" type="checkbox" name="plates" id="maptoggle" onchange="mapToggle()" checked="true">
+					</div>
+				</form>
+			</div>			
+			<div id="WebGLCanvas">
+				<div style="width: 210px; height: 210px; opacity: 0.9; cursor: pointer; position: absolute; bottom: 0px; right:0px" id="iframe2d"><iframe id="frame" src="frame.html" height="220px" width="100%"></iframe></div>
+			</div>			
 		</div>
 		<!-- URL parameter fetcher -->
 		<script>
