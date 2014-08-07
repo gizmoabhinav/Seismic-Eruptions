@@ -7,7 +7,7 @@
 	
 
 	<script src="../leaflet.js"></script>
-	
+	<script src="rainbowvis.js"></script>
 	<script src="//code.jquery.com/jquery-1.9.1.js"></script>
 </head>
 <body>
@@ -19,11 +19,36 @@
 				return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
 		}
 		var map = L.map('map');
-		
+		//time stamp conversion
+function timeConverter(UNIX_timestamp){
+	var a = new Date(UNIX_timestamp);
+	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+	var year = a.getFullYear();
+	var month = months[a.getMonth()];
+	var date = a.getDate();
+	var hour = a.getHours();
+	var min = a.getMinutes();
+	var sec = a.getSeconds();
+	var time = year+' '+month+' '+date;
+	return time;
+}
 		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 			maxZoom: 6
 		}).addTo(map);
-		L.polygon([
+		
+		
+		//adding earthquake points
+		var circles = new Array();
+		var rainbow = new Rainbow();
+		var script = document.createElement('script');
+		script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+getURLParameter("startdate")+'%2000:00:00&minmagnitude='+getURLParameter("mag")+'&format=geojson&callback=eqfeed_callback&endtime='+getURLParameter("enddate")+'%2023:59:59&orderby=time-asc';
+		document.getElementsByTagName('body')[0].appendChild(script);
+		window.eqfeed_callback = function(results) {
+			size = results.features.length;
+			for (var i = 0; i < size; i++){
+				circles[i] = L.geoJson(results.features[i], {pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, {radius: 3 ,fillColor: "#"+rainbow.colourAt(results.features[i].properties.mag),color: "#000",weight: 1,opacity: 1,fillOpacity: 1});}}).bindPopup("Place: <b>"+results.features[i].properties.place+"</b></br>Magnitude : <b>"+ results.features[i].properties.mag+"</b></br>Time : "+timeConverter(results.features[i].properties.time)+"</br>Depth : "+results.features[i].geometry.coordinates[2]+" km").addTo(map);
+			}
+			L.polygon([
 						[parseFloat(getURLParameter("y1")),parseFloat(getURLParameter("x1"))],
 						[parseFloat(getURLParameter("y2")),parseFloat(getURLParameter("x2"))],
 						[parseFloat(getURLParameter("y3")),parseFloat(getURLParameter("x3"))],
@@ -34,16 +59,7 @@
 						[parseFloat(getURLParameter("y3")),parseFloat(getURLParameter("x3"))],
 						[parseFloat(getURLParameter("y4")),parseFloat(getURLParameter("x4"))]]);
 		map.setZoom(map.getZoom()-1);
-		
-		//adding earthquake points
-		var script = document.createElement('script');
-		script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+getURLParameter("startdate")+'%2000:00:00&minmagnitude='+getURLParameter("mag")+'&format=geojson&callback=eqfeed_callback&endtime='+getURLParameter("enddate")+'%2023:59:59&orderby=time-asc';
-		document.getElementsByTagName('body')[0].appendChild(script);
-		window.eqfeed_callback = function(results) {
-			size = results.features.length;
-			for (var i = 0; i < size; i++){
-				circles[i] = L.geoJson(results.features[i], {pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, {radius: results.features[i].properties.mag ,fillColor: "#"+rainbow.colourAt(results.features[i].properties.mag),color: "#000",weight: 1,opacity: 1,fillOpacity: 1});}}).bindPopup("Place: <b>"+results.features[i].properties.place+"</b></br>Magnitude : <b>"+ results.features[i].properties.mag+"</b></br>Time : "+timeConverter(results.features[i].properties.time)+"</br>Depth : "+results.features[i].geometry.coordinates[2]+" km").addTo(map);
-			}
 		}
+		
 	</script>
 </body>
