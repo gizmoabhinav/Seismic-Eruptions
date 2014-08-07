@@ -220,7 +220,7 @@ var drawingMode = false;
 $('#drawingTool').click(function(){
 	if(!drawingMode){
 		tl.pause();
-		$.mobile.showPageLoadingMsg();
+		$.mobile.loading('show');
 		map.addLayer(drawnItems);
 		$('#playback').fadeOut();
 		$('#crosssection').fadeIn();
@@ -230,13 +230,13 @@ $('#drawingTool').click(function(){
 				circles[i].addTo(map);
 			}
 		}
-		$.mobile.hidePageLoadingMsg();
+		$.mobile.loading('hide');
 		drawingMode = true;
 	}
 });
 $('#drawingToolDone').click(function(){
 	if(drawingMode){
-		$.mobile.showPageLoadingMsg();
+		$.mobile.loading('show');
 		$('#playback').fadeIn();
 		$('#crosssection').fadeOut();
 		drawnItems.eachLayer(function (layer) {
@@ -248,7 +248,7 @@ $('#drawingToolDone').click(function(){
 		if(map.hasLayer(polygon)){
 			map.removeLayer(polygon);
 		}
-		$.mobile.hidePageLoadingMsg();
+		$.mobile.loading('hide');
 		drawingMode = false;
 		map.setZoom(2);
 	}
