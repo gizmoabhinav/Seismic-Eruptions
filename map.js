@@ -1,6 +1,17 @@
 var map,mag,startdate,enddate,drawnItems;
+// load plate boundaries
+var track = new L.KML("plates.kml", {async: true});
+//plate controls
+function plateToggle(){
+	if($("#plates").is(':checked')){
+		map.addLayer(track);  // checked
+	}
+	else{
+		map.removeLayer(track);  // unchecked
+	}
+}
 $("#index").on("pageshow",function(event, ui){
-$.mobile.showPageLoadingMsg();
+$.mobile.loading('show');
 map = L.map('map');
 map.invalidateSize(true);
 var baseLayer3 = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {});
@@ -9,10 +20,6 @@ var baseLayer1 = L.tileLayer('http://{s}.tiles.mapbox.com/v3/bclc-apec.map-rslgv
 baseLayer1.addTo(map);
 map.fitBounds([[50,40],[-20,-40]]);
 map.setMaxBounds([[-90,180],[90,-180]]);
-setTimeout(function(){ 
-    map.invalidateSize(); 
-}, 1);
-
 //get url params
 mag = getURLParameter("mag");
 if(mag == undefined){
@@ -135,19 +142,7 @@ function mapRemover(i){
 		map.removeLayer(circles[i]);
 	}
 }
-// load plate boundaries
-var track = new L.KML("plates.kml", {async: true});
 ///////////// Controls /////////////////
-var plates = false;
-//plate controls   
-$('#plates').click(function () {
-	if($("#plates").is(':checked')){
-		map.addLayer(track);  // checked
-	}
-	else{
-		map.removeLayer(track);  // unchecked
-	}
-});
 
 //buttons
 $('#play').click(function (){
@@ -178,7 +173,10 @@ $('#editparamsenter').click(function (){
 //////////// Controls end //////////////
 
 $(window).load(function(){
-	$.mobile.hidePageLoadingMsg();
+	$.mobile.loading('hide');
+	setTimeout(function(){ 
+    		map.invalidateSize(); 
+	}, 1);
 	tl.resume();
 });
 
