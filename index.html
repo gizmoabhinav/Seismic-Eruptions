@@ -4,15 +4,15 @@
         <title>Seismic Eruptions</title>
         <meta http-equiv='Content-Type' content='text/html, charset=utf-8'/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densityDpi=device-dpi"/>
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
         <link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
-		<link rel="stylesheet" href="Draw/leaflet.draw.css" />
-		<!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">-->
-		<link rel="stylesheet" href="css/font-awesome.css" />
+	<link rel="stylesheet" href="Draw/leaflet.draw.css" />
+	<!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">-->
+	<link rel="stylesheet" href="css/font-awesome.css" />
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
-		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
         <script src="http://leafletjs.com/dist/leaflet.js"></script>
 		<style>
 			.ui-content {
@@ -60,9 +60,10 @@
 			</div>
 			 <div data-role="panel" data-position="right" data-display="overlay" data-theme="b" id="settings">
 				<form>
-					<label>
-						<input type="checkbox" name="plates" id="plates">Display plate boundaries
-					</label>
+					<div class="ui-field-contain">
+						<label for="plates">Plate-boundaries</label>
+						<input data-role="flipswitch" data-mini="true" type="checkbox" name="plates" id="plates" onchange="plateToggle()">
+					</div>
 					<div class="ui-field-contain ui-mini">
 						<select name="mapselector" id="mapselector" data-mini="true">
 							<option value="1">PRCC Earthquake density map</option>
@@ -72,9 +73,14 @@
 					</div>
 				</form>
 			</div>
-			<div data-role="popup" id="editparams" data-theme="a" class="ui-corner-all">
+			<div data-role="popup" id="editparams" data-theme="a" class="ui-corner-all" data-mini="false">
 				<h3>Edit the parameters</h3>
-				<input type="text" data-role="date">
+				<form>
+     					<label for="date-1">Start Date :</label>
+     					<input type="date" data-clear-btn="true" name="date-1" id="date-1" value="">
+     					<label for="date-2">End Date :</label>
+     					<input type="date" data-clear-btn="true" name="date-2" id="date-2" value="">
+				</form>
 				<a href="#" data-rel="back" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-check ui-btn-icon-right" id="editparamsenter"> Load </a>
 				<a href="#" data-rel="back" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-delete ui-btn-icon-right" id="editparamscancel"> Cancel </a>
 			</div>
