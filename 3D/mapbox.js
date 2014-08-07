@@ -105,9 +105,11 @@ function thumbnailToggle(){
 }
 function mapToggle(){
 	if($("#maptoggle").is(':checked')){
+		group.traverse( function ( object ) { object.visible = true; } );
 		group.visible = true;
 	}
 	else{
+		group.traverse( function ( object ) { object.visible = false; } );
 		group.visible = false;
 	}
 }
