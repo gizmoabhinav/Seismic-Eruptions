@@ -22,20 +22,26 @@ if(enddate == undefined){
 	curr_date = d.getDate();
 	enddate = curr_year+'/'+curr_month+'/'+curr_date;
 }
+function loadquakes(){
 var script = document.createElement('script');
 script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+startdate+'%2000:00:00&minmagnitude='+magnitude+'&format=geojson&callback=eqfeed_callback&endtime='+enddate+'%2023:59:59&orderby=time-asc&minlatitude='+Math.min(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&maxlatitude='+Math.max(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&minlongitude='+Math.min(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"))+'&maxlongitude='+Math.max(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"));
 document.getElementsByTagName('body')[0].appendChild(script);
 var count = 0;
-var max = 0;
+var maxdepth = 0;
+var mindepth = 999;
 var minmag = 10;
 var maxmag = 0;
 var size;
+
 window.eqfeed_callback = function(results) {
 	size = results.features.length;
+	var mindepth = 999;
+	var maxdepth = 0;
 	for (var i = 0; i < size; i++){
 		if(rect(convertCoordinatesx(results.features[i].geometry.coordinates[0]),convertCoordinatesy(results.features[i].geometry.coordinates[1]))){
 			count++;
-			if(results.features[i].geometry.coordinates[2]>max)max=results.features[i].geometry.coordinates[2];
+			if(results.features[i].geometry.coordinates[2]>maxdepth)maxdepth=results.features[i].geometry.coordinates[2];
+			if(results.features[i].geometry.coordinates[2]<mindepth)mindepth=results.features[i].geometry.coordinates[2];
 			if(results.features[i].properties.mag<minmag)minmag=results.features[i].properties.mag;
 			if(results.features[i].properties.mag>maxmag)maxmag=results.features[i].properties.mag;
 			radius[i] = 0.0025*Math.pow(2,(results.features[i].properties.mag-minmag)*4/(maxmag-minmag));
@@ -44,8 +50,9 @@ window.eqfeed_callback = function(results) {
 			depths[i] = results.features[i].geometry.coordinates[2];
 		}
 	}
-	alert("earthquake count : "+count);
-	rainbow.setNumberRange(0, max);
+	$("#info").html("</br></br>total earthquakes : "+size+"</br>minimum depth : "+mindepth+" km</br>maximum depth : "+maxdepth+" km</br></br></br><div class='ui-body ui-body-a'><p><a href='http://github.com/gizmoabhinav/Seismic-Eruptions'>Link to the project</a></p></div>");
+	//alert("earthquake count : "+count);
+	rainbow.setNumberRange(0, maxdepth);
 	for(var i=0;i<size;i++){
 		var sphereGeometry = new THREE.SphereGeometry( radius[i], 4, 4 );
 		var sphereMaterial = new THREE.MeshBasicMaterial( { color: parseInt('0x'+rainbow.colourAt(results.features[i].geometry.coordinates[2])) , overdraw: false } );
@@ -56,14 +63,14 @@ window.eqfeed_callback = function(results) {
 	sphereParent.position.set(0,0,0);
 	scene.add(sphereParent);
 	// generate the box
-	var vertex1 = new THREE.Vector3( x1-leftTileLimit-2, -y1+topTileLimit+2,1.05 );
-	var vertex2 = new THREE.Vector3( x2-leftTileLimit-2, -y2+topTileLimit+2,1.05 );
-	var vertex3 = new THREE.Vector3( x3-leftTileLimit-2, -y3+topTileLimit+2,1.05 );
-	var vertex4 = new THREE.Vector3( x4-leftTileLimit-2, -y4+topTileLimit+2,1.05 );
-	var vertex5 = new THREE.Vector3( x1-leftTileLimit-2, -y1+topTileLimit+2,1.0-(max/1000) );
-	var vertex6 = new THREE.Vector3( x2-leftTileLimit-2, -y2+topTileLimit+2,1.0-(max/1000) );
-	var vertex7 = new THREE.Vector3( x3-leftTileLimit-2, -y3+topTileLimit+2,1.0-(max/1000) );
-	var vertex8 = new THREE.Vector3( x4-leftTileLimit-2, -y4+topTileLimit+2,1.0-(max/1000) );
+	var vertex1 = new THREE.Vector3( x1-leftTileLimit-2, -y1+topTileLimit+2,1 );
+	var vertex2 = new THREE.Vector3( x2-leftTileLimit-2, -y2+topTileLimit+2,1 );
+	var vertex3 = new THREE.Vector3( x3-leftTileLimit-2, -y3+topTileLimit+2,1 );
+	var vertex4 = new THREE.Vector3( x4-leftTileLimit-2, -y4+topTileLimit+2,1 );
+	var vertex5 = new THREE.Vector3( x1-leftTileLimit-2, -y1+topTileLimit+2,1.0-(maxdepth/1000) );
+	var vertex6 = new THREE.Vector3( x2-leftTileLimit-2, -y2+topTileLimit+2,1.0-(maxdepth/1000) );
+	var vertex7 = new THREE.Vector3( x3-leftTileLimit-2, -y3+topTileLimit+2,1.0-(maxdepth/1000) );
+	var vertex8 = new THREE.Vector3( x4-leftTileLimit-2, -y4+topTileLimit+2,1.0-(maxdepth/1000) );
 	var box = new THREE.Geometry();
 	box.vertices.push( vertex1 );
 	box.vertices.push( vertex2 );
@@ -116,8 +123,9 @@ window.eqfeed_callback = function(results) {
 	// lines
 	var line = new THREE.Line( lines, new THREE.LineBasicMaterial( { color: 0x000000, opacity: 1 } ) );
 	scene.add( line );
-	controls.target.z = 1.0-(max/2000);
+	controls.target.z = 1.0-(maxdepth/2000);
 	
+}
 }
 function rect(x,y){
 				
@@ -133,4 +141,3 @@ function rect(x,y){
 
 	return true;
 }
-
