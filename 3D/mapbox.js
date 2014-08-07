@@ -1,9 +1,15 @@
 var scene;
 var camera; 
 var cubeMesh;
+var group;
+$.mobile.loading('show');
 initializeScene();
+$(window).load(function(){
+	$.mobile.loading('hide');
+	animateScene();
+	loadquakes();
+});
 
-animateScene();
 function initializeScene(){ 
 	if(Detector.webgl){ 
 		renderer = new THREE.WebGLRenderer({antialias:true});
@@ -40,6 +46,7 @@ function initializeScene(){
 	controls.target.x = midx-leftTileLimit-2;
 	controls.target.y = -midy+topTileLimit+2;
 	var cubeGeometry;
+	group = new THREE.Object3D();
 	if(Detector.webgl){
 		planeGeometry = new THREE.PlaneGeometry( 1, 1, 1); 
 	}
@@ -68,11 +75,11 @@ function initializeScene(){
 					combine: THREE.MixOperation});
 			cubeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
 			cubeMesh.position.set(i+0.5-2,-j-0.5+2,1.0);
-			scene.add(cubeMesh);
+			group.add(cubeMesh);
 		}
 	}
 	
-	
+	scene.add(group);
 	var ambientLight = new THREE.AmbientLight(0x101010, 10.0);
 	scene.add(ambientLight);
 	var directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
@@ -87,4 +94,20 @@ function animateScene(){
 function renderScene(){
 	renderer.render(scene, camera);
 	//$("#controls").html("<font color='white'>"+camera.position.x+","+camera.position.y+","+camera.position.z+";"+camera.rotation.x+","+camera.rotation.y+","+camera.rotation.z+"</font>");
-} 
+}
+function thumbnailToggle(){
+	if($("#thumbnail").is(':checked')){
+		$('#iframe2d').fadeIn();
+	}
+	else{
+		$('#iframe2d').fadeOut();
+	}
+}
+function mapToggle(){
+	if($("#maptoggle").is(':checked')){
+		group.visible = true;
+	}
+	else{
+		group.visible = false;
+	}
+}
