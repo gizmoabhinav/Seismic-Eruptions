@@ -10,7 +10,7 @@ var d = new Date();
 var curr_year,curr_month,curr_date;
 var curr_date = d.getDate();
 
-var magnitude = getURLParameter("mag");
+var mag = getURLParameter("mag");
 var startdate = getURLParameter("startdate");
 if(startdate == undefined){
 	startdate = "2009/1/1";
@@ -22,9 +22,21 @@ if(enddate == undefined){
 	curr_date = d.getDate();
 	enddate = curr_year+'/'+curr_month+'/'+curr_date;
 }
+function timeConverter(UNIX_timestamp){
+	var a = new Date(UNIX_timestamp);
+	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+	var year = a.getFullYear();
+	var month = months[a.getMonth()];
+	var date = a.getDate();
+	var hour = a.getHours();
+	var min = a.getMinutes();
+	var sec = a.getSeconds();
+	var time = year+' '+month+' '+date;
+	return time;
+}
 function loadquakes(){
 var script = document.createElement('script');
-script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+startdate+'%2000:00:00&minmagnitude='+magnitude+'&format=geojson&callback=eqfeed_callback&endtime='+enddate+'%2023:59:59&orderby=time-asc&minlatitude='+Math.min(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&maxlatitude='+Math.max(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&minlongitude='+Math.min(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"))+'&maxlongitude='+Math.max(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"));
+script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+startdate+'%2000:00:00&minmagnitude='+mag+'&format=geojson&callback=eqfeed_callback&endtime='+enddate+'%2023:59:59&orderby=time-asc&minlatitude='+Math.min(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&maxlatitude='+Math.max(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&minlongitude='+Math.min(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"))+'&maxlongitude='+Math.max(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"));
 document.getElementsByTagName('body')[0].appendChild(script);
 var count = 0;
 var maxdepth = 0;
@@ -51,6 +63,9 @@ window.eqfeed_callback = function(results) {
 		}
 	}
 	$("#info").html("</br></br>total earthquakes : "+size+"</br>minimum depth : "+mindepth+" km</br>maximum depth : "+maxdepth+" km</br></br></br><div class='ui-body ui-body-a'><p><a href='http://github.com/gizmoabhinav/Seismic-Eruptions'>Link to the project</a></p></div>");
+	$("#startdate").html("Start date : "+timeConverter(startdate));
+	$("#enddate").html("End date : "+timeConverter(enddate));
+	$("#magcutoff").html("Cutoff magnitude : "+mag);
 	//alert("earthquake count : "+count);
 	rainbow.setNumberRange(0, maxdepth);
 	for(var i=0;i<size;i++){
