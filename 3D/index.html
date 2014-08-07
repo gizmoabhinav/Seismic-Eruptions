@@ -33,6 +33,11 @@
             		</div>
 			<div data-role="panel" data-theme="b" data-display="overlay" id="options">
 				<div id="info" class="ui-bar ui-body-a"></div>
+				<div class="ui-bar ui-body-b">
+					<p id="startdate"></p>
+					<p id="enddate"></p>
+					<p id="magcutoff"></p>
+				</div>
 			</div>
 			<div data-role="panel" data-position="right" data-display="overlay" data-theme="b" id="settings">
 				<form>
@@ -69,7 +74,7 @@
 		<script src="rainbowvis.js"></script>
 		<script src="3Dplot.js"></script>
 		<script>
-			document.getElementById("frame").src="frame.html?x1="+getURLParameter('x1')+"&x2="+getURLParameter('x2')+"&x3="+getURLParameter('x3')+"&x4="+getURLParameter('x4')+"&y1="+getURLParameter('y1')+"&y2="+getURLParameter('y2')+"&y3="+getURLParameter('y3')+"&y4="+getURLParameter('y4')+"&startdate="+startdate+"&enddate="+enddate+"&mag="+magnitude;
+			document.getElementById("frame").src="frame.html?x1="+getURLParameter('x1')+"&x2="+getURLParameter('x2')+"&x3="+getURLParameter('x3')+"&x4="+getURLParameter('x4')+"&y1="+getURLParameter('y1')+"&y2="+getURLParameter('y2')+"&y3="+getURLParameter('y3')+"&y4="+getURLParameter('y4')+"&startdate="+startdate+"&enddate="+enddate+"&mag="+mag;
 		</script>
 	</body>
 </html>
