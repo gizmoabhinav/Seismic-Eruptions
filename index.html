@@ -76,12 +76,14 @@
 			<div data-role="popup" id="editparams" data-theme="a" class="ui-corner-all" data-mini="false">
 				<h3>Edit the parameters</h3>
 				<form>
-     					<label for="date-1">Start Date :</label>
-     					<input type="date" data-clear-btn="true" name="date-1" id="date-1" value="">
-     					<label for="date-2">End Date :</label>
-     					<input type="date" data-clear-btn="true" name="date-2" id="date-2" value="">
+     				<label for="date-1-y">Start Date :</label>
+						<select name="date-1-y" id="date-1-y" data-mini="true"><option value="0">2000</option><option value="1">2001</option><option value="2">2002</option><option value="3">2003</option><option value="4">2004</option><option value="5">2005</option><option value="6">2006</option><option value="7">2007</option><option value="8">2008</option><option value="9">2009</option><option value="10">2010</option><option value="11">2011</option><option value="12">2012</option><option value="13">2013</option><option value="14">2014</option></select>
+						<select name="date-1-m" id="date-1-m" data-mini="true"><option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option><option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select>
+					<label for="date-2-y">End Date :</label>
+						<select name="date-2-y" id="date-2-y" data-mini="true"><option value="0">2000</option><option value="1">2001</option><option value="2">2002</option><option value="3">2003</option><option value="4">2004</option><option value="5">2005</option><option value="6">2006</option><option value="7">2007</option><option value="8">2008</option><option value="9">2009</option><option value="10">2010</option><option value="11">2011</option><option value="12">2012</option><option value="13">2013</option><option value="14">2014</option></select>
+						<select name="date-2-m" id="date-2-m" data-mini="true"><option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option><option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select>
 				</form>
-				<a href="#" data-rel="back" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-check ui-btn-icon-right" id="editparamsenter"> Load </a>
+				<a href="#" data-rel="back" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-check ui-btn-icon-right" id="editparamsenter" onclick="loadCount()"> Load </a>
 				<a href="#" data-rel="back" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-delete ui-btn-icon-right" id="editparamscancel"> Cancel </a>
 			</div>
             <div data-role="content" data-theme="b">
@@ -136,8 +138,7 @@
 		<script src="Draw/editedLibs/src/edit/handler/Edit.CrossSection.js"></script>
 		<script src="Draw/editedLibs/src/draw/handler/Draw.CrossSection.js"></script>
 		<script src="map.js"></script>
-		
-	
+		<script src="binarySearchMagnitude.js"></script>
 		<script>
 			function render(){
 				window.open("http://gizmoabhinav.github.io/Seismic-Eruptions/3D/index.html?x1="+toLon(y1)+"&y1="+toLat(x1)+"&x2="+toLon(y2)+"&y2="+toLat(x2)+"&x3="+toLon(y3)+"&y3="+toLat(x3)+"&x4="+toLon(y4)+"&y4="+toLat(x4)+"&mag="+mag+"&startdate="+startdate+"&enddate="+enddate);
