@@ -30,7 +30,7 @@ function loadCount(){
 			if(mag<max){
 				var count = 0;
 				count=parseInt(magarray[parseInt(mag)][(parseInt(year2)*12)+parseInt(month2)])-parseInt(magarray[parseInt(mag)][(parseInt(year1)*12)+parseInt(month1)]);
-				if(parseInt(count)<15000){
+				if(parseInt(count)<15000 && mag!=0){
 					return binarySearch(parseInt(mag)-((max-parseInt(mag))/2),mag);
 				}
 				else if(parseInt(count)>20000){
