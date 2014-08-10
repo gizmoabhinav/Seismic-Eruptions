@@ -1,4 +1,26 @@
-var map,mag,startdate,enddate,drawnItems;
+var map,mag,startdate,enddate,drawnItems,array = new Array(),magarray;
+//load count file
+$.get('count.txt', function(data){
+		array = data.split(',');
+		console.log(array);
+		var length = array.length;
+		console.log(length);
+		magarray = new Array();
+		for(var i=99;i>=0;i--){
+			magarray[i] = new Array();
+			for(var j=0;j<length/102;j++){
+				if(magarray[i][j]!=undefined)
+					magarray[i][j] = parseInt(array[(j*102)+2+i])+parseInt(magarray[i][j]);
+				else
+					magarray[i][j] = parseInt(array[(j*102)+2+i]);
+				if(j+1<length/102)
+					magarray[i][j+1] = parseInt(magarray[i][j]);
+				if(i<99)
+					magarray[i][j] = parseInt(magarray[i+1][j])+parseInt(magarray[i][j]);
+			}
+		}
+		console.log(magarray);	
+});
 // load plate boundaries
 var track = new L.KML("plates.kml", {async: true});
 //plate controls
@@ -180,6 +202,23 @@ $(window).load(function(){
 	tl.resume();
 });
 
+var select1 = document.getElementById('date-1-y');
+var select2 = document.getElementById('date-2-y');
+var year = 1960;
+while(year!=2015){
+	var option1,option2;
+	option1 = document.createElement("option");
+	option1.setAttribute("value", parseInt(year)-1900);
+	if(year==1960)option1.setAttribute("selected","selected");
+	option1.innerHTML = year;
+	select1.appendChild(option1);
+	option2 = document.createElement("option");
+	option2.setAttribute("value", parseInt(year)-1900);
+	if(year==2014)option2.setAttribute("selected","selected");
+	option2.innerHTML = year;
+	select2.appendChild(option2);
+	year = parseInt(year)+1;
+}
 /////////// Drawing Controls ///////////
 
 var Line;
@@ -291,5 +330,17 @@ $('#mapselector').change(function(){
 			map.removeLayer(baseLayer1);
 		}
 }
+});
+$('#date-1-y').change(function(){
+	loadCount(1);
+});
+$('#date-1-m').change(function(){
+	loadCount(1);
+});
+$('#date-2-y').change(function(){
+	loadCount(1);
+});
+$('#date-2-m').change(function(){
+	loadCount(1);
 });
 });

@@ -80,15 +80,17 @@
 				<div style="padding:10px 20px;" data-theme="b">
 					<form>
 						<label for="date-1-y">Start Date :</label>
-						<select name="date-1-y" id="date-1-y" data-native-menu="false" data-mini="true" data-inline="true"><option value="0">2000</option><option value="1">2001</option><option value="2">2002</option><option value="3">2003</option><option value="4">2004</option><option value="5">2005</option><option value="6">2006</option><option value="7">2007</option><option value="8">2008</option><option value="9">2009</option><option value="10">2010</option><option value="11">2011</option><option value="12">2012</option><option value="13">2013</option><option value="14">2014</option></select>
+						<select name="date-1-y" id="date-1-y" data-native-menu="false" data-mini="true" data-inline="true"></select>
 						<select name="date-1-m" id="date-1-m" data-native-menu="false" data-mini="true" data-inline="true"><option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option><option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select>
 						
 						<label for="date-2-y">End Date :</label>
-						<select name="date-2-y" id="date-2-y" data-native-menu="false" data-mini="true" data-inline="true"><option value="0">2000</option><option value="1">2001</option><option value="2">2002</option><option value="3">2003</option><option value="4">2004</option><option value="5">2005</option><option value="6">2006</option><option value="7">2007</option><option value="8">2008</option><option value="9">2009</option><option value="10">2010</option><option value="11">2011</option><option value="12">2012</option><option value="13">2013</option><option value="14">2014</option></select>
+						<select name="date-2-y" id="date-2-y" data-native-menu="false" data-mini="true" data-inline="true"></select>
 						<select name="date-2-m" id="date-2-m" data-native-menu="false" data-mini="true" data-inline="true"><option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option><option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select>
 					</form>
-					<span class="fa fa-info"></span><p>The minimum magnitude cutoff will be calculated for including 15000 to 20000 earthquakes</p>
-					<a href="#" data-rel="back" class="ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-check ui-btn-icon-right" id="editparamsenter" onclick="loadCount()"> Load </a>
+					<span class="fa fa-info"></span><p style="font-size:10px">The minimum magnitude cutoff will be calculated for including 15000 to 20000 earthquakes</p>
+					<div id="magnitude-search"></div>
+					<div id="error-date"></div>
+					<a href="#" class="ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-check ui-btn-icon-right" id="editparamsenter" onclick="loadCount(0)"> Load </a>
 					<a href="#" data-rel="back" class="ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-delete ui-btn-icon-right" id="editparamscancel"> Cancel </a>
 				</div>
 			</div>
