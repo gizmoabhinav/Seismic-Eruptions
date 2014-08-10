@@ -53,10 +53,8 @@ L.Draw.Feature = L.Handler.extend({
 	removeHooks: function () {
 		if (this._map) {
 			L.DomUtil.enableTextSelection();
-
 			this._tooltip.dispose();
 			this._tooltip = null;
-
 			L.DomEvent.off(this._container, 'keyup', this._cancelDrawing, this);
 		}
 	},
