@@ -1,8 +1,8 @@
 function loadCount(click){
 	month1 = parseInt($('#date-1-m').val()-1);
-	year1 = parseInt($('#date-1-y').val());
+	year1 = parseInt($('#date-1-y').val()-60);
 	month2 = parseInt($('#date-2-m').val()-1);
-	year2 = parseInt($('#date-2-y').val());
+	year2 = parseInt($('#date-2-y').val()-60);
 	if((parseInt(year2)*12)+parseInt(month2)<=(parseInt(year1)*12)+parseInt(month1)){
 		$("#error-date").html("<p style='color:red'>Select a valid date range</p>");
 		return;
