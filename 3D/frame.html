@@ -41,7 +41,7 @@ function timeConverter(UNIX_timestamp){
 		var circles = new Array();
 		var rainbow = new Rainbow();
 		var script = document.createElement('script');
-		script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+getURLParameter("startdate")+'%2000:00:00&minmagnitude='+getURLParameter("mag")+'&format=geojson&callback=eqfeed_callback&endtime='+getURLParameter("enddate")+'%2023:59:59&orderby=time-asc';
+		script.src = 'http://comcat.cr.usgs.gov/fdsnws/event/1/query?starttime='+getURLParameter("startdate")+'%2000:00:00&minmagnitude='+getURLParameter("mag")+'&format=geojson&callback=eqfeed_callback&endtime='+getURLParameter("enddate")+'%2023:59:59&orderby=time-asc&minlatitude='+Math.min(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&maxlatitude='+Math.max(getURLParameter("y1"),getURLParameter("y2"),getURLParameter("y3"),getURLParameter("y4"))+'&minlongitude='+Math.min(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"))+'&maxlongitude='+Math.max(getURLParameter("x1"),getURLParameter("x2"),getURLParameter("x3"),getURLParameter("x4"));
 		document.getElementsByTagName('body')[0].appendChild(script);
 		window.eqfeed_callback = function(results) {
 			size = results.features.length;

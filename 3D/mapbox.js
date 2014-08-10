@@ -13,10 +13,10 @@ $(window).load(function(){
 function initializeScene(){ 
 	if(Detector.webgl){ 
 		renderer = new THREE.WebGLRenderer({antialias:true});
-		$("#controls").html("<font color='white'>WebGL Renderer</font>");
+		$("#rendererInfo").html("<font color='white'>WebGL Renderer</font>");
 	} else { 
         renderer = new THREE.CanvasRenderer();
-		$("#controls").html("<font color='white'>Canvas Renderer</font>");
+		$("#rendererInfo").html("<font color='white'>Canvas Renderer</font>");
     } 
     renderer.setClearColor(0x777777, 1);
 	canvasWidth = window.innerWidth;
@@ -45,7 +45,16 @@ function initializeScene(){
 	controls = new THREE.OrbitControls( camera, renderer.domElement );
 	controls.target.x = midx-leftTileLimit-2;
 	controls.target.y = -midy+topTileLimit+2;
-	var cubeGeometry;
+	controls.target.z = 1;
+	controls.maxDistance = 8;
+	
+	var starfieldgeometry  = new THREE.SphereGeometry(90, 32, 32)
+	var starmaterial  = new THREE.MeshBasicMaterial()
+	starmaterial.map   = THREE.ImageUtils.loadTexture('images/galaxy_starfield.png')
+	starmaterial.side  = THREE.BackSide
+	var starmesh  = new THREE.Mesh(starfieldgeometry, starmaterial)
+	scene.add(starmesh);
+	
 	group = new THREE.Object3D();
 	if(Detector.webgl){
 		planeGeometry = new THREE.PlaneGeometry( 1, 1, 1); 

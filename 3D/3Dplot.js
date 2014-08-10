@@ -41,8 +41,8 @@ document.getElementsByTagName('body')[0].appendChild(script);
 var count = 0;
 var maxdepth = 0;
 var mindepth = 999;
-var minmag = 10;
 var maxmag = 0;
+var minmag = 999;
 var size;
 
 window.eqfeed_callback = function(results) {
@@ -54,9 +54,9 @@ window.eqfeed_callback = function(results) {
 			count++;
 			if(results.features[i].geometry.coordinates[2]>maxdepth)maxdepth=results.features[i].geometry.coordinates[2];
 			if(results.features[i].geometry.coordinates[2]<mindepth)mindepth=results.features[i].geometry.coordinates[2];
-			if(results.features[i].properties.mag<minmag)minmag=results.features[i].properties.mag;
+			if(results.features[i].properties.mag<minmag)mag=results.features[i].properties.mag;
 			if(results.features[i].properties.mag>maxmag)maxmag=results.features[i].properties.mag;
-			radius[i] = 0.0025*Math.pow(2,(results.features[i].properties.mag-minmag)*2/(maxmag-minmag));
+			radius[i] = 0.0025*Math.pow(2,(results.features[i].properties.mag)*4/(10));
 			latVal[i] = results.features[i].geometry.coordinates[0];
 			lonVal[i] = results.features[i].geometry.coordinates[1];
 			depths[i] = results.features[i].geometry.coordinates[2];
@@ -70,7 +70,7 @@ window.eqfeed_callback = function(results) {
 	rainbow.setNumberRange(0, maxdepth);
 	for(var i=0;i<size;i++){
 		var sphereGeometry = new THREE.SphereGeometry( radius[i], 8, 8 );
-		var sphereMaterial = new THREE.MeshBasicMaterial( { color: parseInt('0x'+rainbow.colourAt(results.features[i].geometry.coordinates[2])) , overdraw: false } );
+		var sphereMaterial = new THREE.MeshPhongMaterial( { color: parseInt('0x'+rainbow.colourAt(results.features[i].geometry.coordinates[2])) , overdraw: false } );
 		var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 		sphere.position.set(convertCoordinatesx(latVal[i])-leftTileLimit-2,-convertCoordinatesy(lonVal[i])+topTileLimit+2,1.0-(depths[i]/1000));
 		sphereParent.add( sphere );
@@ -136,7 +136,7 @@ window.eqfeed_callback = function(results) {
 	lines.vertices.push( vertex8 );
 	lines.vertices.push( vertex4 );
 	// lines
-	var line = new THREE.Line( lines, new THREE.LineBasicMaterial( { color: 0x000000, opacity: 1 } ) );
+	var line = new THREE.Line( lines, new THREE.LineBasicMaterial( { color: 0xffffff, opacity: 1 } ) );
 	scene.add( line );
 	controls.target.z = 1.0-(maxdepth/2000);
 	
