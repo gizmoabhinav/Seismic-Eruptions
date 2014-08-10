@@ -209,16 +209,16 @@ while(year!=2015){
 	var option1,option2;
 	option1 = document.createElement("option");
 	option1.setAttribute("value", parseInt(year)-1900);
-	if(year==1960)option1.setAttribute("selected","selected");
 	option1.innerHTML = year;
 	select1.appendChild(option1);
 	option2 = document.createElement("option");
 	option2.setAttribute("value", parseInt(year)-1900);
-	if(year==2014)option2.setAttribute("selected","selected");
 	option2.innerHTML = year;
 	select2.appendChild(option2);
 	year = parseInt(year)+1;
 }
+document.getElementById('datediv').appendChild(document.getElementById('d1'));
+document.getElementById('datediv').appendChild(document.getElementById('d2'));
 /////////// Drawing Controls ///////////
 
 var Line;
