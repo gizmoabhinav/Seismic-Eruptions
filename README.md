@@ -21,7 +21,9 @@ The application has two major parts:
 
 The date ranges of the earthquake shown are user-customizable along with the cutoff earthquake magnitude. The default date range for the 2D timeline view is between 1-1-2009 and today with the magnitude cutoff set to 5.
 
-The user has options to speed up, speed down, play and pause the time, show/hide the plate boundaries and select different date ranges and magnitude cutoffs. Selecting different date ranges and magnitude cutoffs can be done by using the UI or by giving parameters in the URL. The parameters accepted by the 2D timeline view are:
+The user has options to speed up, speed down, play and pause the time, show/hide the plate boundaries and select different date ranges and magnitude cutoffs. Selecting different date ranges and magnitude cutoffs can be done by using the UI or by giving parameters in the URL. The date selector calculates the magnitude range to accomodate optimum number of earthquake events.
+
+The parameters accepted by the 2D timeline view are:
 
 mag (for cutoff magnitude), startdate and enddate
 
