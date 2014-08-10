@@ -47,6 +47,10 @@ var size;
 
 window.eqfeed_callback = function(results) {
 	size = results.features.length;
+	if(size==0){
+		alert("No earthquakes inside the cross section in given time range");
+		return;
+	}
 	var mindepth = 999;
 	var maxdepth = 0;
 	for (var i = 0; i < size; i++){

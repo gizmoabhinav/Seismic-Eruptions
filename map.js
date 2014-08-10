@@ -1,4 +1,4 @@
-var map,mag,startdate,enddate,drawnItems,array = new Array(),magarray;
+var map,mag,startdate,enddate,drawnItems,array = new Array(),magarray,editing=false;;
 //load count file
 $.get('count.txt', function(data){
 		array = data.split(',');
@@ -217,8 +217,6 @@ while(year!=2015){
 	select2.appendChild(option2);
 	year = parseInt(year)+1;
 }
-document.getElementById('datediv').appendChild(document.getElementById('d1'));
-document.getElementById('datediv').appendChild(document.getElementById('d2'));
 /////////// Drawing Controls ///////////
 
 var Line;

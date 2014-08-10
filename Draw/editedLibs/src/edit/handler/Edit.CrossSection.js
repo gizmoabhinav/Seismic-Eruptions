@@ -169,6 +169,8 @@ L.Edit.Poly = L.Handler.extend({
 		resizemarkervar.setLatLng(p3);
 		movemarkervar.setLatLng(p4);
 		this._poly.redraw();
+		var distance = (L.GeometryUtil.readableDistance((this._markers[0]._latlng).distanceTo(this._markers[1]._latlng),true));
+		linelength = parseInt(distance.substr(0,distance.length-4));
 	},
 
 	_onMarkerClick: function (e) {

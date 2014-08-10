@@ -146,21 +146,39 @@
 		<script src="Draw/editedLibs/src/edit/EditToolbar.js"></script>
 		<script src="Draw/editedLibs/src/edit/handler/EditToolbar.Edit.js"></script>
 		<script src="Draw/editedLibs/src/edit/handler/EditToolbar.Delete.js"></script>
+		<script src="map.js"></script>
 		<script src="Draw/editedLibs/src/edit/handler/Edit.CrossSection.js"></script>
 		<script src="Draw/editedLibs/src/draw/handler/Draw.CrossSection.js"></script>
-		<script src="map.js"></script>
+		
 		<script src="binarySearchMagnitude.js"></script>
 		<script>
 			function render(){
+				if(editing){
+					alert("Save edit before viewing the cross section");
+					return;
+				}
+				if(linelength==0){
+					alert("Draw a cross-section first");
+					return;
+				}
+				else if(linelength>=1400){
+					alert("cross section too long");
+					return;
+				}
 				window.open("http://gizmoabhinav.github.io/Seismic-Eruptions/3D/index.html?x1="+toLon(y1)+"&y1="+toLat(x1)+"&x2="+toLon(y2)+"&y2="+toLat(x2)+"&x3="+toLon(y3)+"&y3="+toLat(x3)+"&x4="+toLon(y4)+"&y4="+toLat(x4)+"&mag="+mag+"&startdate="+startdate+"&enddate="+enddate);
 			}
 			var poly,polyedit;
 			function startdrawing(){
+				if(editing){
+					alert("Save edit before drawing a new cross-section");
+					return;
+				}
 				poly = new L.Draw.CrossSection(map, []);
 				poly.enable();
 				poly._updateTooltip();
 			}
 			function editdrawing(){
+				editing = true;
 				polyedit = new L.EditToolbar.Edit(map, {featureGroup: drawnItems,
 					selectedPathOptions: {
 						color: '#fe57a1',
@@ -177,11 +195,13 @@
 				polyedit.enable();
 			}
 			function editsave(){
+				editing = false;
 				polyedit.save();
 				polyedit.disable();
 				polyedit = null;
 			}
 			function backtonormalview(){
+				editing = false;
 				if(polyedit!=null)
 				editsave();
 				poly.disable();

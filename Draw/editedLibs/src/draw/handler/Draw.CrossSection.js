@@ -3,6 +3,7 @@ var polygon,lng0,lng1,lat0,lat1;
 var touchstart = true;
 var touchend = false;
 var width=0.25;
+var linelength = 0;
 var length,ratio1,ratio2,x1,y1,x2,y2,x3,y3,x4,y4;
 L.Draw.CrossSection = L.Draw.Feature.extend({
 	statics: {
@@ -33,7 +34,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			clickable: true
 		},
 		metric: true, // Whether to use the metric meaurement system or imperial
-		showLength: false, // Whether to display distance in the tooltip
+		showLength: true, // Whether to display distance in the tooltip
 		zIndexOffset: 2000 // This should be > than the highest z-index any map layers
 	},
 
@@ -454,12 +455,20 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			};
 		} else {
 			distanceStr = showLength ? this._getMeasurementString() : '';
-
+			linelength = parseInt(distanceStr.substr(0,distanceStr.length-4));
+			
 			if (this._markers.length === 1) {
+				if(parseInt(distanceStr.substr(0,distanceStr.length-4))>1400){
+					labelText = {
+					text: L.drawLocal.draw.handlers.polyline.tooltip.cont,
+					subtext: distanceStr+" Create a smaller cross section for better view"
+					};
+				}else{
 				labelText = {
 					text: L.drawLocal.draw.handlers.polyline.tooltip.cont,
 					subtext: distanceStr
 				};
+				}
 			} else {
 				labelText = {
 					text: L.drawLocal.draw.handlers.polyline.tooltip.end,
@@ -478,7 +487,7 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 			this._measurementRunningTotal = 0;
 		} else {
 			previousMarkerIndex = markersLength - (added ? 2 : 1);
-			distance = latlng.distanceTo(this._markers[previousMarkerIndex].getLatLng());
+			distance = latlng.distanceTo(this._markers[0].getLatLng());
 
 			this._measurementRunningTotal += distance * (added ? 1 : -1);
 		}
@@ -486,12 +495,11 @@ L.Draw.CrossSection = L.Draw.Feature.extend({
 
 	_getMeasurementString: function () {
 		var currentLatLng = this._currentLatLng,
-			previousLatLng = this._markers[this._markers.length - 1].getLatLng(),
+			previousLatLng = this._markers[0].getLatLng(),
 			distance;
 
 		// calculate the distance from the last fixed point to the mouse position
-		distance = this._measurementRunningTotal + currentLatLng.distanceTo(previousLatLng);
-
+		distance = currentLatLng.distanceTo(previousLatLng);
 		return L.GeometryUtil.readableDistance(distance, this.options.metric);
 	},
 
