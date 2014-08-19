@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>earthquake area selection</title>
+
+	<link rel="stylesheet" href="../leaflet.css" />
+	<link rel="stylesheet" href="leaflet.draw.css" />
+	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	
+
+	<script src="../leaflet.js"></script>
+	
+	<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script src="editedLibs/src/Leaflet.draw.js"></script>
+	<script src="editedLibs/src/draw/handler/Draw.Feature.js"></script>
+	<script src="editedLibs/src/draw/handler/latlonTo3D.js"></script>
+	<script src="editedLibs/src/draw/handler/Draw.CrossSection.js"></script>
+	<script src="editedLibs/src/ext/GeometryUtil.js"></script>
+	<script src="editedLibs/src/Control.Draw.js"></script>
+	<script src="editedLibs/src/Tooltip.js"></script>
+	<script src="editedLibs/src/Toolbar.js"></script>
+
+	<script src="editedLibs/src/draw/DrawToolbar.js"></script>
+</head>
+<body>
+	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+	<div id="slider" style="width:40%"></div>
+	<button onclick="render()">Render</button>
+	<script>
+		function render(){
+			window.open("http://gizmoabhinav.github.io/Seismic-Eruptions/3D/index.html?x1="+toLon(y1)+"&y1="+toLat(x1)+"&x2="+toLon(y2)+"&y2="+toLat(x2)+"&x3="+toLon(y3)+"&y3="+toLat(x3)+"&x4="+toLon(y4)+"&y4="+toLat(x4)+"&mag=4&y=2013&m=1&d=1");
+		}
+		$("#slider").slider({
+		value: 0,
+		min: 0,
+		max: 100,
+		slide: function ( event, ui ) {
+			width = ui.value/100;
+			x1=polygonArr[polygonArr.length-1].lat+(width/ratio2);
+			y1=polygonArr[polygonArr.length-1].lng-(width/ratio1);
+			x2=polygonArr[polygonArr.length-2].lat+(width/ratio2);
+			y2=polygonArr[polygonArr.length-2].lng-(width/ratio1);
+			x3=polygonArr[polygonArr.length-2].lat-(width/ratio2);
+			y3=polygonArr[polygonArr.length-2].lng+(width/ratio1);
+			x4=polygonArr[polygonArr.length-1].lat-(width/ratio2);
+			y4=polygonArr[polygonArr.length-1].lng+(width/ratio1);
+			map.removeLayer(polygon);
+			polygon = L.polygon([
+						[toLat(x1),toLon(y1)],
+						[toLat(x2),toLon(y2)],
+						[toLat(x3),toLon(y3)],
+						[toLat(x4),toLon(y4)]
+					]).addTo(map);
+			//document.write("<button href='http://gizmoabhinav.github.io/Seismic-Eruptions/3D/index.html?x1="+toLon(y1)+"&y1="+toLat(x1)+"&x2="+toLon(y2)+"&y2="+toLat(x2)+"&x3="+toLon(y3)+"&y3="+toLat(x3)+"&x4="+toLon(y4)+"&y4="+toLat(x4)+"&mag=4&y=2013&m=1&d=1'>Render</button>");
+		}
+		});
+		
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
+			map = new L.Map('map', {layers: [osm], center: new L.LatLng(-37.7772, 1.2756), zoom: 4 });
+
+		var drawnItems = new L.FeatureGroup();
+		map.addLayer(drawnItems);
+
+		// Set the title to show on the polygon button
+		//L.drawLocal.draw.toolbar.buttons.polygon = 'Draw a sexy polygon!';
+
+		var drawControl = new L.Control.Draw({
+			position: 'topright',
+			draw: {
+				polyline: {
+					metric: true
+				}
+			},
+			edit: {
+				featureGroup: drawnItems,
+				remove: false
+			}
+		});
+		//map.addControl(drawControl);
+
+		map.on('draw:created', function (e) {
+			var type = e.layerType,
+				layer = e.layer;
+
+			if (type === 'marker') {
+				layer.bindPopup('A popup!');
+			}
+
+			drawnItems.addLayer(layer);
+		});
+		
+		/*map.on('draw:edited', function (e) {
+			var layers = e.layers;
+			var countOfEditedLayers = 0;
+			layers.eachLayer(function(layer) {
+				countOfEditedLayers++;
+			});
+			console.log("Edited " + countOfEditedLayers + " layers");
+		});
+
+		/*L.DomUtil.get('changeColor').onclick = function () {
+			drawControl.setDrawingOptions({ rectangle: { shapeOptions: { color: '#004a80' } } });
+		};*/
+
+	</script>
+	
+	<button onclick="map.addControl(drawControl);">Draw</button>
+</body>
+</html>
