@@ -50,7 +50,7 @@ function initializeScene(){
 	
 	var starfieldgeometry  = new THREE.SphereGeometry(90, 32, 32)
 	var starmaterial  = new THREE.MeshBasicMaterial()
-	starmaterial.map   = THREE.ImageUtils.loadTexture('../../images/galaxy_starfield.png')
+	starmaterial.map   = THREE.ImageUtils.loadTexture('../../../app/assets/images/galaxy_starfield.png')
 	starmaterial.side  = THREE.BackSide
 	var starmesh  = new THREE.Mesh(starfieldgeometry, starmaterial)
 	scene.add(starmesh);
@@ -64,7 +64,7 @@ function initializeScene(){
 	}
 	var tileSource;
 	if(Detector.webgl){
-		tileSource = "../../images/tiles/6/"; 
+		tileSource = "../../assets/images/tiles/6/"; 
 	}
 	else{
 		tileSource = "http://otile1.mqcdn.com/tiles/1.0.0/sat/6/"; 
