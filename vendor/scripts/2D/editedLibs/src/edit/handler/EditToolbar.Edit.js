@@ -31,7 +31,7 @@ L.EditToolbar.Edit = L.Handler.extend({
 		this.fire('enabled', {handler: this.type});
 			//this disable other handlers
 
-		this._map.fire('draw:editstart', { handler: this.type });
+		this._map.leafletMap.fire('draw:editstart', { handler: this.type });
 			//allow drawLayer to be updated before beginning edition.
 
 		L.Handler.prototype.enable.call(this);
@@ -46,32 +46,32 @@ L.EditToolbar.Edit = L.Handler.extend({
 			.off('layeradd', this._enableLayerEdit, this)
 			.off('layerremove', this._disableLayerEdit, this);
 		L.Handler.prototype.disable.call(this);
-		this._map.fire('draw:editstop', { handler: this.type });
+		this._map.leafletMap.fire('draw:editstop', { handler: this.type });
 		this.fire('disabled', {handler: this.type});
 	},
 
 	addHooks: function () {
-		var map = this._map;
+		var map = this._map.leafletMap;
 
 		if (map) {
 			map.getContainer().focus();
 
 			this._featureGroup.eachLayer(this._enableLayerEdit, this);
 
-			this._tooltip = new L.Tooltip(this._map);
+			this._tooltip = new L.Tooltip(this._map.leafletMap);
 			this._tooltip.updateContent({
 				text: L.drawLocal.edit.handlers.edit.tooltip.text,
 				subtext: L.drawLocal.edit.handlers.edit.tooltip.subtext
 			});
 
-			this._map.on('mousemove', this._onMouseMove, this)
+			this._map.leafletMap.on('mousemove', this._onMouseMove, this)
 					 .on('touchmove', this._onMouseMove, this);
 			
 		}
 	},
 
 	removeHooks: function () {
-		if (this._map) {
+		if (this._map.leafletMap) {
 			// Clean up selected layers.
 			this._featureGroup.eachLayer(this._disableLayerEdit, this);
 
@@ -81,7 +81,7 @@ L.EditToolbar.Edit = L.Handler.extend({
 			this._tooltip.dispose();
 			this._tooltip = null;
 
-			this._map.off('mousemove', this._onMouseMove, this)
+			this._map.leafletMap.off('mousemove', this._onMouseMove, this)
 					 .off('touchmove', this._onMouseMove, this);
 		}
 	},
@@ -100,7 +100,7 @@ L.EditToolbar.Edit = L.Handler.extend({
 				layer.edited = false;
 			}
 		});
-		this._map.fire('draw:edited', {layers: editedLayers});
+		this._map.leafletMap.fire('draw:edited', {layers: editedLayers});
 	},
 
 	_backupLayer: function (layer) {
