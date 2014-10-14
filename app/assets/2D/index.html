@@ -44,7 +44,7 @@
                 <h1>Seismic Eruptions</h1>
 				<a href="#options" class="ui-btn ui-icon-info ui-mini ui-btn-icon-notext ui-corner-all">Options</a>
 				<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
-					<a href="#" class="ui-btn ui-btn-b ui-icon-knife ui-mini ui-btn-icon-notext ui-corner-all" id="drawingTool" onclick="startdrawing()">Draw Cross-Section</a>
+					<a href="#" class="ui-btn ui-btn-b ui-icon-knife ui-mini ui-btn-icon-notext ui-corner-all" id="drawingTool" onclick="map2D.startdrawing()">Draw Cross-Section</a>
 					<a href="#settings" class="ui-btn ui-icon-gear ui-mini ui-btn-icon-notext ui-corner-all">Settings</a>
 				</div>
             </div>
@@ -61,7 +61,7 @@
 				<form>
 					<div class="ui-field-contain">
 						<label for="plates">Plate-boundaries</label>
-						<input data-role="flipswitch" data-mini="true" type="checkbox" name="plates" id="plates" onchange="plateToggle()">
+						<input data-role="flipswitch" data-mini="true" type="checkbox" name="plates" id="plates" onchange="map2D.plateToggle()">
 					</div>
 					<div class="ui-field-contain ui-mini">
 						<select name="mapselector" id="mapselector" data-native-menu="false" data-mini="true">
@@ -111,10 +111,10 @@
 					</div>
 				</div>
 				<div class="ui-bar ui-mini ui-body-b" style="width:100%;bottom:0px;position:absolute;display:none" id="crosssection">
-					<a class="ui-btn ui-btn-inline" onclick="render()">View Cross Section</a>
-					<a class="ui-btn ui-btn-inline" onclick="editdrawing()">Edit</a>
-					<a class="ui-btn ui-btn-inline" onclick="editsave()">Save</a>
-					<a class="ui-btn ui-btn-inline" onclick="backtonormalview()" id="drawingToolDone">Done</a>
+					<a class="ui-btn ui-btn-inline" onclick="map2D.render()">View Cross Section</a>
+					<a class="ui-btn ui-btn-inline" onclick="map2D.editdrawing()">Edit</a>
+					<a class="ui-btn ui-btn-inline" onclick="map2D.editsave()">Save</a>
+					<a class="ui-btn ui-btn-inline" onclick="map2D.backtonormalview()" id="drawingToolDone">Done</a>
 				</div>
 			</div>
 			
