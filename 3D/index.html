@@ -5,6 +5,12 @@
 		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
+		<script src="http://threejs.org/build/three.min.js"></script>
+		<script src="http://threejs.org/examples/js/controls/OrbitControls.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="http://threejs.org/examples/js/Detector.js"></script>
+		<script src="vendor-3d.js"></script>
+		<!--<script src="../../../vendor/scripts/3D/rainbowvis.js"></script>-->
 		<style type="text/css"> 
 			.ui-mobile .ui-page { min-height: 300px; overflow: hidden; }
 			html,body { 
@@ -17,9 +23,6 @@
 				overflow: hidden;
 			}
 		</style>
-		<script src="three.js"></script>
-		<script src="OrbitControl.js"></script>
-		<script src="Detector.js"></script>
 		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         	<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
 		<script src="http://threejs.org/examples/js/libs/stats.min.js"></script>
@@ -56,26 +59,10 @@
 				<div style="width: 210px; height: 210px; opacity: 0.9; cursor: pointer; position: absolute; bottom: 0px; right:0px" id="iframe2d"><iframe id="frame" src="frame.html" height="220px" width="100%"></iframe></div>
 			</div>			
 		</div>
-		<!-- URL parameter fetcher -->
-		<script>
-		function getURLParameter(name) {
-				return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
-		}
-		
-		//alert("frame.html?x1="+getURLParameter("x1")+"&x2="+getURLParameter("x2")+"&x3="+getURLParameter("x3")+"&x4="+getURLParameter("x4")+"&y1="+getURLParameter("y1")+"&y2="+getURLParameter("y2")+"&y3="+getURLParameter("y3")+"&y4="+getURLParameter("y4"));
-			
-		</script>
-		<!-- This script helps convert latitude longitude values from the 2D map into 3D xyz coordinates centered at 0,0,0 -->
-		<script src="latlonTo3D.js"></script>
-		<!-- This script gets the limits of the mapbox in the projection -->
-		<script src="getMapLimits.js"></script>
-		<!-- This script creates a three.js scene and a 3D array of boxes with map - tiles mapped to their top face -->
-		<script src="mapbox.js"></script>
-		<!-- This script adds earthquake plottings to the mapbox in the scene -->
-		<script src="rainbowvis.js"></script>
-		<script src="3Dplot.js"></script>
-		<script>
-			document.getElementById("frame").src="frame.html?x1="+getURLParameter('x1')+"&x2="+getURLParameter('x2')+"&x3="+getURLParameter('x3')+"&x4="+getURLParameter('x4')+"&y1="+getURLParameter('y1')+"&y2="+getURLParameter('y2')+"&y3="+getURLParameter('y3')+"&y4="+getURLParameter('y4')+"&startdate="+startdate+"&enddate="+enddate+"&mag="+mag;
-		</script>
+		<script src="app-3d.js"></script>
+		<!--<script src="../../scripts/3D/latlonTo3D.js"></script>
+		<script src="../../scripts/3D/getMapLimits.js"></script>
+		<script src="../../scripts/3D/mapbox.js"></script>
+		<script src="../../scripts/3D/3Dplot.js"></script>-->
 	</body>
 </html>
