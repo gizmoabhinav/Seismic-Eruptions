@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Seismic Eruptions</title>
+        <meta http-equiv='Content-Type' content='text/html, charset=utf-8'/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densityDpi=device-dpi"/>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
+        <link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
+		<!--<link rel="stylesheet" href="../../../vendor/styles/font-awesome.css" />
+		<link rel="stylesheet" href="../../../vendor/styles/leaflet.draw.css" />-->
+		
+		<link rel="stylesheet" href="vendor-2d.css" />
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <script src="http://leafletjs.com/dist/leaflet.js"></script>
+		<style>
+			.ui-content {
+				position: absolute;
+				top: 40px;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				padding: 0;
+			}
+			#map {
+				height: 100%;
+				position:absolute;
+				top:0;
+				bottom:0;
+				left:0;
+				right:0;
+				margin: 0;
+				padding: 0;
+			}
+			.ui-icon-knife:after {
+				background-image: url("../images/knife-dashed-line.png");
+				background-size: 18px 18px;
+			}
+		</style>
+    </head>
+    <body>
+        <div data-role="page" id="index">
+            <div data-theme="b" data-role="header">
+                <h1>Seismic Eruptions</h1>
+				<a href="#options" class="ui-btn ui-icon-info ui-mini ui-btn-icon-notext ui-corner-all">Options</a>
+				<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
+					<a href="#" class="ui-btn ui-btn-b ui-icon-knife ui-mini ui-btn-icon-notext ui-corner-all" id="drawingTool" onclick="map2D.startdrawing()">Draw Cross-Section</a>
+					<a href="#settings" class="ui-btn ui-icon-gear ui-mini ui-btn-icon-notext ui-corner-all">Settings</a>
+				</div>
+            </div>
+            <div data-role="panel" data-theme="b" data-display="overlay" id="options">
+				<div id="info" class="ui-bar ui-body-a"></div>
+				<div class="ui-bar ui-body-b">
+					<p id="startdate"></p>
+					<p id="enddate"></p>
+					<p id="magcutoff"></p>
+					<a href="#editparams" data-rel="popup" data-position-to="window" class="ui-btn ui-shadow ui-corner-all ui-mini ui-icon-edit ui-btn-icon-right" id="changeparams"> Change parameters </a>
+				</div>
+			</div>
+			 <div data-role="panel" data-position="right" data-display="overlay" data-theme="b" id="settings">
+				<form>
+					<div class="ui-field-contain">
+						<label for="plates">Plate-boundaries</label>
+						<input data-role="flipswitch" data-mini="true" type="checkbox" name="plates" id="plates" onchange="map2D.plateToggle()">
+					</div>
+					<div class="ui-field-contain ui-mini">
+						<select name="mapselector" id="mapselector" data-native-menu="false" data-mini="true">
+							<option value="1">PRCC Earthquake density map</option>
+							<option value="2">Satellite map</option>
+							<option value="3">OSM map</option>
+						</select>
+					</div>
+				</form>
+			</div>
+			<div data-role="popup" data-transition="fade" data-overlay-theme="a" id="editparams" data-theme="a" class="ui-corner-all" data-mini="false">
+				<div data-theme="b" data-role="header">
+					<h3>Edit the parameters</h3>
+				</div>
+				<div style="padding:10px 20px;" data-theme="b">
+					<div id="datediv">
+						<label for="date-1-y">Start Date :</label>
+						<div id="d1">
+						<select name="date-1-y" id="date-1-y" data-native-menu="false" data-mini="true" data-inline="true"><option value="null">year</option></select>
+						<select name="date-1-m" id="date-1-m" data-native-menu="false" data-mini="true" data-inline="true"><option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option><option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select>
+						</div>
+						<div id="d2">
+						<label for="date-2-y">End Date :</label>
+						<select name="date-2-y" id="date-2-y" data-native-menu="false" data-mini="true" data-inline="true"><option value="null">year</option></select>
+						<select name="date-2-m" id="date-2-m" data-native-menu="false" data-mini="true" data-inline="true"><option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option><option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select>
+						</div>
+					</div>
+					<span class="fa fa-info"></span><p style="font-size:10px">The minimum magnitude cutoff will be calculated for including 15000 to 20000 earthquakes</p>
+					<div id="magnitude-search"></div>
+					<div id="error-date"></div>
+					<a href="#" class="ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-check ui-btn-icon-right" id="editparamsenter" onclick="loadCount(0)"> Load </a>
+					<a href="#" data-rel="back" class="ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-delete ui-btn-icon-right" id="editparamscancel"> Cancel </a>
+				</div>
+			</div>
+            <div data-role="content" data-theme="b">
+                <div id="map"></div>
+				<div class="ui-bar ui-body-b" style="width:100%;bottom:0px;left:0px;position:absolute"  id="playback">
+					<div class="ui-grid-d" id="playcontrols">
+						<div class="ui-block-a"><a class="ui-btn ui-shadow ui-icon-fa ui-icon-fa-play ui-corner-all" id="play"></a></div>
+						<div class="ui-block-b"><a class="ui-btn ui-shadow ui-icon-fa ui-icon-fa-pause ui-corner-all" id="pause"></a></div>
+						<div class="ui-block-c"><a class="ui-btn ui-shadow ui-icon-fa ui-icon-fa-forward ui-corner-all" id="speedup"></a></div>
+						<div class="ui-block-d"><a class="ui-btn ui-shadow ui-icon-fa ui-icon-fa-backward ui-corner-all" id="speeddown"></a></div>
+					</div>
+					<div class="ui-grid-a">
+						<div class="ui-block-a"><div id="slider" style="height:10px;width:90%"></div></div>
+						<div class="ui-block-b" id="date"></div>
+					</div>
+				</div>
+				<div class="ui-bar ui-mini ui-body-b" style="width:100%;bottom:0px;position:absolute;display:none" id="crosssection">
+					<a class="ui-btn ui-btn-inline" onclick="map2D.render()">View Cross Section</a>
+					<a class="ui-btn ui-btn-inline" onclick="map2D.editdrawing()">Edit</a>
+					<a class="ui-btn ui-btn-inline" onclick="map2D.editsave()">Save</a>
+					<a class="ui-btn ui-btn-inline" onclick="map2D.backtonormalview()" id="drawingToolDone">Done</a>
+				</div>
+			</div>
+			
+        </div>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+		<!--<script src="../../scripts/2D/rainbowvis.js"></script>
+		<script src="../../scripts/2D/Tooltip.js"></script>
+		<script src="../../scripts/2D/latlonto3D.js"></script>
+		<script src="../../scripts/2D/LatLngUtil.js"></script>
+		<script src="../../scripts/2D/KML.js"></script>
+		<script src="../../scripts/2D/binarySearchMagnitude.js"></script>
+		<script src="../../scripts/2D/Draw.CrossSection.js"></script>
+		<script src="../../scripts/2D/drawingTool.js"></script>
+		<script src="../../scripts/2D/map.js"></script>-->
+		
+		<script src="app-2d.js"></script>
+    </body>
+</html>   
