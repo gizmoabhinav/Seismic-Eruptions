@@ -1,7 +1,7 @@
 Seismic-Eruptions
 =================
 
-Link to the developing project page : http://gizmoabhinav.github.io/Seismic-Eruptions
+Link to the developing project page : http://gizmoabhinav.github.io/Seismic-Eruptions/2D
 
 =================
 
@@ -27,7 +27,7 @@ The parameters accepted by the 2D timeline view are:
 
 mag (for cutoff magnitude), startdate and enddate
 
-example URL : http://gizmoabhinav.github.io/Seismic-Eruptions/?startdate=2013-1-1&enddate2014-1-1&mag=3
+example URL : http://gizmoabhinav.github.io/Seismic-Eruptions/2D/?startdate=2013-1-1&enddate2014-1-1&mag=3
 
 The 2D view has an option for creating a cross section on the map which can be viewed in the 3D cross-section view. The earthquake are shown at the depths of their epicenters inside the area selected in the cross section.
 
